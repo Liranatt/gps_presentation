@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garmin Health Multi-Agent System</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .glass {
+      background: rgba(30,41,59,0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 32px 0 rgba(0,0,0,0.25);
+    }
+  </style>
+</head>
+<body class="bg-slate-900 min-h-screen text-white">
+  <main class="flex flex-col items-center justify-center min-h-screen px-4">
+    <section class="glass p-8 max-w-xl w-full mt-16 text-center">
+      <div class="flex justify-center mb-4">
+        <i data-lucide="activity" class="w-12 h-12 text-green-400"></i>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">Garmin Health Multi-Agent System</h1>
+      <p class="text-slate-300 mb-6">A GenAI-powered health intelligence system running on Heroku. This project demonstrates a multi-agent architecture for real-time health analytics and insights from Garmin data.</p>
+      <div class="flex flex-col items-center gap-4 mb-6">
+        <span id="status-badge" class="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-slate-700 text-orange-400">
+          <i data-lucide="loader" class="w-4 h-4 animate-spin mr-2"></i>Checking status...
+        </span>
+        <a href="https://liran-garmin-ai.herokuapp.com" target="_blank" class="mt-2 px-6 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-bold shadow-lg transition">Launch Live App</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    lucide.createIcons();
+    // Hybrid System Status Logic
+    window.addEventListener('DOMContentLoaded', () => {
+      const badge = document.getElementById('status-badge');
+      fetch('https://liran-garmin-ai.herokuapp.com/health-check', {method: 'GET', mode: 'cors'})
+        .then(res => {
+          if (res.ok) {
+            badge.className = 'inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-green-700 text-green-300';
+            badge.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 mr-2"></i>System Online';
+            lucide.createIcons();
+          } else {
+            throw new Error('Not OK');
+          }
+        })
+        .catch(() => {
+          badge.className = 'inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-orange-700 text-orange-300';
+          badge.innerHTML = '<i data-lucide="clock" class="w-4 h-4 mr-2"></i>Waking up Agents...';
+          lucide.createIcons();
+        });
+    });
+  </script>
+</body>
+</html>

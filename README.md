@@ -1,56 +1,27 @@
-# Visual GPS Localization - BGU Deep Learning Project
+# Liran Attar Portfolio Structure
 
-## Campus Image-to-GPS Regression for Localization and Navigation
+Welcome to my developer portfolio! This repository is organized as a multi-project showcase, hosted on GitHub Pages at [liranattar.dev](https://liranattar.dev).
 
-**Authors:** Liran Attar & Tom Mimran  
-**Institution:** Ben-Gurion University of the Negev  
-**Department:** Computer Science • January 2026
+## Structure
 
----
+```
+/                # Root: Main portfolio landing page (index.html)
+|-- CNAME        # Custom domain for GitHub Pages
+|-- gps/         # Visual GPS Localization project (all original files)
+|-- garmin/      # Garmin Health Intelligence project
+|-- .git/        # Git repository (do not delete)
+```
 
-## 🎯 View the Interactive Presentation
+### Details
+- **index.html** (root): My personal landing page, styled with Tailwind CSS and Lucide Icons. Features project cards for easy navigation.
+- **gps/**: Contains all files and assets for the Visual GPS Localization project (originally the entire repo content).
+- **garmin/**: Contains the Garmin Health Intelligence project page, including a live system status badge and launch button.
+- **CNAME**: Keeps the custom domain (liranattar.dev) mapped to this site.
 
-### **[👉 Click here to view the presentation](https://liranatt.github.io/gps_presentation/)**
-
----
-
-## 📊 Project Overview
-
-This project demonstrates a deep learning approach to visual geo-localization on the BGU campus. Using a 360° data collection strategy and an EfficientNet-B0 backbone, we achieve high-accuracy GPS coordinate prediction from images alone.
-
-### Key Results
-| Metric | Value |
-|--------|-------|
-| **Mean Error** | 5.24m |
-| **Median Error** | 4.01m |
-| **P75** | 5.35m |
-| **P95** | 10.22m |
-| **Within 10m** | 94.5% |
-| **Within 20m** | 98.2% |
+## Notes
+- All internal links and image paths have been updated to reflect the new structure.
+- Do **not** delete or move the `.git` or `CNAME` files from the root.
 
 ---
 
-## 🔬 Methodology
-
-### Data Collection Strategy
-- **360° Rotation**: 4 photos per location (0°, 90°, 180°, 270°)
-- **GPS Stabilization**: Wait for GPS signal to stabilize before capture
-- **Dataset Size**: 3,646 images from BGU campus
-
-### Model Architecture
-- **Backbone**: EfficientNet-B0 (pretrained on ImageNet)
-- **Head**: Custom regression MLP with LayerNorm and SiLU
-- **Output**: Normalized GPS coordinates via ScaledSigmoid
-- **Loss**: Haversine distance (great-circle distance in meters)
-
----
-
-## 🛠️ Try the Demo
-
-**[🤗 Hugging Face Demo](https://huggingface.co/spaces/liranatt/GPU_Modell_Liran_and_Tom)**
-
-Upload a photo from BGU campus and get the predicted GPS coordinates!
-
----
-
-**🌟 Star this repo if you found it helpful!**
+Feel free to explore the projects and reach out via the links on the main page!
