@@ -57,23 +57,20 @@
 
   <section class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
     <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12 relative z-10">
-      <div class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm rounded-full bg-slate-800 text-white hover:bg-slate-700 border border-slate-600 transition-colors">
-        <span class="text-xs bg-indigo-600 rounded-full text-white px-4 py-1.5 mr-3">עדכון</span>
-        <span class="text-sm font-medium" dir="rtl">האתר עודכן לפורטפוליו 2026</span> 
-      </div>
-      <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none md:text-7xl lg:text-8xl">
-        I Turn Data into <br> <span class="gradient-text">Intelligent Systems</span>
+      <h1 class="mb-4 text-4xl md:text-5xl font-extrabold tracking-tight leading-none" style="margin-top: 2rem;">
+        Projects I like to make:<br>
+        <span class="gradient-text text-3xl md:text-5xl">Data, Quant, Neural Networks, Machine Learning, Intelligent Systems</span>
       </h1>
-      <p class="mb-8 text-lg font-normal text-slate-400 lg:text-xl sm:px-16 xl:px-48 max-w-4xl mx-auto leading-relaxed" dir="rtl" style="text-align: right;">
+      <p class="mb-6 text-lg font-normal text-slate-400 lg:text-xl sm:px-16 xl:px-48 max-w-4xl mx-auto leading-relaxed" dir="rtl" style="text-align: right;">
         היי, אני לירן. סטודנט למדעי המחשב באוניברסיטת בן-גוריון עם התמחות ב-Data Science.<br>
-        אני משלב אלגוריתמיקה מתקדמת, ארכיטקטורת סוכנים (Agents) ועיצוב מוקפד כדי לבנות פתרונות AI שעובדים בעולם האמיתי.
+        אני משלב אלגוריתמיקה מתקדמת, ארכיטקטורת סוכנים, כלים מתמטים וסטטיסטיים וקצת פייתון כדי לבנות פרוייקטים בתחום הAI ואלגוטריידינג בשביל לבחון תיאוריות שונות שעולות לי ביום יום.
       </p>
-      <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+      <div class="flex flex-col mb-6 lg:mb-8 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
         <a href="#projects" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-white rounded-full bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-900 transition-all">
           View Projects
           <i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
         </a>
-        <a href="mailto:contact@liranattar.dev" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-slate-300 rounded-full border border-slate-600 hover:text-white hover:bg-slate-800 focus:ring-4 focus:ring-slate-800 transition-all">
+        <a href="mailto:lirattar@gmail.com" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-slate-300 rounded-full border border-slate-600 hover:text-white hover:bg-slate-800 focus:ring-4 focus:ring-slate-800 transition-all">
           Contact Me
         </a>
       </div>
@@ -122,17 +119,25 @@
           </div>
           <h3 class="text-2xl font-bold text-white mb-3" dir="ltr">Visual GPS Localization</h3>
           <p class="text-slate-400 mb-6 flex-grow leading-relaxed" dir="rtl" style="text-align: right;">
-            פרויקט מחקר ב-Computer Vision המאפשר איכון מדויק (עד 5 מטר) בקמפוס ללא שימוש בלוויינים. שימוש במודל EfficientNet-B0 וארכיטקטורה ייחודית לעיבוד תמונות ב-360 מעלות.
+            פרוייקט מחקר ב computer vision וברשתות עמוקות הבודק את איכות המודלים efficientNet-Bo, ResNet30 ו ConvNext לאיכון מדוייק של GPS על פי תמונות בלבד ברחבי קמפוס אוניברסיטת בן גוריון. המודל בדמו הינו מודל הEfficient Net עם Backbone ו head שעברו קונפיגורציה כדי להתאים למשימה.
           </p>
           <div class="flex flex-wrap gap-2 mb-8">
             <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">PyTorch</span>
             <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">EfficientNet</span>
             <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">Interactive Map</span>
           </div>
-          <div class="flex gap-4 mt-auto">
-            <a href="/gps" class="text-white bg-indigo-600 hover:bg-indigo-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center transition-colors w-full justify-center">
-              View Presentation
-              <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+          <div class="flex gap-2 mt-auto">
+            <a href="/gps/presentation.html" class="text-white bg-indigo-600 hover:bg-indigo-700 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center transition-colors w-full justify-center">
+              Presentation
+              <i data-lucide="monitor" class="ml-2 w-4 h-4"></i>
+            </a>
+            <a href="https://huggingface.co/spaces/liranatt/GPU_Modell_Liran_and_Tom" target="_blank" class="text-white bg-cyan-600 hover:bg-cyan-700 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center transition-colors w-full justify-center">
+              Demo
+              <i data-lucide="rocket" class="ml-2 w-4 h-4"></i>
+            </a>
+            <a href="/FINAL_GPS_PROJECT%20(3).pdf" target="_blank" class="text-white bg-slate-700 hover:bg-slate-800 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center transition-colors w-full justify-center">
+              Research Paper
+              <i data-lucide="file-text" class="ml-2 w-4 h-4"></i>
             </a>
           </div>
         </div>
