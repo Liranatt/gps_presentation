@@ -6,6 +6,7 @@
   <title>Liran Attar | Data Scientist & AI Engineer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
@@ -44,36 +45,51 @@
 
   <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-slate-900/80 backdrop-blur-md">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-      <a href="https://www.linkedin.com/in/liran-attar/" target="_blank" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <span class="self-center text-xl font-bold whitespace-nowrap tracking-tight">LinkedIn</span>
-      </a>
       <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-        <a href="https://github.com/liranatt" target="_blank" class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-800 font-medium rounded-full text-sm px-5 py-2.5 text-center transition-colors">
-          GitHub Profile
+        <a href="https://github.com/liranatt" target="_blank" class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-800 font-medium rounded-full text-sm px-5 py-2.5 text-center inline-flex items-center transition-colors">
+          <i data-lucide="github" class="w-5 h-5 mr-2"></i> GitHub Profile
+        </a>
+        <a href="https://www.linkedin.com/in/liran-attar/" target="_blank" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-full text-sm px-5 py-2.5 text-center inline-flex items-center transition-colors">
+          <i data-lucide="linkedin" class="w-5 h-5 mr-2"></i> LinkedIn
         </a>
       </div>
     </div>
   </nav>
 
   <section class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12 relative z-10">
-      <h1 class="mb-4 text-5xl md:text-6xl font-extrabold tracking-tight leading-none" style="margin-top: 2rem;">
-        Projects I Build:<br>
-        <span class="gradient-text text-2xl md:text-4xl">Data Science, Quantitative Analysis, Deep Learning, Machine Learning, Intelligent Systems</span>
-      </h1>
-      <p class="mb-6 text-lg font-normal text-slate-400 lg:text-xl sm:px-16 xl:px-48 max-w-4xl mx-auto leading-relaxed" dir="rtl" style="text-align: right;">
-        היי, אני לירן. סטודנט למדעי המחשב באוניברסיטת בן-גוריון עם התמחות ב-Data Science.<br>
-        אני משלב אלגוריתמיקה מתקדמת, ארכיטקטורת סוכנים, כלים מתמטים וסטטיסטיים וקצת פייתון כדי לבנות פרוייקטים בתחום הAI ואלגוטריידינג בשביל לבחון תיאוריות שונות שעולות לי ביום יום.
-      </p>
-      <div class="flex flex-col mb-6 lg:mb-8 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-        <a href="#projects" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-white rounded-full bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-900 transition-all">
-          View Projects
-          <i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
-        </a>
-        <a href="mailto:lirattar@gmail.com" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-slate-300 rounded-full border border-slate-600 hover:text-white hover:bg-slate-800 focus:ring-4 focus:ring-slate-800 transition-all">
-          Contact Me
-        </a>
+    <div class="mx-auto max-w-4xl w-full glass-card p-6 rounded-xl shadow-lg backdrop-blur-md bg-white/10 border border-white/20 flex flex-col md:flex-row gap-6 relative z-10">
+      <!-- Left: Headline & Subheadline -->
+      <div class="flex flex-col justify-center md:w-1/2 w-full gap-2">
+        <div class="flex items-center gap-3 mb-2">
+          <i class="lucide lucide-brain text-indigo-400 text-3xl"></i>
+          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-white" style="font-family: 'Rubik', 'Inter', sans-serif;">
+            Building Intelligent Systems
+          </h1>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <i class="lucide lucide-bar-chart-3 text-pink-400 text-2xl"></i>
+          <i class="lucide lucide-code text-teal-400 text-2xl"></i>
+          <span class="text-xl md:text-2xl font-medium text-gray-300" style="font-family: 'Rubik', 'Inter', sans-serif;">
+            Data Science, Quantitative Analysis, Deep Learning
+          </span>
+        </div>
       </div>
+      <!-- Right: Description -->
+      <div class="flex items-center md:w-1/2 w-full">
+        <p class="text-base md:text-lg text-gray-200" style="font-family: 'Rubik', 'Inter', sans-serif;">
+          היי, אני לירן. סטודנט למדעי המחשב באוניברסיטת בן-גוריון עם התמחות ב-Data Science.<br>
+          אני משלב אלגוריתמיקה מתקדמת, ארכיטקטורת סוכנים, כלים מתמטים וסטטיסטיים וקצת פייתון כדי לבנות פרוייקטים בתחום הAI ואלגוטריידינג בשביל לבחון תיאוריות שונות שעולות לי ביום יום.
+        </p>
+      </div>
+    </div>
+    <div class="flex flex-col mb-6 lg:mb-8 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 mt-8">
+      <a href="#projects" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-white rounded-full bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-900 transition-all">
+        View Projects
+        <i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
+      </a>
+      <a href="mailto:lirattar@gmail.com" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-slate-300 rounded-full border border-slate-600 hover:text-white hover:bg-slate-800 focus:ring-4 focus:ring-slate-800 transition-all">
+        Contact Me
+      </a>
     </div>
   </section>
 
