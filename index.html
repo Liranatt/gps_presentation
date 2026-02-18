@@ -332,7 +332,34 @@
       gap: 22px;
       max-width: 1080px;
       margin: 0 auto;
+      align-items: start;
     }
+
+    .card-extra {
+      display: none;
+      margin-top: 10px;
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.78;
+    }
+    .card-extra.open { display: block; }
+
+    .read-more-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 8px 0 18px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      color: #6366f1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s ease;
+    }
+    .read-more-btn:hover { color: #a5b4fc; }
 
     .project-card {
       position: relative;
@@ -520,7 +547,7 @@
         <a href="#projects" class="cta-primary">
           See my work <i data-lucide="arrow-down" style="width:15px;height:15px;"></i>
         </a>
-        <a href="mailto:lirattar@gmail.com" class="cta-secondary">
+        <a href="/cdn-cgi/l/email-protection#7f13160d1e0b0b1e0d3f18121e1613511c1012" class="cta-secondary">
           <i data-lucide="mail" style="width:15px;height:15px;"></i> Say hello
         </a>
       </div>
@@ -542,13 +569,17 @@
           <span class="card-badge badge-green">Live Agent System</span>
         </div>
         <h3 class="card-title">Garmin Health Intelligence: Deterministic Math Meets Multi-Agent AI</h3>
-        <p class="card-desc" id="garmin-desc">
-          <span id="garmin-short">An autonomous Data Engineering and AI platform designed to analyze my personal Garmin watch data. This system solves the LLM "hallucination" problem through a "Determinism before Semantics" architecture...</span>
-          <span id="garmin-more" style="display:none;">An autonomous Data Engineering and AI platform designed to analyze my personal Garmin watch data. This system solves the LLM "hallucination" problem through a "Determinism before Semantics" architecture.<br>Deterministic Math Layer: A custom statistical engine (Python/Pandas) processes my raw biometric sensors before any AI involvement. It executes rigorous calculations—including Pearson correlations, AR(1) autoregressive models, Markov Chain state transitions, and statistical anomaly detection—to establish mathematical ground truth.<br>Multi-Agent System: A squad of 5 specialized AI agents (CrewAI) interprets these pre-validated results in parallel. From sleep architecture to training load optimization, they synthesize actionable insights grounded strictly in my specific physiological data, rather than generic training sets.<br>The result is an N-of-1 scientific instrument that understands my body better than any standard health app algorithm.</span>
+        <p class="card-desc">
+          An autonomous Data Engineering and AI platform built to analyze personal Garmin watch data.
+          The system solves LLM hallucination through a "Determinism before Semantics" architecture —
+          mathematical ground truth is established before any AI touches the data.
+          A custom statistical engine runs Pearson correlations, AR(1) models, and anomaly detection first.
         </p>
-        <div style="margin-top:8px;">
-          <button class="btn btn-ghost" id="garmin-readmore" onclick="toggleReadMore('garmin')">Read More</button>
+        <div class="card-extra" id="garmin-extra">
+          <strong style="color:#94a3b8;">Multi-Agent System:</strong> A squad of 5 specialized AI agents (CrewAI) interprets the pre-validated results in parallel. From sleep architecture to training load optimization, they synthesize insights grounded in personal physiological data — not generic training sets.<br><br>
+          The result is an N-of-1 scientific instrument that understands your body better than any standard health app.
         </div>
+        <button class="read-more-btn" id="garmin-btn" onclick="toggleCard('garmin')">Read more ↓</button>
         <div class="card-tags">
           <span class="tag">Python</span>
           <span class="tag">GenAI Agents</span>
@@ -569,29 +600,17 @@
           <span class="card-badge badge-blue">Deep Learning Research</span>
         </div>
         <h3 class="card-title">Visual Localization: Direct Coordinate Regression via Deep Ensembles</h3>
-        <p class="card-desc" id="gps-desc">
-          <span id="gps-short">A Deep Learning system that treats visual localization as a continuous regression problem rather than a discrete retrieval task...</span>
-          <span id="gps-more" style="display:none;">A Deep Learning system that treats visual localization as a continuous regression problem rather than a discrete retrieval task.<br>Physics-Aware Optimization: Implemented a custom, numerically stable Haversine Loss function (PyTorch) to optimize for actual geodesic distance on Earth's surface, solving gradient explosion issues common in coordinate regression.<br>Architecture: An ensemble of EfficientNet-B0, ResNet18, and ConvNeXt backbones, utilizing Transfer Learning to extract spatial features robust to lighting and viewpoint changes.<br>Result: Achieved 5.24m mean error in a GPS-denied environment (BGU Campus), proving the viability of autonomous navigation using monocular vision alone.</span>
+        <p class="card-desc">
+          A Deep Learning system that treats visual localization as a continuous regression problem
+          rather than a discrete retrieval task — no GPS signal, just a photo and a prediction.
+          Tested on BGU campus with 3,646 images captured at 360° rotations for viewpoint invariance.
+          Physics-aware Haversine Loss optimizes for real geodesic distance, not flat coordinate MSE.
         </p>
-        <div style="margin-top:8px;">
-          <button class="btn btn-ghost" id="gps-readmore" onclick="toggleReadMore('gps')">Read More</button>
+        <div class="card-extra" id="gps-extra">
+          <strong style="color:#94a3b8;">Architecture:</strong> An ensemble of EfficientNet-B0, ResNet18, and ConvNeXt with Transfer Learning, extracting spatial features robust to lighting and viewpoint changes.<br><br>
+          <strong style="color:#94a3b8;">Result:</strong> 5.24m mean error in a GPS-denied environment — proving autonomous navigation is viable with monocular vision alone.
         </div>
-          <script>
-            function toggleReadMore(card) {
-              const short = document.getElementById(card + '-short');
-              const more = document.getElementById(card + '-more');
-              const btn = document.getElementById(card + '-readmore');
-              if (more.style.display === 'none') {
-                short.style.display = 'none';
-                more.style.display = 'inline';
-                btn.textContent = 'Read Less';
-              } else {
-                short.style.display = 'inline';
-                more.style.display = 'none';
-                btn.textContent = 'Read More';
-              }
-            }
-          </script>
+        <button class="read-more-btn" id="gps-btn" onclick="toggleCard('gps')">Read more ↓</button>
         <div class="card-tags">
           <span class="tag">PyTorch</span>
           <span class="tag">EfficientNet</span>
@@ -615,9 +634,4 @@
 
   <footer>
     <span>© 2026 <a href="https://liranattar.dev">Liran Attar</a>. All Rights Reserved.</span>
-    <div style="margin-top:10px; font-size:12px; color:#1e293b;">Built with Passion & Code</div>
-  </footer>
-
-  <script>lucide.createIcons();</script>
-</body>
-</html>
+    <div style="margin
