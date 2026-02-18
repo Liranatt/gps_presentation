@@ -7,6 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    function toggleCard(id) {
+      var extra = document.getElementById(id + '-extra');
+      var btn   = document.getElementById(id + '-btn');
+      var isOpen = extra.classList.contains('open');
+      extra.classList.toggle('open', !isOpen);
+      btn.textContent = isOpen ? 'Read more ↓' : 'Read less ↑';
+    }
+  </script>
   <style>
     :root {
       --indigo: #6366f1;
@@ -634,4 +643,3 @@
 
   <footer>
     <span>© 2026 <a href="https://liranattar.dev">Liran Attar</a>. All Rights Reserved.</span>
-    <div style="margin
