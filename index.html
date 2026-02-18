@@ -1,59 +1,158 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liran Attar | Data Scientist & AI Engineer</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    .glass {
-      background: rgba(30,41,59,0.6);
+    body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    .gradient-text {
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
       backdrop-filter: blur(12px);
-      border-radius: 1.5rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 4px 32px 0 rgba(0,0,0,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.2);
+    }
+    .bg-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(0,0,0,0) 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+      pointer-events: none;
     }
   </style>
 </head>
-<body class="bg-slate-900 min-h-screen text-white">
-  <main class="flex flex-col items-center justify-center min-h-screen px-4">
-    <!-- Hero Section -->
-    <section class="mb-12 text-center">
-      <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Liran Attar</h1>
-      <h2 class="text-xl md:text-2xl font-medium text-slate-300 mb-2">Data Scientist & AI Engineer</h2>
-      <div class="flex justify-center gap-4 mt-4">
-        <span id="github" class="cursor-pointer"><i data-lucide="github" class="w-7 h-7"></i></span>
-        <span id="linkedin" class="cursor-pointer"><i data-lucide="linkedin" class="w-7 h-7"></i></span>
-        <span id="mail" class="cursor-pointer"><i data-lucide="mail" class="w-7 h-7"></i></span>
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
+
+  <div class="bg-glow"></div>
+
+  <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-slate-900/80 backdrop-blur-md">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <span class="self-center text-xl font-bold whitespace-nowrap tracking-tight">liranattar<span class="text-indigo-500">.dev</span></span>
+      </a>
+      <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <a href="https://github.com/liranatt" target="_blank" class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-800 font-medium rounded-full text-sm px-5 py-2.5 text-center transition-colors">
+          GitHub Profile
+        </a>
       </div>
-    </section>
-    <!-- Projects Section -->
-    <section class="w-full max-w-3xl">
-      <h3 class="text-2xl font-bold mb-6">Projects</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" dir="rtl">
-          <!-- GPS Project Card -->
-          <a href="/gps/index.html" class="glass p-6 flex flex-col items-center hover:scale-105 transition-transform" dir="ltr">
-            <i data-lucide="map-pin" class="w-10 h-10 mb-3 text-cyan-400"></i>
-            <h4 class="text-xl font-semibold mb-2" dir="ltr">Visual GPS Localization</h4>
-            <p class="text-slate-300 text-center mb-2" dir="rtl">Deep learning for campus geo-localization using images.</p>
-            <span class="inline-flex items-center gap-1 text-cyan-400 font-medium">View Project <i data-lucide="arrow-right"></i></span>
-          </a>
-          <!-- Garmin Project Card -->
-          <a href="/garmin/index.html" class="glass p-6 flex flex-col items-center hover:scale-105 transition-transform" dir="ltr">
-            <i data-lucide="activity" class="w-10 h-10 mb-3 text-green-400"></i>
-            <h4 class="text-xl font-semibold mb-2" dir="ltr">Garmin Health Intelligence</h4>
-            <p class="text-slate-300 text-center mb-2" dir="rtl">GenAI-powered health analytics and multi-agent system.</p>
-            <span class="inline-flex items-center gap-1 text-green-400 font-medium">View Project <i data-lucide="arrow-right"></i></span>
-          </a>
+    </div>
+  </nav>
+
+  <section class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12 relative z-10">
+      <div class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm rounded-full bg-slate-800 text-white hover:bg-slate-700 border border-slate-600 transition-colors">
+        <span class="text-xs bg-indigo-600 rounded-full text-white px-4 py-1.5 mr-3">עדכון</span>
+        <span class="text-sm font-medium" dir="rtl">האתר עודכן לפורטפוליו 2026</span> 
       </div>
-    </section>
-  </main>
+      <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none md:text-7xl lg:text-8xl">
+        I Turn Data into <br> <span class="gradient-text">Intelligent Systems</span>
+      </h1>
+      <p class="mb-8 text-lg font-normal text-slate-400 lg:text-xl sm:px-16 xl:px-48 max-w-4xl mx-auto leading-relaxed" dir="rtl" style="text-align: right;">
+        היי, אני לירן. סטודנט למדעי המחשב באוניברסיטת בן-גוריון עם התמחות ב-Data Science.<br>
+        אני משלב אלגוריתמיקה מתקדמת, ארכיטקטורת סוכנים (Agents) ועיצוב מוקפד כדי לבנות פתרונות AI שעובדים בעולם האמיתי.
+      </p>
+      <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+        <a href="#projects" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-white rounded-full bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-900 transition-all">
+          View Projects
+          <i data-lucide="arrow-down" class="ml-2 w-5 h-5"></i>
+        </a>
+        <a href="mailto:contact@liranattar.dev" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-slate-300 rounded-full border border-slate-600 hover:text-white hover:bg-slate-800 focus:ring-4 focus:ring-slate-800 transition-all">
+          Contact Me
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="py-24 bg-slate-900/50 relative">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
+      <div class="mx-auto max-w-screen-sm text-center mb-16">
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white" dir="ltr">Featured Projects</h2>
+        <p class="font-light text-slate-400 lg:mb-16 sm:text-xl" dir="rtl" style="text-align: right;">מערכות מורכבות, פתרונות אלגנטיים.</p>
+      </div> 
+            
+      <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
+                
+        <div class="glass-card rounded-2xl p-8 flex flex-col h-full">
+          <div class="flex justify-between items-start mb-6">
+            <div class="p-3 rounded-lg bg-indigo-900/30 text-indigo-400">
+              <i data-lucide="activity" class="w-8 h-8"></i>
+            </div>
+            <span class="bg-green-900/30 text-green-400 text-xs font-medium px-2.5 py-0.5 rounded border border-green-800">Live Agent System</span>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-3" dir="ltr">Garmin Health Intelligence</h3>
+          <p class="text-slate-400 mb-6 flex-grow leading-relaxed" dir="rtl" style="text-align: right;">
+            מערכת Multi-Agent AI שמנתחת מדדים פיזיולוגיים בזמן אמת. המערכת משתמשת בגישת "Determinism before Semantics" כדי למנוע הזיות מודל, ומריצה חישובים מתמטיים מורכבים (קורלציות, שונות דופק) לפני הסקת מסקנות.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-8">
+            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">Python</span>
+            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">GenAI Agents</span>
+            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">Heroku DB</span>
+          </div>
+          <div class="flex gap-4 mt-auto">
+            <a href="/garmin" class="text-white bg-indigo-600 hover:bg-indigo-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center transition-colors w-full justify-center">
+              Case Study & Demo
+              <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 flex flex-col h-full">
+          <div class="flex justify-between items-start mb-6">
+            <div class="p-3 rounded-lg bg-cyan-900/30 text-cyan-400">
+              <i data-lucide="map-pin" class="w-8 h-8"></i>
+            </div>
+            <span class="bg-blue-900/30 text-blue-400 text-xs font-medium px-2.5 py-0.5 rounded border border-blue-800">Deep Learning Research</span>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-3" dir="ltr">Visual GPS Localization</h3>
+          <p class="text-slate-400 mb-6 flex-grow leading-relaxed" dir="rtl" style="text-align: right;">
+            פרויקט מחקר ב-Computer Vision המאפשר איכון מדויק (עד 5 מטר) בקמפוס ללא שימוש בלוויינים. שימוש במודל EfficientNet-B0 וארכיטקטורה ייחודית לעיבוד תמונות ב-360 מעלות.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-8">
+            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">PyTorch</span>
+            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">EfficientNet</span>
+            <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium border border-slate-700">Interactive Map</span>
+          </div>
+          <div class="flex gap-4 mt-auto">
+            <a href="/gps" class="text-white bg-indigo-600 hover:bg-indigo-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center transition-colors w-full justify-center">
+              View Presentation
+              <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-slate-900 border-t border-white/5 py-12">
+    <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8 flex flex-col items-center justify-center">
+       <span class="text-sm text-slate-500 sm:text-center">© 2026 <a href="https://liranattar.dev" class="hover:underline">Liran Attar</a>. All Rights Reserved.
+      </span>
+      <div class="mt-4 text-xs text-slate-600">
+        Built with Passion & Code
+      </div>
+    </div>
+  </footer>
+
   <script>
     lucide.createIcons();
-    document.getElementById('github').onclick = () => window.open('https://github.com/Liranatt', '_blank');
-    document.getElementById('linkedin').onclick = () => window.open('https://linkedin.com/in/liranattar', '_blank');
-    document.getElementById('mail').onclick = () => window.open('mailto:liranattar@gmail.com', '_blank');
   </script>
 </body>
 </html>
