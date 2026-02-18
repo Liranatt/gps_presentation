@@ -543,13 +543,12 @@
         </div>
         <h3 class="card-title">Garmin Health Intelligence: Deterministic Math Meets Multi-Agent AI</h3>
         <p class="card-desc" id="garmin-desc">
-          An autonomous Data Engineering and AI platform designed to analyze my personal Garmin watch data. This system solves the LLM "hallucination" problem through a "Determinism before Semantics" architecture:<span id="garmin-more" style="display:none;">
-          <br>Deterministic Math Layer: A custom statistical engine (Python/Pandas) processes my raw biometric sensors before any AI involvement. It executes rigorous calculations—including Pearson correlations, AR(1) autoregressive models, Markov Chain state transitions, and statistical anomaly detection—to establish mathematical ground truth.
-          <br>Multi-Agent System: A squad of 5 specialized AI agents (CrewAI) interprets these pre-validated results in parallel. From sleep architecture to training load optimization, they synthesize actionable insights grounded strictly in my specific physiological data, rather than generic training sets.
-          <br>The result is an N-of-1 scientific instrument that understands my body better than any standard health app algorithm.
-          </span>
+          <span id="garmin-short">An autonomous Data Engineering and AI platform designed to analyze my personal Garmin watch data. This system solves the LLM "hallucination" problem through a "Determinism before Semantics" architecture...</span>
+          <span id="garmin-more" style="display:none;">An autonomous Data Engineering and AI platform designed to analyze my personal Garmin watch data. This system solves the LLM "hallucination" problem through a "Determinism before Semantics" architecture.<br>Deterministic Math Layer: A custom statistical engine (Python/Pandas) processes my raw biometric sensors before any AI involvement. It executes rigorous calculations—including Pearson correlations, AR(1) autoregressive models, Markov Chain state transitions, and statistical anomaly detection—to establish mathematical ground truth.<br>Multi-Agent System: A squad of 5 specialized AI agents (CrewAI) interprets these pre-validated results in parallel. From sleep architecture to training load optimization, they synthesize actionable insights grounded strictly in my specific physiological data, rather than generic training sets.<br>The result is an N-of-1 scientific instrument that understands my body better than any standard health app algorithm.</span>
         </p>
-        <button class="btn btn-ghost" id="garmin-readmore" onclick="toggleReadMore('garmin')">Read More</button>
+        <div style="margin-top:8px;">
+          <button class="btn btn-ghost" id="garmin-readmore" onclick="toggleReadMore('garmin')">Read More</button>
+        </div>
         <div class="card-tags">
           <span class="tag">Python</span>
           <span class="tag">GenAI Agents</span>
@@ -571,21 +570,23 @@
         </div>
         <h3 class="card-title">Visual Localization: Direct Coordinate Regression via Deep Ensembles</h3>
         <p class="card-desc" id="gps-desc">
-          A Deep Learning system that treats visual localization as a continuous regression problem rather than a discrete retrieval task.<span id="gps-more" style="display:none;">
-          <br>Physics-Aware Optimization: Implemented a custom, numerically stable Haversine Loss function (PyTorch) to optimize for actual geodesic distance on Earth's surface, solving gradient explosion issues common in coordinate regression.
-          <br>Architecture: An ensemble of EfficientNet-B0, ResNet18, and ConvNeXt backbones, utilizing Transfer Learning to extract spatial features robust to lighting and viewpoint changes.
-          <br>Result: Achieved 5.24m mean error in a GPS-denied environment (BGU Campus), proving the viability of autonomous navigation using monocular vision alone.
-          </span>
+          <span id="gps-short">A Deep Learning system that treats visual localization as a continuous regression problem rather than a discrete retrieval task...</span>
+          <span id="gps-more" style="display:none;">A Deep Learning system that treats visual localization as a continuous regression problem rather than a discrete retrieval task.<br>Physics-Aware Optimization: Implemented a custom, numerically stable Haversine Loss function (PyTorch) to optimize for actual geodesic distance on Earth's surface, solving gradient explosion issues common in coordinate regression.<br>Architecture: An ensemble of EfficientNet-B0, ResNet18, and ConvNeXt backbones, utilizing Transfer Learning to extract spatial features robust to lighting and viewpoint changes.<br>Result: Achieved 5.24m mean error in a GPS-denied environment (BGU Campus), proving the viability of autonomous navigation using monocular vision alone.</span>
         </p>
-        <button class="btn btn-ghost" id="gps-readmore" onclick="toggleReadMore('gps')">Read More</button>
+        <div style="margin-top:8px;">
+          <button class="btn btn-ghost" id="gps-readmore" onclick="toggleReadMore('gps')">Read More</button>
+        </div>
           <script>
             function toggleReadMore(card) {
+              const short = document.getElementById(card + '-short');
               const more = document.getElementById(card + '-more');
               const btn = document.getElementById(card + '-readmore');
               if (more.style.display === 'none') {
+                short.style.display = 'none';
                 more.style.display = 'inline';
                 btn.textContent = 'Read Less';
               } else {
+                short.style.display = 'inline';
                 more.style.display = 'none';
                 btn.textContent = 'Read More';
               }
