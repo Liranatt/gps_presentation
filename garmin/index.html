@@ -532,6 +532,11 @@
       font-size: 14px;
       color: rgba(255, 255, 255, 0.82);
       line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-clamp: 4;
     }
 
     .insight-detail {
@@ -580,9 +585,15 @@
     .chat-wrap {
       display: grid;
       gap: 10px;
-      height: 100%;
-      min-height: 520px;
-      grid-template-rows: 1fr auto;
+      min-height: 0;
+      grid-template-rows: auto auto auto;
+    }
+
+    #chat {
+      align-self: start;
+      position: sticky;
+      top: 16px;
+      height: fit-content;
     }
 
     .chat-log {
@@ -593,6 +604,8 @@
       overflow: auto;
       display: grid;
       gap: 10px;
+      min-height: 260px;
+      max-height: min(58vh, 460px);
     }
 
     .msg {
@@ -682,6 +695,49 @@
       font-weight: 700;
     }
 
+    .table-wrap {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      overflow: auto;
+      max-height: 380px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: rgba(13, 17, 23, 0.95);
+      backdrop-filter: blur(6px);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    th,
+    td {
+      padding: 9px 11px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: top;
+    }
+
+    tbody td {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
     .spin {
       animation: spin 0.9s linear infinite;
     }
@@ -696,8 +752,17 @@
         grid-template-columns: 1fr;
       }
 
+      #chat {
+        position: static;
+        top: auto;
+      }
+
       .chat-wrap {
-        min-height: 500px;
+        min-height: 0;
+      }
+
+      .chat-log {
+        max-height: 420px;
       }
     }
 
@@ -734,6 +799,11 @@
 
       .button {
         width: 100%;
+      }
+
+      .chat-log {
+        min-height: 220px;
+        max-height: 360px;
       }
     }
   </style>
@@ -1001,6 +1071,7 @@
 
   <script>
     const DEFAULT_API_BASE = "https://garmin-health-liran-f16faec73fc5.herokuapp.com";
+    const HISTORY_START_DATE = "2026-02-01";
 
     const state = {
       apiBase: DEFAULT_API_BASE,
@@ -1102,7 +1173,7 @@
             ? payload.history
             : [];
 
-      return rows.map((row) => ({
+      const normalized = rows.map((row) => ({
         date: findFirst(row, ["date", "timestamp", "as_of"]),
         restingHr: numberOrNull(findFirst(row, ["resting_hr", "restingHr", "rhr"])),
         hrv: numberOrNull(findFirst(row, ["hrv", "hrv_last_night", "hrv_ms", "rmssd"])),
@@ -1110,7 +1181,20 @@
         stress: numberOrNull(findFirst(row, ["stress", "stress_level", "stress_score", "avg_stress"])),
         battery: numberOrNull(findFirst(row, ["battery", "body_battery", "bb_peak"])),
         load: numberOrNull(findFirst(row, ["training_load", "daily_load_acute", "load", "acute_load"]))
-      })).filter((row) => row.date).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+      }));
+
+      const startTs = Date.parse(HISTORY_START_DATE);
+      return normalized
+        .filter((row) => row.date)
+        .filter((row) => {
+          const rowTs = Date.parse(String(row.date));
+          if (Number.isFinite(startTs) && Number.isFinite(rowTs) && rowTs < startTs) {
+            return false;
+          }
+          return [row.restingHr, row.hrv, row.sleep, row.stress, row.battery, row.load]
+            .some((value) => value !== null && value !== undefined);
+        })
+        .sort((a, b) => String(a.date).localeCompare(String(b.date)));
     }
 
     function sparklineModel(values, width = 320, height = 68, pad = 7) {
@@ -1214,7 +1298,7 @@
 
       const firstDate = rows[0].date;
       const lastDate = rows[rows.length - 1].date;
-      el.historyStatus.textContent = `Loaded ${rows.length} daily rows (${firstDate} → ${lastDate})`;
+      el.historyStatus.textContent = `Loaded ${rows.length} daily rows from ${firstDate} to ${lastDate}`;
       el.trendGrid.innerHTML = cards;
       el.trendGrid.hidden = false;
     }
@@ -1426,6 +1510,9 @@
         for (const section of sections) {
           const detail = section.content.trim();
           if (!detail) {
+            continue;
+          }
+          if (/^please provide the pre-computed correlation analysis/i.test(detail)) {
             continue;
           }
           expanded.push({
