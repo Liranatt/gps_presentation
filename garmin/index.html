@@ -369,9 +369,13 @@
 
     .help {
       margin-top: 8px;
-      color: rgba(255, 255, 255, 0.55);
-      font-size: 12px;
-      line-height: 1.5;
+      color: rgba(236, 248, 255, 0.88);
+      font-size: 13px;
+      line-height: 1.6;
+      border: 1px solid rgba(0, 245, 160, 0.22);
+      border-radius: 12px;
+      background: linear-gradient(140deg, rgba(0, 245, 160, 0.1) 0%, rgba(102, 126, 234, 0.08) 100%);
+      padding: 10px 12px;
     }
 
     .metrics-grid {
@@ -469,6 +473,13 @@
       align-items: center;
       gap: 8px;
       justify-self: end;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .analytics-side label {
@@ -481,15 +492,25 @@
 
     .analytics-side select {
       appearance: none;
-      background: rgba(255, 255, 255, 0.05);
+      background: #131b26;
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 10px;
-      color: #fff;
+      color: #f3fbff;
       font-size: 12px;
       font-weight: 700;
       padding: 8px 30px 8px 10px;
       min-width: 120px;
       outline: none;
+    }
+
+    .analytics-side select:focus {
+      border-color: rgba(0, 245, 160, 0.4);
+      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.12);
+    }
+
+    .analytics-side select option {
+      background: #131b26;
+      color: #f3fbff;
     }
 
     .analytics-panel[hidden] {
@@ -567,6 +588,14 @@
       color: rgba(255, 255, 255, 0.5);
     }
 
+    .trend-note {
+      font-size: 12px;
+      line-height: 1.45;
+      color: rgba(220, 238, 246, 0.76);
+      border-top: 1px dashed rgba(255, 255, 255, 0.14);
+      padding-top: 6px;
+    }
+
     .insights {
       display: grid;
       gap: 10px;
@@ -593,6 +622,19 @@
       font-size: 14px;
       line-height: 1.65;
       color: rgba(255, 255, 255, 0.9);
+    }
+
+    .insight-points {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .insight-points li {
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(245, 252, 255, 0.92);
     }
 
     .insight-main .meta {
@@ -640,11 +682,6 @@
       font-size: 14px;
       color: rgba(255, 255, 255, 0.82);
       line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      line-clamp: 4;
     }
 
     .insight-detail {
@@ -671,11 +708,11 @@
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: rgba(255, 255, 255, 0.02);
-      color: rgba(255, 255, 255, 0.74);
-      font-size: 12px;
-      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 13px;
+      line-height: 1.6;
       white-space: pre-wrap;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-family: "Inter", sans-serif;
       max-height: 220px;
       overflow: auto;
     }
@@ -953,8 +990,8 @@
         <div>
           <h1>Garmin Health Intelligence Dashboard v3</h1>
           <p>
-            Deterministic statistics first, multi-agent reasoning second. This page mirrors your Streamlit v3
-            structure and consumes your Heroku API for snapshot metrics, insights, and interactive agent chat.
+            Daily health intelligence from your Garmin data: snapshot, trends, cross-metric effects, workout progress,
+            and actionable guidance from specialized agents.
           </p>
         </div>
         <div class="hero-kpis">
@@ -996,16 +1033,13 @@
               <i data-lucide="heart-pulse" style="width:17px;height:17px;"></i>
               Latest Snapshot
             </h2>
-            <button class="button ghost" id="refreshSnapshotBtn" type="button">
-              <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
-              Refresh
-            </button>
           </header>
           <div class="card-body">
             <div id="snapshotStatus" class="loading-row">
               <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
               Loading snapshot metrics...
             </div>
+            <div id="snapshotSummary" class="help" hidden></div>
             <div class="metrics-grid" id="metricsGrid" hidden>
               <article class="metric">
                 <div class="metric-label">Resting Heart Rate</div>
@@ -1033,9 +1067,9 @@
                 <div class="metric-meta">daily index</div>
               </article>
               <article class="metric">
-                <div class="metric-label">Training Load</div>
+                <div class="metric-label" id="mLoadLabel">Training Load</div>
                 <div class="metric-value" id="mLoad">--</div>
-                <div class="metric-meta">7-day</div>
+                <div class="metric-meta" id="mLoadMeta">7-day</div>
               </article>
             </div>
           </div>
@@ -1047,10 +1081,6 @@
               <i data-lucide="line-chart" style="width:17px;height:17px;"></i>
               Analytics Workspace
             </h2>
-            <button class="button ghost" id="refreshAnalyticsBtn" type="button">
-              <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
-              Refresh
-            </button>
           </header>
           <div class="card-body">
             <div class="analytics-toolbar">
@@ -1060,8 +1090,14 @@
                 <button class="analytics-tab" type="button" data-analytics-view="workouts">Workout Progress</button>
               </div>
               <div class="analytics-side">
-                <label for="rangeSelect">Window</label>
-                <select id="rangeSelect" aria-label="Analytics timeframe"></select>
+                <div class="filter-group">
+                  <label for="rangeSelect">Window</label>
+                  <select id="rangeSelect" aria-label="Analytics timeframe"></select>
+                </div>
+                <div class="filter-group">
+                  <label for="sportSelect">Sport</label>
+                  <select id="sportSelect" aria-label="Workout sport filter"></select>
+                </div>
               </div>
             </div>
             <div id="historyStatus" class="loading-row trend-status">
@@ -1070,6 +1106,7 @@
             </div>
 
             <section id="analyticsTrends" class="analytics-panel">
+              <div id="trendsSummary" class="help" hidden></div>
               <div class="trend-grid" id="trendGrid" hidden></div>
             </section>
 
@@ -1092,10 +1129,6 @@
               <i data-lucide="sparkles" style="width:17px;height:17px;"></i>
               Agent Insights
             </h2>
-            <button class="button ghost" id="refreshInsightsBtn" type="button">
-              <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
-              Refresh
-            </button>
           </header>
           <div class="card-body">
             <div id="insightMain" class="insight-main" hidden></div>
@@ -1136,7 +1169,7 @@
           </form>
 
           <p class="footer-note">
-            This UI is Streamlit-free. It talks directly to your backend API so you can fully host on Heroku.
+            Insights are computed daily from your 06:00 UTC sync and translated to practical actions for recovery and training.
           </p>
         </div>
       </section>
@@ -1159,29 +1192,40 @@
       { days: 270, label: "9 months" },
       { days: 365, label: "1 year" }
     ];
+    const SPORT_OPTIONS = [
+      { key: "all", label: "All" },
+      { key: "running", label: "Running" },
+      { key: "cycling", label: "Cycling" },
+      { key: "swimming", label: "Swimming" },
+      { key: "skiing", label: "Skiing" },
+      { key: "gym", label: "Gym" }
+    ];
 
     const state = {
       apiBase: DEFAULT_API_BASE,
       selectedRangeDays: 60,
+      selectedSport: "all",
       analyticsView: "trends",
       snapshot: null,
       insights: { main: null, agents: [] },
       history: [],
       workouts: [],
       workoutSummary: null,
+      crossEffects: null,
       historyError: "",
-      workoutError: ""
+      workoutError: "",
+      crossEffectsError: ""
     };
 
     const el = {
       statusBadge: document.getElementById("statusBadge"),
-      refreshSnapshotBtn: document.getElementById("refreshSnapshotBtn"),
-      refreshAnalyticsBtn: document.getElementById("refreshAnalyticsBtn"),
-      refreshInsightsBtn: document.getElementById("refreshInsightsBtn"),
       rangeSelect: document.getElementById("rangeSelect"),
+      sportSelect: document.getElementById("sportSelect"),
       snapshotStatus: document.getElementById("snapshotStatus"),
+      snapshotSummary: document.getElementById("snapshotSummary"),
       metricsGrid: document.getElementById("metricsGrid"),
       historyStatus: document.getElementById("historyStatus"),
+      trendsSummary: document.getElementById("trendsSummary"),
       trendGrid: document.getElementById("trendGrid"),
       analyticsTrends: document.getElementById("analyticsTrends"),
       analyticsCorrelations: document.getElementById("analyticsCorrelations"),
@@ -1207,7 +1251,9 @@
       mSleep: document.getElementById("mSleep"),
       mBattery: document.getElementById("mBattery"),
       mStress: document.getElementById("mStress"),
-      mLoad: document.getElementById("mLoad")
+      mLoad: document.getElementById("mLoad"),
+      mLoadLabel: document.getElementById("mLoadLabel"),
+      mLoadMeta: document.getElementById("mLoadMeta")
     };
 
 
@@ -1273,6 +1319,7 @@
         sleep: findFirst(source, ["sleep_score", "sleepScore", "sleep"]),
         battery: findFirst(source, ["body_battery", "bodyBattery", "battery"]),
         stress: findFirst(source, ["stress", "stress_score", "avg_stress"]),
+        readiness: findFirst(source, ["training_readiness", "readiness", "readiness_score"]),
         load: findFirst(source, ["training_load", "load", "acute_load", "seven_day_load"]),
         timestamp: findFirst(source, ["timestamp", "created_at", "date", "as_of"])
       };
@@ -1306,6 +1353,7 @@
         sleep: numberOrNull(findFirst(row, ["sleep_score", "sleepScore", "sleep"])),
         stress: numberOrNull(findFirst(row, ["stress", "stress_level", "stress_score", "avg_stress"])),
         battery: numberOrNull(findFirst(row, ["battery", "body_battery", "bb_peak"])),
+        readiness: numberOrNull(findFirst(row, ["training_readiness", "readiness", "readiness_score"])),
         load: numberOrNull(findFirst(row, ["training_load", "daily_load_acute", "load", "acute_load"]))
       }));
 
@@ -1317,10 +1365,91 @@
           if (Number.isFinite(startTs) && Number.isFinite(rowTs) && rowTs < startTs) {
             return false;
           }
-          return [row.restingHr, row.hrv, row.sleep, row.stress, row.battery, row.load]
+          return [row.restingHr, row.hrv, row.sleep, row.stress, row.battery, row.readiness, row.load]
             .some((value) => value !== null && value !== undefined);
         })
         .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+    }
+
+    function loadMetricDescriptor(metrics) {
+      const readiness = numberOrNull(metrics?.readiness);
+      if (readiness !== null) {
+        return { label: "Training Readiness", meta: "0-100", value: readiness };
+      }
+      return {
+        label: "Training Load",
+        meta: "7-day",
+        value: numberOrNull(metrics?.load)
+      };
+    }
+
+    function summarizeSnapshot(metrics) {
+      const notes = [];
+      const readiness = numberOrNull(metrics?.readiness);
+      const sleep = numberOrNull(metrics?.sleep);
+      const stress = numberOrNull(metrics?.stress);
+      const battery = numberOrNull(metrics?.battery);
+      const hrv = numberOrNull(metrics?.hrv);
+      const rhr = numberOrNull(metrics?.restingHr);
+
+      if (sleep !== null) {
+        notes.push(sleep >= 78 ? "Sleep quality is solid right now." : "Sleep quality is below your ideal target.");
+      }
+      if (stress !== null) {
+        notes.push(stress <= 25 ? "Stress is under control." : "Stress is elevated and needs active recovery.");
+      }
+      if (battery !== null) {
+        notes.push(battery >= 70 ? "Body battery is supportive for training." : "Body battery is lower than ideal for a hard session.");
+      }
+      if (hrv !== null && rhr !== null) {
+        notes.push(`Recovery context: HRV ${fmt(hrv)} and resting HR ${fmt(rhr)}.`);
+      }
+
+      let action = "Recommendation: keep training moderate today and prioritize sleep consistency tonight.";
+      if (readiness !== null) {
+        if (readiness >= 70 && (stress === null || stress < 35) && (battery === null || battery >= 65)) {
+          action = "Recommendation: green light for a moderate session today, cap intensity around HR 150-160.";
+        } else if (readiness >= 50) {
+          action = "Recommendation: go easy to moderate today, cap intensity around HR 145-150.";
+        } else {
+          action = "Recommendation: recovery day preferred; if you train, keep it light and below HR 140.";
+        }
+      }
+
+      return `${notes.slice(0, 3).join(" ")} ${action}`.trim();
+    }
+
+    function summarizeTrends(rows, loadMetricKey) {
+      if (!rows.length) {
+        return "";
+      }
+      const deltas = {
+        sleep: trendDelta(rows.map((r) => r.sleep).filter((v) => v !== null && v !== undefined)),
+        stress: trendDelta(rows.map((r) => r.stress).filter((v) => v !== null && v !== undefined)),
+        battery: trendDelta(rows.map((r) => r.battery).filter((v) => v !== null && v !== undefined)),
+        load: trendDelta(rows.map((r) => r[loadMetricKey]).filter((v) => v !== null && v !== undefined))
+      };
+
+      const parts = [];
+      if (deltas.sleep !== null) {
+        parts.push(deltas.sleep >= 0 ? "Sleep trend is improving." : "Sleep trend is declining.");
+      }
+      if (deltas.stress !== null) {
+        parts.push(deltas.stress <= 0 ? "Stress trend is improving." : "Stress trend is getting worse.");
+      }
+      if (deltas.battery !== null) {
+        parts.push(deltas.battery >= 0 ? "Body battery trend is stable-to-up." : "Body battery trend shows recent depletion.");
+      }
+      if (deltas.load !== null) {
+        parts.push(
+          deltas.load > 20
+            ? "Training demand rose quickly this window; watch recovery closely."
+            : deltas.load < -20
+              ? "Training demand dropped sharply in this window."
+              : "Training demand is relatively stable."
+        );
+      }
+      return parts.join(" ");
     }
 
     function sparklineModel(values, width = 320, height = 68, pad = 7) {
@@ -1373,9 +1502,16 @@
       state.history = rows;
       if (!rows.length) {
         el.trendGrid.hidden = true;
+        el.trendsSummary.hidden = true;
         el.historyStatus.innerHTML = '<span class="empty">No daily history rows returned yet.</span>';
         return;
       }
+
+      const readinessCount = rows.filter((row) => row.readiness !== null && row.readiness !== undefined).length;
+      const useReadiness = readinessCount >= Math.max(4, Math.floor(rows.length * 0.35));
+      const loadMetric = useReadiness
+        ? { key: "readiness", label: "Training Readiness", unit: "", higherIsBetter: true }
+        : { key: "load", label: "Training Load", unit: "", higherIsBetter: true };
 
       const metrics = [
         { key: "restingHr", label: "Resting HR", unit: "bpm", higherIsBetter: false },
@@ -1383,7 +1519,7 @@
         { key: "sleep", label: "Sleep Score", unit: "", higherIsBetter: true },
         { key: "stress", label: "Stress", unit: "", higherIsBetter: false },
         { key: "battery", label: "Body Battery", unit: "", higherIsBetter: true },
-        { key: "load", label: "Training Load", unit: "", higherIsBetter: true }
+        loadMetric
       ];
 
       const cards = metrics.map((metric) => {
@@ -1396,6 +1532,7 @@
                 <strong class="trend-value">--</strong>
               </div>
               <div class="trend-delta flat">No data</div>
+              <div class="trend-note">No interpretation available yet for this metric in the selected window.</div>
             </article>
           `;
         }
@@ -1407,6 +1544,11 @@
         const deltaText = delta === null
           ? "Need at least 6 days"
           : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% across this window`;
+        const directionText = delta === null
+          ? "Trend is not stable yet."
+          : metric.higherIsBetter
+            ? (delta >= 0 ? "This trend is moving in a favorable direction." : "This trend is moving in an unfavorable direction.")
+            : (delta <= 0 ? "This trend is moving in a favorable direction." : "This trend is moving in an unfavorable direction.");
 
         return `
           <article class="trend-card">
@@ -1419,6 +1561,7 @@
               <circle cx="${spark.lastX.toFixed(2)}" cy="${spark.lastY.toFixed(2)}" r="3"></circle>
             </svg>
             <div class="trend-delta ${klass}">${escapeHtml(deltaText)}</div>
+            <div class="trend-note">${escapeHtml(directionText)}</div>
           </article>
         `;
       }).join("");
@@ -1426,11 +1569,19 @@
       const firstDate = rows[0].date;
       const lastDate = rows[rows.length - 1].date;
       el.historyStatus.textContent = `Loaded ${rows.length} daily rows from ${firstDate} to ${lastDate}`;
+      const trendSummary = summarizeTrends(rows, loadMetric.key);
+      if (trendSummary) {
+        el.trendsSummary.hidden = false;
+        el.trendsSummary.textContent = trendSummary;
+      } else {
+        el.trendsSummary.hidden = true;
+      }
       el.trendGrid.innerHTML = cards;
       el.trendGrid.hidden = false;
     }
 
     function renderHistoryError(message) {
+      el.trendsSummary.hidden = true;
       el.trendGrid.hidden = true;
       el.historyStatus.innerHTML = `<span class="empty">${escapeHtml(message)}</span>`;
     }
@@ -1502,6 +1653,8 @@
 
     function renderAnalyticsStatus() {
       const parts = [`Window: ${rangeLabel(state.selectedRangeDays)}`];
+      const sportLabel = SPORT_OPTIONS.find((item) => item.key === state.selectedSport)?.label || "All";
+      parts.push(`Sport: ${sportLabel}`);
       if (state.historyError) {
         parts.push("Trends unavailable");
       } else {
@@ -1511,6 +1664,9 @@
         parts.push("Workouts unavailable");
       } else {
         parts.push(`${state.workouts.length} workouts`);
+      }
+      if (state.crossEffectsError) {
+        parts.push("Cross-effects unavailable");
       }
       el.historyStatus.textContent = parts.join(" | ");
     }
@@ -1566,19 +1722,40 @@
       return `background: rgba(251,113,133,${alpha.toFixed(3)});`;
     }
 
+    function corrStrength(absValue) {
+      if (absValue >= 0.7) {
+        return "strong";
+      }
+      if (absValue >= 0.4) {
+        return "moderate";
+      }
+      return "weak";
+    }
+
+    function corrExplanation(leftLabel, rightLabel, value) {
+      const abs = Math.abs(value);
+      const strength = corrStrength(abs);
+      const direction = value >= 0 ? "move together" : "move opposite";
+      return `${leftLabel} and ${rightLabel} ${direction} (${strength}, r=${value.toFixed(2)}).`;
+    }
+
     function renderCorrelationMatrix(rows) {
       if (state.historyError) {
         el.correlationSummary.innerHTML = `<span class="empty">${escapeHtml(state.historyError)}</span>`;
         el.correlationTableWrap.innerHTML = "";
         return;
       }
+      const readinessCount = rows.filter((row) => row.readiness !== null && row.readiness !== undefined).length;
+      const useReadiness = readinessCount >= Math.max(4, Math.floor(rows.length * 0.35));
       const metrics = [
         { key: "restingHr", label: "Resting HR" },
         { key: "hrv", label: "HRV" },
         { key: "sleep", label: "Sleep Score" },
         { key: "stress", label: "Stress" },
         { key: "battery", label: "Body Battery" },
-        { key: "load", label: "Training Load" }
+        useReadiness
+          ? { key: "readiness", label: "Training Readiness" }
+          : { key: "load", label: "Training Load" }
       ];
 
       if (rows.length < 5) {
@@ -1604,13 +1781,35 @@
         }
       }
 
+      const notable = [];
+      for (let i = 0; i < metrics.length; i += 1) {
+        for (let j = i + 1; j < metrics.length; j += 1) {
+          const value = matrix[i][j];
+          if (value === null) {
+            continue;
+          }
+          notable.push({ left: metrics[i].label, right: metrics[j].label, value });
+        }
+      }
+      notable.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+
       if (strongest) {
-        const strength = Math.abs(strongest.value) >= 0.7
-          ? "strong"
-          : Math.abs(strongest.value) >= 0.4 ? "moderate" : "weak";
-        const direction = strongest.value >= 0 ? "move together" : "move in opposite directions";
-        el.correlationSummary.textContent =
-          `Most notable relationship: ${strongest.left} and ${strongest.right} (${strength}, ${direction}, r=${strongest.value.toFixed(2)}).`;
+        const topLines = notable
+          .slice(0, 3)
+          .map((pair) => `- ${corrExplanation(pair.left, pair.right, pair.value)}`)
+          .join("<br>");
+        const effectRows = Array.isArray(state.crossEffects?.pearson_effects)
+          ? state.crossEffects.pearson_effects.slice(0, 3)
+          : [];
+        const effectLines = effectRows.length
+          ? "<br><br>" + effectRows
+            .map((item) => {
+              const sign = item.r >= 0 ? "+" : "";
+              return `- ${escapeHtml(String(item.sport || "sport"))} -> ${escapeHtml(String(item.outcome_label || item.outcome || "metric"))} (${sign}${Number(item.r).toFixed(2)})`;
+            })
+            .join("<br>")
+          : "";
+        el.correlationSummary.innerHTML = topLines + effectLines;
       } else {
         el.correlationSummary.textContent = "No clear correlation pattern in this window.";
       }
@@ -1620,7 +1819,10 @@
         const cells = metrics.map((_, colIndex) => {
           const value = matrix[rowIndex][colIndex];
           const text = value === null ? "--" : value.toFixed(2);
-          return `<td class="corr-cell" style="${corrCellStyle(value, rowIndex === colIndex)}">${text}</td>`;
+          const title = value === null || rowIndex === colIndex
+            ? ""
+            : corrExplanation(metrics[rowIndex].label, metrics[colIndex].label, value);
+          return `<td class="corr-cell" style="${corrCellStyle(value, rowIndex === colIndex)}" title="${escapeHtml(title)}">${text}</td>`;
         }).join("");
         return `<tr><th>${escapeHtml(metric.label)}</th>${cells}</tr>`;
       }).join("");
@@ -1636,6 +1838,7 @@
     }
 
     function renderWorkoutProgress(rows) {
+      const sportLabel = SPORT_OPTIONS.find((item) => item.key === state.selectedSport)?.label || "All";
       if (state.workoutError) {
         el.workoutSummary.innerHTML = `<span class="empty">${escapeHtml(state.workoutError)}</span>`;
         el.workoutTrendGrid.innerHTML = "";
@@ -1644,7 +1847,7 @@
       }
 
       if (!rows.length) {
-        el.workoutSummary.innerHTML = '<span class="empty">No workouts found in this period.</span>';
+        el.workoutSummary.innerHTML = `<span class="empty">No ${escapeHtml(sportLabel)} workouts found in this period.</span>`;
         el.workoutTrendGrid.innerHTML = "";
         el.workoutTableWrap.innerHTML = "";
         return;
@@ -1653,7 +1856,7 @@
       const summary = state.workoutSummary || {};
       const types = Array.isArray(summary.activity_types) ? summary.activity_types : [];
       el.workoutSummary.innerHTML = `
-        <strong style="color:#fff;">${rows.length} workouts in ${escapeHtml(rangeLabel(state.selectedRangeDays))}.</strong>
+        <strong style="color:#fff;">${rows.length} ${escapeHtml(sportLabel)} workouts in ${escapeHtml(rangeLabel(state.selectedRangeDays))}.</strong>
         <br>${escapeHtml(types.length ? `Types: ${types.slice(0, 5).join(", ")}` : "Types: mixed")}
         <br><span style="color:rgba(255,255,255,0.58);font-size:12px;">${escapeHtml(summary?.strength_proxy_trend?.note || "Strength progression currently uses workout load/duration proxies.")}</span>
       `;
@@ -1675,6 +1878,7 @@
                 <strong class="trend-value">--</strong>
               </div>
               <div class="trend-delta flat">No data</div>
+              <div class="trend-note">No interpretation available yet for this workout metric.</div>
             </article>
           `;
         }
@@ -1684,6 +1888,11 @@
         const delta = trendDelta(values);
         const klass = trendClass(delta, metric.higherIsBetter);
         const deltaText = delta === null ? "Need at least 6 sessions" : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% in this window`;
+        const directionText = delta === null
+          ? "Trend is not stable yet."
+          : metric.higherIsBetter
+            ? (delta >= 0 ? "Progress is moving in a positive direction." : "Progress is trending down in this window.")
+            : (delta <= 0 ? "This metric is improving in this window." : "This metric is worsening in this window.");
 
         return `
           <article class="trend-card">
@@ -1696,6 +1905,7 @@
               <circle cx="${spark.lastX.toFixed(2)}" cy="${spark.lastY.toFixed(2)}" r="3"></circle>
             </svg>
             <div class="trend-delta ${klass}">${escapeHtml(deltaText)}</div>
+            <div class="trend-note">${escapeHtml(directionText)}</div>
           </article>
         `;
       }).join("");
@@ -1747,13 +1957,16 @@
 
     function renderSnapshot(metrics) {
       state.snapshot = metrics;
+      const loadDescriptor = loadMetricDescriptor(metrics);
 
       el.mRestHr.textContent = fmt(metrics.restingHr);
       el.mHrv.textContent = fmt(metrics.hrv);
       el.mSleep.textContent = fmt(metrics.sleep);
       el.mBattery.textContent = fmt(metrics.battery);
       el.mStress.textContent = fmt(metrics.stress);
-      el.mLoad.textContent = fmt(metrics.load);
+      el.mLoad.textContent = fmt(loadDescriptor.value);
+      el.mLoadLabel.textContent = loadDescriptor.label;
+      el.mLoadMeta.textContent = loadDescriptor.meta;
 
       el.heroRestHr.textContent = fmt(metrics.restingHr);
       el.heroHrv.textContent = fmt(metrics.hrv);
@@ -1763,10 +1976,13 @@
       el.snapshotStatus.innerHTML = metrics.timestamp
         ? `As of ${fmt(metrics.timestamp)}`
         : "Latest available snapshot";
+      el.snapshotSummary.hidden = false;
+      el.snapshotSummary.textContent = summarizeSnapshot(metrics);
       el.metricsGrid.hidden = false;
     }
 
     function renderSnapshotError(message) {
+      el.snapshotSummary.hidden = true;
       el.metricsGrid.hidden = true;
       el.snapshotStatus.innerHTML = `<span class="empty">${message}</span>`;
     }
@@ -1948,6 +2164,26 @@
         return best;
       }
       return `${best.slice(0, maxLen - 3)}...`;
+    }
+
+    function insightPoints(text, maxItems = 3) {
+      const distilled = distillInsightText(text, maxItems);
+      if (distilled) {
+        return distilled
+          .split(/\n+/)
+          .map((line) => line.replace(/^[\-*]\s*/, "").trim())
+          .filter(Boolean);
+      }
+      const fallback = summarizeInsightText(text, 260);
+      return fallback ? [fallback] : [];
+    }
+
+    function insightPointsHtml(points) {
+      if (!points.length) {
+        return '<p>No actionable insight extracted for this block.</p>';
+      }
+      const items = points.map((point) => `<li>${escapeHtml(point)}</li>`).join("");
+      return `<ul class="insight-points">${items}</ul>`;
     }
 
     function formatSectionTitle(title) {
@@ -2135,19 +2371,18 @@
       if (!mainInsight) {
         el.insightMain.hidden = true;
         el.insightMain.innerHTML = "";
-        el.insightsList.innerHTML = '<div class="empty">No insights returned yet. Trigger your pipeline and refresh.</div>';
+        el.insightsList.innerHTML = '<div class="empty">No insights returned yet. Insights are generated in the daily sync run.</div>';
         return;
       }
 
       const mainSummaryText = insightText(mainInsight);
-      const mainDisplayText = distillInsightText(mainSummaryText, 3) || summarizeInsightText(mainSummaryText, 320) || mainSummaryText;
-      const mainSummary = escapeHtml(mainDisplayText).replace(/\n/g, "<br>");
+      const mainSummary = insightPointsHtml(insightPoints(mainSummaryText, 3));
       const mainAgent = escapeHtml(String(insightAgent(mainInsight)).replace(/_/g, " "));
       const mainTime = escapeHtml(insightTime(mainInsight));
       el.insightMain.hidden = false;
       el.insightMain.innerHTML = `
         <h3>${mainAgent}</h3>
-        <p>${mainSummary}</p>
+        ${mainSummary}
         <div class="meta">${mainTime ? `Updated: ${mainTime}` : "Latest synthesized insight"}</div>
       `;
 
@@ -2158,13 +2393,12 @@
 
       const html = agentInsights.map((item) => {
         const summaryText = insightText(item);
-        const summaryDisplayText = distillInsightText(summaryText, 2) || summarizeInsightText(summaryText, 220) || summaryText;
-        const summary = escapeHtml(summaryDisplayText).replace(/\n/g, "<br>");
+        const summary = insightPointsHtml(insightPoints(summaryText, 2));
         const agent = escapeHtml(String(insightAgent(item)).replace(/_/g, " "));
         const time = escapeHtml(insightTime(item));
         const detailRaw = insightDetail(item);
-        const detail = escapeHtml(detailRaw);
-        const hasDetail = detailRaw && detailRaw.trim() && detailRaw.trim() !== summaryDisplayText.trim();
+        const detail = escapeHtml(summarizeInsightText(detailRaw, 420));
+        const hasDetail = detailRaw && detailRaw.trim();
 
         return `
           <article class="insight">
@@ -2172,7 +2406,7 @@
               <span class="insight-agent">${agent}</span>
               ${time ? `<span class="insight-time">${time}</span>` : ""}
             </div>
-            <p>${summary}</p>
+            ${summary}
             ${hasDetail ? `
               <details class="insight-detail">
                 <summary>View full section</summary>
@@ -2295,11 +2529,13 @@
 
       state.historyError = "";
       state.workoutError = "";
+      state.crossEffectsError = "";
 
       const days = Number(state.selectedRangeDays);
-      const [historyResult, workoutResult] = await Promise.allSettled([
+      const [historyResult, workoutResult, effectsResult] = await Promise.allSettled([
         getJson(`/api/v1/metrics/history?days=${encodeURIComponent(days)}`),
-        getJson(`/api/v1/workouts/progress?days=${encodeURIComponent(days)}`)
+        getJson(`/api/v1/workouts/progress?days=${encodeURIComponent(days)}&sport=${encodeURIComponent(state.selectedSport)}`),
+        getJson(`/api/v1/analytics/cross-effects?days=${encodeURIComponent(days)}`)
       ]);
 
       if (historyResult.status === "fulfilled") {
@@ -2318,6 +2554,13 @@
         state.workouts = [];
         state.workoutSummary = null;
         state.workoutError = `Could not load workout progress (${messageFromError(workoutResult.reason)}).`;
+      }
+
+      if (effectsResult.status === "fulfilled") {
+        state.crossEffects = effectsResult.value;
+      } else {
+        state.crossEffects = null;
+        state.crossEffectsError = `Could not load cross-effects (${messageFromError(effectsResult.reason)}).`;
       }
 
       renderAnalyticsView();
@@ -2362,11 +2605,20 @@
       el.rangeSelect.value = String(state.selectedRangeDays);
     }
 
+    function initSportOptions() {
+      const options = SPORT_OPTIONS.map((item) => (
+        `<option value="${item.key}">${item.label}</option>`
+      )).join("");
+      el.sportSelect.innerHTML = options;
+      if (!SPORT_OPTIONS.some((item) => item.key === state.selectedSport)) {
+        state.selectedSport = SPORT_OPTIONS[0].key;
+      }
+      el.sportSelect.value = state.selectedSport;
+    }
+
     function initEvents() {
-      el.refreshSnapshotBtn.addEventListener("click", loadSnapshot);
-      el.refreshAnalyticsBtn.addEventListener("click", loadHistory);
-      el.refreshInsightsBtn.addEventListener("click", loadInsights);
       initRangeOptions();
+      initSportOptions();
 
       el.rangeSelect.addEventListener("change", () => {
         const nextDays = Number(el.rangeSelect.value);
@@ -2374,6 +2626,11 @@
           return;
         }
         state.selectedRangeDays = nextDays;
+        loadHistory();
+      });
+
+      el.sportSelect.addEventListener("change", () => {
+        state.selectedSport = el.sportSelect.value || "all";
         loadHistory();
       });
 
