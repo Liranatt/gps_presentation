@@ -1806,9 +1806,137 @@
       return findFirst(item, ["timestamp", "created_at", "date", "time"]) || "";
     }
 
+    function cleanAgentText(text) {
+      return String(text || "")
+        .replace(/\r/g, "")
+        .replace(/```[\s\S]*?```/g, "\n")
+        .replace(/^\s*\|.*\|\s*$/gm, "")
+        .replace(/^\s*[-=]{3,}\s*$/gm, "")
+        .replace(/^\s*(SELECT|FROM|WHERE|JOIN|ORDER BY|GROUP BY|LIMIT|INSERT|UPDATE|DELETE)\b.*$/gim, "")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+    }
+
+    function looksLikeNoise(line) {
+      const text = String(line || "").trim();
+      if (!text) {
+        return true;
+      }
+
+      const lower = text.toLowerCase();
+      if (/^[\d\s.,:%()+\-]+$/.test(text)) {
+        return true;
+      }
+      if (/\b(select|from|where|join|order by|group by|limit|insert|update|delete)\b/.test(lower)) {
+        return true;
+      }
+      if (/^\s*[\[{].*[\]}]\s*$/.test(text)) {
+        return true;
+      }
+
+      const digits = (text.match(/\d/g) || []).length;
+      const punctuation = (text.match(/[,;:|]/g) || []).length;
+      const digitDensity = digits / Math.max(text.length, 1);
+      if (digitDensity > 0.22 && !/(sleep|hrv|stress|recover|training|workout|recommend|action|improve|decrease|increase|load|battery)/i.test(text)) {
+        return true;
+      }
+      if (digits >= 8 && punctuation >= 5) {
+        return true;
+      }
+
+      return false;
+    }
+
+    function splitInsightCandidates(text) {
+      return cleanAgentText(text)
+        .split(/\n+/)
+        .flatMap((line) => line.split(/[.!?]\s+/))
+        .map((line) => line.replace(/^[\-*]\s*/, "").trim())
+        .filter((line) => line.length >= 25);
+    }
+
+    function scoreInsightCandidate(line) {
+      const text = String(line || "").trim();
+      const lower = text.toLowerCase();
+      let score = 0;
+
+      if (/(recommend|should|focus|prioritize|aim|try|keep|reduce|increase|avoid|improve|sleep|recover|training|stress|hrv|battery|load)/.test(lower)) {
+        score += 3;
+      }
+      if (/(because|indicates|suggests|linked|correlat|therefore|which means|driven by)/.test(lower)) {
+        score += 2;
+      }
+      if (text.length >= 45 && text.length <= 190) {
+        score += 1;
+      }
+      if (looksLikeNoise(text)) {
+        score -= 4;
+      }
+
+      const digits = (text.match(/\d/g) || []).length;
+      if (digits > 6) {
+        score -= 1;
+      }
+
+      return score;
+    }
+
+    function distillInsightText(text, maxItems = 3) {
+      const ranked = splitInsightCandidates(text)
+        .map((line) => ({ line, score: scoreInsightCandidate(line) }))
+        .filter((item) => item.score > -1)
+        .sort((a, b) => b.score - a.score);
+
+      const selected = [];
+      for (const item of ranked) {
+        const normalized = item.line.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+        if (!normalized) {
+          continue;
+        }
+
+        const tooSimilar = selected.some((existing) => {
+          const base = existing.normalized.slice(0, 28);
+          return normalized.includes(base) || existing.normalized.includes(normalized.slice(0, 28));
+        });
+        if (tooSimilar) {
+          continue;
+        }
+
+        selected.push({ line: item.line, normalized });
+        if (selected.length >= maxItems) {
+          break;
+        }
+      }
+
+      if (!selected.length) {
+        return "";
+      }
+
+      return selected.map((item) => `- ${item.line}`).join("\n");
+    }
+
+    function formatChatReply(text) {
+      const clean = cleanAgentText(text);
+      if (!clean) {
+        return "No response from agent.";
+      }
+
+      if (clean.length <= 220 && !looksLikeNoise(clean)) {
+        return clean;
+      }
+
+      const distilled = distillInsightText(clean, 3);
+      if (distilled) {
+        return `Key takeaways:\n${distilled}`;
+      }
+
+      return summarizeInsightText(clean, 320);
+    }
+
     function summarizeInsightText(text, maxLen = 320) {
-      const blocks = text.split(/\n\s*\n/).map((part) => part.trim()).filter(Boolean);
-      let best = blocks.find((part) => !/^\|/.test(part) && part.length >= 30) || blocks[0] || "";
+      const cleaned = cleanAgentText(text);
+      const blocks = cleaned.split(/\n\s*\n/).map((part) => part.trim()).filter(Boolean);
+      let best = blocks.find((part) => !looksLikeNoise(part) && part.length >= 30) || blocks.find((part) => part.length >= 20) || "";
       best = best.replace(/\s+/g, " ").trim();
       if (best.length <= maxLen) {
         return best;
@@ -2006,7 +2134,8 @@
       }
 
       const mainSummaryText = insightText(mainInsight);
-      const mainSummary = escapeHtml(mainSummaryText).replace(/\n/g, "<br>");
+      const mainDisplayText = distillInsightText(mainSummaryText, 3) || summarizeInsightText(mainSummaryText, 320) || mainSummaryText;
+      const mainSummary = escapeHtml(mainDisplayText).replace(/\n/g, "<br>");
       const mainAgent = escapeHtml(String(insightAgent(mainInsight)).replace(/_/g, " "));
       const mainTime = escapeHtml(insightTime(mainInsight));
       el.insightMain.hidden = false;
@@ -2023,12 +2152,13 @@
 
       const html = agentInsights.map((item) => {
         const summaryText = insightText(item);
-        const summary = escapeHtml(summaryText).replace(/\n/g, "<br>");
+        const summaryDisplayText = distillInsightText(summaryText, 2) || summarizeInsightText(summaryText, 220) || summaryText;
+        const summary = escapeHtml(summaryDisplayText).replace(/\n/g, "<br>");
         const agent = escapeHtml(String(insightAgent(item)).replace(/_/g, " "));
         const time = escapeHtml(insightTime(item));
         const detailRaw = insightDetail(item);
         const detail = escapeHtml(detailRaw);
-        const hasDetail = detailRaw && detailRaw.trim() && detailRaw.trim() !== summaryText.trim();
+        const hasDetail = detailRaw && detailRaw.trim() && detailRaw.trim() !== summaryDisplayText.trim();
 
         return `
           <article class="insight">
@@ -2208,7 +2338,7 @@
       try {
         const result = await postJson("/api/v1/chat", { message });
         const reply = findFirst(result, ["answer", "response", "message", "text", "output"]) || "No response field returned by API.";
-        pendingNode.textContent = String(reply);
+        pendingNode.textContent = formatChatReply(String(reply));
       } catch (error) {
         pendingNode.textContent = `Request failed: ${error.message}`;
       }
