@@ -204,9 +204,16 @@
       transform: translateY(-1px);
     }
 
+    .mode-pill.is-active {
+      border-color: rgba(0, 245, 160, 0.42);
+      color: #fff;
+      background: rgba(0, 245, 160, 0.14);
+      box-shadow: inset 0 0 0 1px rgba(0, 245, 160, 0.2);
+    }
+
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
       gap: 16px;
     }
 
@@ -417,6 +424,78 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .analytics-toolbar {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .analytics-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .analytics-tab {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.72);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .analytics-tab:hover {
+      border-color: rgba(0, 245, 160, 0.35);
+      color: #fff;
+      background: rgba(0, 245, 160, 0.08);
+    }
+
+    .analytics-tab.is-active {
+      border-color: rgba(0, 245, 160, 0.45);
+      color: #fff;
+      background: rgba(0, 245, 160, 0.14);
+      box-shadow: inset 0 0 0 1px rgba(0, 245, 160, 0.2);
+    }
+
+    .analytics-side {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-self: end;
+    }
+
+    .analytics-side label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.56);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .analytics-side select {
+      appearance: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 30px 8px 10px;
+      min-width: 120px;
+      outline: none;
+    }
+
+    .analytics-panel[hidden] {
+      display: none !important;
+    }
+
     .trend-card {
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
@@ -491,6 +570,35 @@
     .insights {
       display: grid;
       gap: 10px;
+    }
+
+    .insight-main {
+      border: 1px solid rgba(0, 245, 160, 0.28);
+      border-radius: 14px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(0, 245, 160, 0.12) 0%, rgba(102, 126, 234, 0.08) 100%);
+      margin-bottom: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .insight-main h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 16px;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+
+    .insight-main p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .insight-main .meta {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.62);
     }
 
     .insight {
@@ -604,8 +712,8 @@
       overflow: auto;
       display: grid;
       gap: 10px;
-      min-height: 260px;
-      max-height: min(58vh, 460px);
+      min-height: 170px;
+      max-height: min(42vh, 340px);
     }
 
     .msg {
@@ -652,8 +760,8 @@
     }
 
     .chat-form textarea {
-      min-height: 52px;
-      max-height: 120px;
+      min-height: 44px;
+      max-height: 92px;
       resize: vertical;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 12px;
@@ -738,6 +846,11 @@
       background: rgba(255, 255, 255, 0.04);
     }
 
+    .corr-cell {
+      text-align: center;
+      font-weight: 700;
+    }
+
     .spin {
       animation: spin 0.9s linear infinite;
     }
@@ -763,6 +876,14 @@
 
       .chat-log {
         max-height: 420px;
+      }
+
+      .analytics-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .analytics-side {
+        justify-self: stretch;
       }
     }
 
@@ -861,13 +982,9 @@
       <a class="mode-pill" href="#snapshot">Overview</a>
       <a class="mode-pill" href="#insights">Insights</a>
       <a class="mode-pill" href="#chat">Agent Chat</a>
-      <a class="mode-pill" href="#trends">Trends</a>
-      <a class="mode-pill" href="#roadmap">Correlations</a>
-      <a class="mode-pill" href="#roadmap">Deep Dive</a>
-      <a class="mode-pill" href="#roadmap">Date Explorer</a>
-      <a class="mode-pill" href="#roadmap">Daily Input</a>
-      <a class="mode-pill" href="#roadmap">Agent Analysis</a>
-      <a class="mode-pill" href="#roadmap">Goals</a>
+      <a class="mode-pill" href="#analytics" data-analytics-view="trends">Trends</a>
+      <a class="mode-pill" href="#analytics" data-analytics-view="correlations">Correlations</a>
+      <a class="mode-pill" href="#analytics" data-analytics-view="workouts">Workout Progress</a>
     </nav>
 
     <main class="layout">
@@ -924,23 +1041,48 @@
           </div>
         </article>
 
-        <article id="trends" class="card">
+        <article id="analytics" class="card">
           <header class="card-head">
             <h2 class="card-title">
               <i data-lucide="line-chart" style="width:17px;height:17px;"></i>
-              Daily Trends (Last 90 Days)
+              Analytics Workspace
             </h2>
-            <button class="button ghost" id="refreshHistoryBtn" type="button">
+            <button class="button ghost" id="refreshAnalyticsBtn" type="button">
               <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
               Refresh
             </button>
           </header>
           <div class="card-body">
+            <div class="analytics-toolbar">
+              <div id="analyticsTabs" class="analytics-tabs" role="tablist" aria-label="Analytics views">
+                <button class="analytics-tab is-active" type="button" data-analytics-view="trends">Trends</button>
+                <button class="analytics-tab" type="button" data-analytics-view="correlations">Correlations</button>
+                <button class="analytics-tab" type="button" data-analytics-view="workouts">Workout Progress</button>
+              </div>
+              <div class="analytics-side">
+                <label for="rangeSelect">Window</label>
+                <select id="rangeSelect" aria-label="Analytics timeframe"></select>
+              </div>
+            </div>
             <div id="historyStatus" class="loading-row trend-status">
               <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
-              Loading trend history...
+              Loading analytics...
             </div>
-            <div class="trend-grid" id="trendGrid" hidden></div>
+
+            <section id="analyticsTrends" class="analytics-panel">
+              <div class="trend-grid" id="trendGrid" hidden></div>
+            </section>
+
+            <section id="analyticsCorrelations" class="analytics-panel" hidden>
+              <div id="correlationSummary" class="help"></div>
+              <div class="table-wrap" id="correlationTableWrap"></div>
+            </section>
+
+            <section id="analyticsWorkouts" class="analytics-panel" hidden>
+              <div id="workoutSummary" class="help"></div>
+              <div class="trend-grid" id="workoutTrendGrid"></div>
+              <div class="table-wrap" id="workoutTableWrap"></div>
+            </section>
           </div>
         </article>
 
@@ -956,6 +1098,7 @@
             </button>
           </header>
           <div class="card-body">
+            <div id="insightMain" class="insight-main" hidden></div>
             <div id="insightsList" class="insights">
               <div class="loading-row">
                 <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
@@ -999,96 +1142,56 @@
       </section>
     </main>
 
-    <section id="roadmap" class="card" style="margin-top:16px;">
-      <header class="card-head">
-        <h2 class="card-title">
-          <i data-lucide="map" style="width:17px;height:17px;"></i>
-          Streamlit v3 Page Map
-        </h2>
-      </header>
-      <div class="card-body">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Page</th>
-                <th>Frontend Status</th>
-                <th>Backend Endpoint Needed</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Overview</td>
-                <td>Implemented</td>
-                <td><code>/api/v1/snapshot/latest</code>, <code>/api/v1/insights/latest</code></td>
-              </tr>
-              <tr>
-                <td>Agent Chat</td>
-                <td>Implemented</td>
-                <td><code>/api/v1/chat</code></td>
-              </tr>
-              <tr>
-                <td>Trends</td>
-                <td>Implemented</td>
-                <td><code>/api/v1/metrics/history?days=90</code></td>
-              </tr>
-              <tr>
-                <td>Correlations</td>
-                <td>Design ready</td>
-                <td><code>/api/v1/correlations/summary</code>, matrix endpoint</td>
-              </tr>
-              <tr>
-                <td>Deep Dive</td>
-                <td>Design ready</td>
-                <td>history endpoint + metric query filters</td>
-              </tr>
-              <tr>
-                <td>Date Explorer</td>
-                <td>Design ready</td>
-                <td><code>/api/v1/date/&lt;YYYY-MM-DD&gt;</code></td>
-              </tr>
-              <tr>
-                <td>Daily Input</td>
-                <td>Design ready</td>
-                <td><code>/api/v1/daily/wellness</code>, <code>/api/v1/daily/nutrition</code></td>
-              </tr>
-              <tr>
-                <td>Agent Analysis</td>
-                <td>Design ready</td>
-                <td><code>/api/v1/analysis/run</code></td>
-              </tr>
-              <tr>
-                <td>Goals</td>
-                <td>Design ready</td>
-                <td><code>/api/v1/goals/progress</code> (or weekly history endpoint)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
   </div>
 
   <script>
     const DEFAULT_API_BASE = "https://garmin-health-liran-f16faec73fc5.herokuapp.com";
     const HISTORY_START_DATE = "2026-02-01";
+    const ANALYTICS_VIEWS = ["trends", "correlations", "workouts"];
+    const RANGE_OPTIONS = [
+      { days: 7, label: "1 week" },
+      { days: 14, label: "2 weeks" },
+      { days: 21, label: "3 weeks" },
+      { days: 30, label: "1 month" },
+      { days: 60, label: "2 months" },
+      { days: 90, label: "3 months" },
+      { days: 180, label: "6 months" },
+      { days: 270, label: "9 months" },
+      { days: 365, label: "1 year" }
+    ];
 
     const state = {
       apiBase: DEFAULT_API_BASE,
+      selectedRangeDays: 60,
+      analyticsView: "trends",
       snapshot: null,
-      insights: [],
-      history: []
+      insights: { main: null, agents: [] },
+      history: [],
+      workouts: [],
+      workoutSummary: null,
+      historyError: "",
+      workoutError: ""
     };
 
     const el = {
       statusBadge: document.getElementById("statusBadge"),
       refreshSnapshotBtn: document.getElementById("refreshSnapshotBtn"),
-      refreshHistoryBtn: document.getElementById("refreshHistoryBtn"),
+      refreshAnalyticsBtn: document.getElementById("refreshAnalyticsBtn"),
       refreshInsightsBtn: document.getElementById("refreshInsightsBtn"),
+      rangeSelect: document.getElementById("rangeSelect"),
       snapshotStatus: document.getElementById("snapshotStatus"),
       metricsGrid: document.getElementById("metricsGrid"),
       historyStatus: document.getElementById("historyStatus"),
       trendGrid: document.getElementById("trendGrid"),
+      analyticsTrends: document.getElementById("analyticsTrends"),
+      analyticsCorrelations: document.getElementById("analyticsCorrelations"),
+      analyticsWorkouts: document.getElementById("analyticsWorkouts"),
+      correlationSummary: document.getElementById("correlationSummary"),
+      correlationTableWrap: document.getElementById("correlationTableWrap"),
+      workoutSummary: document.getElementById("workoutSummary"),
+      workoutTrendGrid: document.getElementById("workoutTrendGrid"),
+      workoutTableWrap: document.getElementById("workoutTableWrap"),
+      insightMain: document.getElementById("insightMain"),
       insightsList: document.getElementById("insightsList"),
       chatForm: document.getElementById("chatForm"),
       chatInput: document.getElementById("chatInput"),
@@ -1127,6 +1230,29 @@
       el.statusBadge.className = `status ${kind}`;
       el.statusBadge.innerHTML = `<i data-lucide="${icon}" style="width:14px;height:14px;"></i>${text}`;
       lucide.createIcons();
+    }
+
+    function rangeLabel(days) {
+      const option = RANGE_OPTIONS.find((item) => item.days === days);
+      return option ? option.label : `${days} days`;
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "";
+      }
+      const ts = Date.parse(String(value));
+      if (!Number.isFinite(ts)) {
+        return String(value);
+      }
+      return new Date(ts).toISOString().slice(0, 10);
+    }
+
+    function messageFromError(error) {
+      if (error instanceof Error && error.message) {
+        return error.message;
+      }
+      return String(error || "Unknown error");
     }
 
     function findFirst(source, keys) {
@@ -1174,7 +1300,7 @@
             : [];
 
       const normalized = rows.map((row) => ({
-        date: findFirst(row, ["date", "timestamp", "as_of"]),
+        date: formatDate(findFirst(row, ["date", "timestamp", "as_of"])),
         restingHr: numberOrNull(findFirst(row, ["resting_hr", "restingHr", "rhr"])),
         hrv: numberOrNull(findFirst(row, ["hrv", "hrv_last_night", "hrv_ms", "rmssd"])),
         sleep: numberOrNull(findFirst(row, ["sleep_score", "sleepScore", "sleep"])),
@@ -1221,11 +1347,12 @@
 
     function trendDelta(values) {
       const clean = values.filter((value) => value !== null && value !== undefined);
-      if (clean.length < 14) {
+      if (clean.length < 6) {
         return null;
       }
-      const recent = average(clean.slice(-7));
-      const previous = average(clean.slice(-14, -7));
+      const chunk = Math.max(3, Math.floor(clean.length / 3));
+      const recent = average(clean.slice(-chunk));
+      const previous = average(clean.slice(0, chunk));
       if (recent === null || previous === null || previous === 0) {
         return null;
       }
@@ -1278,8 +1405,8 @@
         const delta = trendDelta(values);
         const klass = trendClass(delta, metric.higherIsBetter);
         const deltaText = delta === null
-          ? "Need at least 14 data points"
-          : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% vs previous 7 days`;
+          ? "Need at least 6 days"
+          : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% across this window`;
 
         return `
           <article class="trend-card">
@@ -1306,6 +1433,316 @@
     function renderHistoryError(message) {
       el.trendGrid.hidden = true;
       el.historyStatus.innerHTML = `<span class="empty">${escapeHtml(message)}</span>`;
+    }
+
+    function normalizeWorkouts(payload) {
+      const rows = Array.isArray(payload?.data)
+        ? payload.data
+        : Array.isArray(payload)
+          ? payload
+          : [];
+
+      const startTs = Date.parse(HISTORY_START_DATE);
+      return rows
+        .map((row) => {
+          const durationMin = numberOrNull(findFirst(row, ["duration_min", "durationMin"])) ??
+            (() => {
+              const seconds = numberOrNull(findFirst(row, ["duration_sec", "durationSec"]));
+              return seconds ? seconds / 60 : null;
+            })();
+          const distanceKm = numberOrNull(findFirst(row, ["distance_km", "distanceKm"])) ??
+            (() => {
+              const meters = numberOrNull(findFirst(row, ["distance_m", "distanceM"]));
+              return meters ? meters / 1000 : null;
+            })();
+
+          return {
+            date: formatDate(findFirst(row, ["date", "timestamp"])),
+            activityName: findFirst(row, ["activity_name", "activityName"]) || "Workout",
+            activityType: findFirst(row, ["activity_type", "activityType", "sport_type", "sportType"]) || "unknown",
+            durationMin,
+            distanceKm,
+            avgHr: numberOrNull(findFirst(row, ["average_hr", "avg_hr", "avgHr"])),
+            speedKph: numberOrNull(findFirst(row, ["speed_kph", "speedKph"])),
+            cadence: numberOrNull(findFirst(row, ["avg_cadence", "avgCadence", "cadence"])),
+            trainingLoad: numberOrNull(findFirst(row, ["training_load", "trainingLoad"]))
+          };
+        })
+        .filter((row) => row.date)
+        .filter((row) => {
+          const rowTs = Date.parse(row.date);
+          return !Number.isFinite(startTs) || !Number.isFinite(rowTs) || rowTs >= startTs;
+        })
+        .sort((a, b) => a.date.localeCompare(b.date));
+    }
+
+    function setAnalyticsView(view) {
+      if (!ANALYTICS_VIEWS.includes(view)) {
+        return;
+      }
+      state.analyticsView = view;
+
+      const panelMap = {
+        trends: el.analyticsTrends,
+        correlations: el.analyticsCorrelations,
+        workouts: el.analyticsWorkouts
+      };
+      Object.entries(panelMap).forEach(([name, node]) => {
+        if (node) {
+          node.hidden = name !== state.analyticsView;
+        }
+      });
+
+      document.querySelectorAll("[data-analytics-view]").forEach((node) => {
+        node.classList.toggle("is-active", node.dataset.analyticsView === state.analyticsView);
+      });
+
+      renderAnalyticsView();
+    }
+
+    function renderAnalyticsStatus() {
+      const parts = [`Window: ${rangeLabel(state.selectedRangeDays)}`];
+      if (state.historyError) {
+        parts.push("Trends unavailable");
+      } else {
+        parts.push(`${state.history.length} daily rows`);
+      }
+      if (state.workoutError) {
+        parts.push("Workouts unavailable");
+      } else {
+        parts.push(`${state.workouts.length} workouts`);
+      }
+      el.historyStatus.textContent = parts.join(" | ");
+    }
+    function pearson(valuesA, valuesB) {
+      const pairs = [];
+      for (let i = 0; i < valuesA.length; i += 1) {
+        const a = valuesA[i];
+        const b = valuesB[i];
+        if (a === null || b === null || a === undefined || b === undefined) {
+          continue;
+        }
+        pairs.push([a, b]);
+      }
+      if (pairs.length < 5) {
+        return null;
+      }
+
+      const xs = pairs.map((item) => item[0]);
+      const ys = pairs.map((item) => item[1]);
+      const meanX = average(xs);
+      const meanY = average(ys);
+      if (meanX === null || meanY === null) {
+        return null;
+      }
+
+      let numerator = 0;
+      let denX = 0;
+      let denY = 0;
+      for (let i = 0; i < xs.length; i += 1) {
+        const dx = xs[i] - meanX;
+        const dy = ys[i] - meanY;
+        numerator += dx * dy;
+        denX += dx * dx;
+        denY += dy * dy;
+      }
+      if (denX === 0 || denY === 0) {
+        return null;
+      }
+      return numerator / Math.sqrt(denX * denY);
+    }
+
+    function corrCellStyle(value, diagonal = false) {
+      if (diagonal) {
+        return "background: rgba(255,255,255,0.08);";
+      }
+      if (value === null) {
+        return "background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.4);";
+      }
+      const alpha = Math.min(0.46, 0.12 + (Math.abs(value) * 0.34));
+      if (value >= 0) {
+        return `background: rgba(74,222,128,${alpha.toFixed(3)});`;
+      }
+      return `background: rgba(251,113,133,${alpha.toFixed(3)});`;
+    }
+
+    function renderCorrelationMatrix(rows) {
+      if (state.historyError) {
+        el.correlationSummary.innerHTML = `<span class="empty">${escapeHtml(state.historyError)}</span>`;
+        el.correlationTableWrap.innerHTML = "";
+        return;
+      }
+      const metrics = [
+        { key: "restingHr", label: "Resting HR" },
+        { key: "hrv", label: "HRV" },
+        { key: "sleep", label: "Sleep Score" },
+        { key: "stress", label: "Stress" },
+        { key: "battery", label: "Body Battery" },
+        { key: "load", label: "Training Load" }
+      ];
+
+      if (rows.length < 5) {
+        el.correlationSummary.innerHTML = '<span class="empty">Need at least 5 daily rows for correlation analysis.</span>';
+        el.correlationTableWrap.innerHTML = "";
+        return;
+      }
+
+      const matrix = metrics.map((left) => metrics.map((right) => (
+        left.key === right.key ? 1 : pearson(rows.map((row) => row[left.key]), rows.map((row) => row[right.key]))
+      )));
+
+      let strongest = null;
+      for (let i = 0; i < metrics.length; i += 1) {
+        for (let j = i + 1; j < metrics.length; j += 1) {
+          const value = matrix[i][j];
+          if (value === null) {
+            continue;
+          }
+          if (!strongest || Math.abs(value) > Math.abs(strongest.value)) {
+            strongest = { left: metrics[i].label, right: metrics[j].label, value };
+          }
+        }
+      }
+
+      if (strongest) {
+        const strength = Math.abs(strongest.value) >= 0.7
+          ? "strong"
+          : Math.abs(strongest.value) >= 0.4 ? "moderate" : "weak";
+        const direction = strongest.value >= 0 ? "move together" : "move in opposite directions";
+        el.correlationSummary.textContent =
+          `Most notable relationship: ${strongest.left} and ${strongest.right} (${strength}, ${direction}, r=${strongest.value.toFixed(2)}).`;
+      } else {
+        el.correlationSummary.textContent = "No clear correlation pattern in this window.";
+      }
+
+      const header = metrics.map((metric) => `<th>${escapeHtml(metric.label)}</th>`).join("");
+      const body = metrics.map((metric, rowIndex) => {
+        const cells = metrics.map((_, colIndex) => {
+          const value = matrix[rowIndex][colIndex];
+          const text = value === null ? "--" : value.toFixed(2);
+          return `<td class="corr-cell" style="${corrCellStyle(value, rowIndex === colIndex)}">${text}</td>`;
+        }).join("");
+        return `<tr><th>${escapeHtml(metric.label)}</th>${cells}</tr>`;
+      }).join("");
+
+      el.correlationTableWrap.innerHTML = `
+        <table>
+          <thead>
+            <tr><th>Metric</th>${header}</tr>
+          </thead>
+          <tbody>${body}</tbody>
+        </table>
+      `;
+    }
+
+    function renderWorkoutProgress(rows) {
+      if (state.workoutError) {
+        el.workoutSummary.innerHTML = `<span class="empty">${escapeHtml(state.workoutError)}</span>`;
+        el.workoutTrendGrid.innerHTML = "";
+        el.workoutTableWrap.innerHTML = "";
+        return;
+      }
+
+      if (!rows.length) {
+        el.workoutSummary.innerHTML = '<span class="empty">No workouts found in this period.</span>';
+        el.workoutTrendGrid.innerHTML = "";
+        el.workoutTableWrap.innerHTML = "";
+        return;
+      }
+
+      const summary = state.workoutSummary || {};
+      const types = Array.isArray(summary.activity_types) ? summary.activity_types : [];
+      el.workoutSummary.innerHTML = `
+        <strong style="color:#fff;">${rows.length} workouts in ${escapeHtml(rangeLabel(state.selectedRangeDays))}.</strong>
+        <br>${escapeHtml(types.length ? `Types: ${types.slice(0, 5).join(", ")}` : "Types: mixed")}
+        <br><span style="color:rgba(255,255,255,0.58);font-size:12px;">${escapeHtml(summary?.strength_proxy_trend?.note || "Strength progression currently uses workout load/duration proxies.")}</span>
+      `;
+
+      const metrics = [
+        { key: "avgHr", label: "Workout Avg HR", unit: "bpm", higherIsBetter: false },
+        { key: "speedKph", label: "Speed", unit: "km/h", higherIsBetter: true },
+        { key: "cadence", label: "Cadence", unit: "spm", higherIsBetter: true },
+        { key: "trainingLoad", label: "Training Load", unit: "", higherIsBetter: true }
+      ];
+
+      el.workoutTrendGrid.innerHTML = metrics.map((metric) => {
+        const values = rows.map((row) => row[metric.key]).filter((value) => value !== null && value !== undefined);
+        if (!values.length) {
+          return `
+            <article class="trend-card">
+              <div class="trend-top">
+                <span class="trend-label">${metric.label}</span>
+                <strong class="trend-value">--</strong>
+              </div>
+              <div class="trend-delta flat">No data</div>
+            </article>
+          `;
+        }
+
+        const latest = values[values.length - 1];
+        const spark = sparklineModel(values);
+        const delta = trendDelta(values);
+        const klass = trendClass(delta, metric.higherIsBetter);
+        const deltaText = delta === null ? "Need at least 6 sessions" : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% in this window`;
+
+        return `
+          <article class="trend-card">
+            <div class="trend-top">
+              <span class="trend-label">${metric.label}</span>
+              <strong class="trend-value">${fmt(latest)}${metric.unit ? ` ${metric.unit}` : ""}</strong>
+            </div>
+            <svg class="spark" viewBox="0 0 320 68" preserveAspectRatio="none">
+              <path d="${spark.path}"></path>
+              <circle cx="${spark.lastX.toFixed(2)}" cy="${spark.lastY.toFixed(2)}" r="3"></circle>
+            </svg>
+            <div class="trend-delta ${klass}">${escapeHtml(deltaText)}</div>
+          </article>
+        `;
+      }).join("");
+
+      const recent = rows.slice(-50).reverse();
+      const tableRows = recent.map((row) => `
+        <tr>
+          <td>${escapeHtml(row.date)}</td>
+          <td>${escapeHtml(row.activityName)}</td>
+          <td>${escapeHtml(String(row.activityType).replace(/_/g, " "))}</td>
+          <td>${fmt(row.durationMin)}</td>
+          <td>${fmt(row.distanceKm)}</td>
+          <td>${fmt(row.avgHr)}</td>
+          <td>${fmt(row.speedKph)}</td>
+          <td>${fmt(row.cadence)}</td>
+          <td>${fmt(row.trainingLoad)}</td>
+        </tr>
+      `).join("");
+
+      el.workoutTableWrap.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th><th>Workout</th><th>Type</th><th>Min</th><th>Km</th>
+              <th>Avg HR</th><th>Speed</th><th>Cadence</th><th>Load</th>
+            </tr>
+          </thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      `;
+    }
+
+    function renderAnalyticsView() {
+      renderAnalyticsStatus();
+      if (state.analyticsView === "trends") {
+        if (state.historyError) {
+          renderHistoryError(state.historyError);
+          return;
+        }
+        renderHistory(state.history);
+        return;
+      }
+      if (state.analyticsView === "correlations") {
+        renderCorrelationMatrix(state.history);
+        return;
+      }
+      renderWorkoutProgress(state.workouts);
     }
 
     function renderSnapshot(metrics) {
@@ -1469,7 +1906,7 @@
 
         wins.push({
           agent: "Quick Win",
-          summary: summaryParts.join(" • "),
+          summary: summaryParts.join(" | "),
           detail: block.join("\n").trim(),
           timestamp
         });
@@ -1556,14 +1993,35 @@
     }
 
     function renderInsights(items) {
-      state.insights = items;
+      const normalized = Array.isArray(items) ? items : [];
+      const mainInsight = normalized[0] || null;
+      const agentInsights = mainInsight ? normalized.slice(1, 10) : [];
+      state.insights = { main: mainInsight, agents: agentInsights };
 
-      if (!items.length) {
+      if (!mainInsight) {
+        el.insightMain.hidden = true;
+        el.insightMain.innerHTML = "";
         el.insightsList.innerHTML = '<div class="empty">No insights returned yet. Trigger your pipeline and refresh.</div>';
         return;
       }
 
-      const html = items.slice(0, 10).map((item) => {
+      const mainSummaryText = insightText(mainInsight);
+      const mainSummary = escapeHtml(mainSummaryText).replace(/\n/g, "<br>");
+      const mainAgent = escapeHtml(String(insightAgent(mainInsight)).replace(/_/g, " "));
+      const mainTime = escapeHtml(insightTime(mainInsight));
+      el.insightMain.hidden = false;
+      el.insightMain.innerHTML = `
+        <h3>${mainAgent}</h3>
+        <p>${mainSummary}</p>
+        <div class="meta">${mainTime ? `Updated: ${mainTime}` : "Latest synthesized insight"}</div>
+      `;
+
+      if (!agentInsights.length) {
+        el.insightsList.innerHTML = '<div class="empty">No additional agent sections for this cycle.</div>';
+        return;
+      }
+
+      const html = agentInsights.map((item) => {
         const summaryText = insightText(item);
         const summary = escapeHtml(summaryText).replace(/\n/g, "<br>");
         const agent = escapeHtml(String(insightAgent(item)).replace(/_/g, " "));
@@ -1591,11 +2049,12 @@
 
       el.insightsList.innerHTML = html;
     }
-
     function renderInsightsError(message) {
+      state.insights = { main: null, agents: [] };
+      el.insightMain.hidden = true;
+      el.insightMain.innerHTML = "";
       el.insightsList.innerHTML = `<div class="empty">${escapeHtml(message)}</div>`;
     }
-
     function appendMessage(role, text) {
       const node = document.createElement("div");
       node.className = `msg ${role}`;
@@ -1695,20 +2154,42 @@
     }
 
     async function loadHistory() {
-      el.historyStatus.innerHTML = '<span class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading trend history...</span>';
+      el.historyStatus.innerHTML = '<span class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading analytics...</span>';
       lucide.createIcons();
 
-      try {
-        const data = await getJson("/api/v1/metrics/history?days=90");
-        const rows = normalizeHistory(data);
-        renderHistory(rows);
-      } catch (error) {
-        renderHistoryError(`Could not load trend history (${error.message}).`);
-      }
-    }
+      state.historyError = "";
+      state.workoutError = "";
 
+      const days = Number(state.selectedRangeDays);
+      const [historyResult, workoutResult] = await Promise.allSettled([
+        getJson(`/api/v1/metrics/history?days=${encodeURIComponent(days)}`),
+        getJson(`/api/v1/workouts/progress?days=${encodeURIComponent(days)}`)
+      ]);
+
+      if (historyResult.status === "fulfilled") {
+        state.history = normalizeHistory(historyResult.value);
+      } else {
+        state.history = [];
+        state.historyError = `Could not load trend history (${messageFromError(historyResult.reason)}).`;
+      }
+
+      if (workoutResult.status === "fulfilled") {
+        state.workouts = normalizeWorkouts(workoutResult.value);
+        state.workoutSummary = workoutResult.value?.summary && typeof workoutResult.value.summary === "object"
+          ? workoutResult.value.summary
+          : null;
+      } else {
+        state.workouts = [];
+        state.workoutSummary = null;
+        state.workoutError = `Could not load workout progress (${messageFromError(workoutResult.reason)}).`;
+      }
+
+      renderAnalyticsView();
+    }
     async function loadInsights() {
       el.insightsList.innerHTML = '<div class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading latest insights...</div>';
+      el.insightMain.hidden = true;
+      el.insightMain.innerHTML = "";
       lucide.createIcons();
 
       try {
@@ -1719,7 +2200,6 @@
         renderInsightsError(`Could not load insights (${error.message}).`);
       }
     }
-
     async function sendChat(message) {
       appendMessage("user", message);
       appendMessage("bot", "Thinking...");
@@ -1734,11 +2214,46 @@
       }
     }
 
-    function initEvents() {
+    function initRangeOptions() {
+      const options = RANGE_OPTIONS.map((item) => (
+        `<option value="${item.days}">${item.label}</option>`
+      )).join("");
+      el.rangeSelect.innerHTML = options;
 
+      if (!RANGE_OPTIONS.some((item) => item.days === state.selectedRangeDays)) {
+        state.selectedRangeDays = RANGE_OPTIONS[0].days;
+      }
+      el.rangeSelect.value = String(state.selectedRangeDays);
+    }
+
+    function initEvents() {
       el.refreshSnapshotBtn.addEventListener("click", loadSnapshot);
-      el.refreshHistoryBtn.addEventListener("click", loadHistory);
+      el.refreshAnalyticsBtn.addEventListener("click", loadHistory);
       el.refreshInsightsBtn.addEventListener("click", loadInsights);
+      initRangeOptions();
+
+      el.rangeSelect.addEventListener("change", () => {
+        const nextDays = Number(el.rangeSelect.value);
+        if (!Number.isFinite(nextDays) || nextDays <= 0) {
+          return;
+        }
+        state.selectedRangeDays = nextDays;
+        loadHistory();
+      });
+
+      document.querySelectorAll("[data-analytics-view]").forEach((node) => {
+        node.addEventListener("click", (event) => {
+          const view = node.dataset.analyticsView;
+          if (!view) {
+            return;
+          }
+          if (node.tagName === "A") {
+            event.preventDefault();
+            history.replaceState(null, "", "#analytics");
+          }
+          setAnalyticsView(view);
+        });
+      });
 
       el.chatForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -1766,8 +2281,9 @@
           el.chatForm.requestSubmit();
         }
       });
-    }
 
+      setAnalyticsView(state.analyticsView);
+    }
     async function boot() {
       await loadHealth();
       await Promise.all([loadSnapshot(), loadHistory(), loadInsights()]);
