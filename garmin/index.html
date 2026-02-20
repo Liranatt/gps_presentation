@@ -6,28 +6,28 @@
   <title>Garmin Health Intelligence | Liran Attar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
-      --bg: #f4f6ef;
-      --bg-soft: #eef2e5;
-      --surface: #ffffff;
-      --surface-2: #f8fbf2;
-      --text: #1c2716;
-      --text-dim: #51624a;
-      --line: #d8e2cf;
-      --brand: #2d7a4a;
-      --brand-dark: #1d5b36;
-      --brand-soft: #d5eed8;
-      --warn-soft: #ffeec4;
-      --warn-text: #8a5a00;
-      --bad-soft: #ffd8d8;
-      --bad-text: #8b2121;
+      --bg: #0a0a0f;
+      --bg-soft: #0d1117;
+      --surface: rgba(255, 255, 255, 0.03);
+      --surface-2: rgba(255, 255, 255, 0.04);
+      --text: #ffffff;
+      --text-dim: rgba(255, 255, 255, 0.45);
+      --line: rgba(255, 255, 255, 0.08);
+      --brand: #00f5a0;
+      --brand-dark: #00d9f5;
+      --brand-soft: rgba(0, 245, 160, 0.14);
+      --warn-soft: rgba(245, 197, 66, 0.18);
+      --warn-text: #f5c542;
+      --bad-soft: rgba(245, 87, 108, 0.18);
+      --bad-text: #f5576c;
       --radius-lg: 22px;
       --radius-md: 14px;
-      --shadow-lg: 0 20px 50px -26px rgba(25, 48, 18, 0.3);
-      --shadow-md: 0 10px 24px -18px rgba(25, 48, 18, 0.25);
+      --shadow-lg: 0 22px 60px -28px rgba(0, 0, 0, 0.65);
+      --shadow-md: 0 12px 28px -20px rgba(0, 0, 0, 0.55);
     }
 
     * {
@@ -37,10 +37,10 @@
     }
 
     body {
-      font-family: "Manrope", sans-serif;
+      font-family: "Inter", sans-serif;
       background:
-        radial-gradient(circle at 15% 0%, rgba(60, 166, 102, 0.18) 0%, transparent 40%),
-        radial-gradient(circle at 85% 0%, rgba(255, 204, 92, 0.2) 0%, transparent 34%),
+        radial-gradient(circle at 15% 0%, rgba(0, 245, 160, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 85% 0%, rgba(102, 126, 234, 0.18) 0%, transparent 34%),
         var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -74,8 +74,8 @@
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.7);
-      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.72);
       text-decoration: none;
       font-size: 12px;
       font-weight: 700;
@@ -84,15 +84,15 @@
     }
 
     .chip-link:hover {
-      border-color: #b8c8aa;
-      background: #ffffff;
-      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
       transform: translateY(-1px);
     }
 
     .hero {
-      background: linear-gradient(140deg, #edf8ea 0%, #fbfcf6 52%, #fff7e5 100%);
-      border: 1px solid #d6e4c8;
+      background: linear-gradient(140deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 52%, rgba(255,255,255,0.04) 100%);
+      border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
       padding: 24px;
@@ -109,7 +109,7 @@
       width: 220px;
       height: 220px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(60, 166, 102, 0.25) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(0, 245, 160, 0.28) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -128,11 +128,11 @@
       line-height: 1.05;
       letter-spacing: -1px;
       margin-bottom: 10px;
-      color: #16381f;
+      color: #fff;
     }
 
     .hero p {
-      color: var(--text-dim);
+      color: rgba(255, 255, 255, 0.68);
       font-size: 15px;
       line-height: 1.6;
       max-width: 64ch;
@@ -145,9 +145,9 @@
     }
 
     .hero-kpi {
-      border: 1px solid #cee1bf;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.05);
       padding: 12px;
       min-height: 86px;
       display: flex;
@@ -160,7 +160,7 @@
       font-size: 11px;
       letter-spacing: 0.8px;
       text-transform: uppercase;
-      color: #5f7357;
+      color: rgba(255, 255, 255, 0.45);
       margin-bottom: 5px;
       font-weight: 700;
     }
@@ -169,7 +169,39 @@
       font-size: 23px;
       font-weight: 800;
       line-height: 1;
-      color: #20432b;
+      color: #fff;
+    }
+
+    .mode-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .mode-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .mode-pill:hover {
+      border-color: rgba(0, 245, 160, 0.38);
+      color: #ffffff;
+      background: rgba(0, 245, 160, 0.08);
+      transform: translateY(-1px);
     }
 
     .layout {
@@ -188,6 +220,7 @@
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
+      backdrop-filter: blur(12px);
       overflow: hidden;
     }
 
@@ -209,7 +242,7 @@
       font-size: 16px;
       font-weight: 700;
       letter-spacing: -0.2px;
-      color: #203718;
+      color: #fff;
     }
 
     .status {
@@ -228,27 +261,27 @@
     }
 
     .status.loading {
-      background: #eef3e7;
-      color: #54684d;
-      border-color: #d4e0c8;
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.68);
+      border-color: rgba(255, 255, 255, 0.14);
     }
 
     .status.ok {
       background: var(--brand-soft);
       color: var(--brand-dark);
-      border-color: #9bcea8;
+      border-color: rgba(0, 245, 160, 0.35);
     }
 
     .status.warm {
       background: var(--warn-soft);
       color: var(--warn-text);
-      border-color: #f0d38d;
+      border-color: rgba(245, 197, 66, 0.35);
     }
 
     .status.fail {
       background: var(--bad-soft);
       color: var(--bad-text);
-      border-color: #eaa7a7;
+      border-color: rgba(245, 87, 108, 0.35);
     }
 
     .card-body {
@@ -270,7 +303,7 @@
     .field label {
       font-size: 12px;
       font-weight: 700;
-      color: #5c6b54;
+      color: rgba(255, 255, 255, 0.55);
       letter-spacing: 0.3px;
     }
 
@@ -278,16 +311,16 @@
       width: 100%;
       padding: 11px 12px;
       border-radius: 10px;
-      border: 1px solid #cfdcc2;
-      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text);
       font-size: 14px;
       outline: none;
     }
 
     .field input:focus {
-      border-color: #79a26d;
-      box-shadow: 0 0 0 3px rgba(45, 122, 74, 0.13);
+      border-color: rgba(0, 245, 160, 0.45);
+      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.13);
     }
 
     .button {
@@ -318,18 +351,18 @@
     }
 
     .button.ghost {
-      background: #f2f7eb;
-      color: #355a3f;
-      border: 1px solid #d1dfc5;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.13);
     }
 
     .button.ghost:hover {
-      background: #e7f0de;
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .help {
       margin-top: 8px;
-      color: #5f7158;
+      color: rgba(255, 255, 255, 0.55);
       font-size: 12px;
       line-height: 1.5;
     }
@@ -341,10 +374,10 @@
     }
 
     .metric {
-      border: 1px solid #d7e3cc;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
       padding: 13px;
-      background: #fcfef9;
+      background: rgba(255, 255, 255, 0.04);
       min-height: 104px;
       display: grid;
       align-content: center;
@@ -354,7 +387,7 @@
 
     .metric-label {
       font-size: 12px;
-      color: #5f6f56;
+      color: rgba(255, 255, 255, 0.5);
       letter-spacing: 0.3px;
       margin-bottom: 6px;
       font-weight: 700;
@@ -365,13 +398,13 @@
       font-size: 30px;
       line-height: 1;
       font-weight: 700;
-      color: #1c4f2f;
+      color: #fff;
     }
 
     .metric-meta {
       margin-top: 5px;
       font-size: 11px;
-      color: #6b7c62;
+      color: rgba(255, 255, 255, 0.45);
     }
 
     .insights {
@@ -380,10 +413,10 @@
     }
 
     .insight {
-      border: 1px solid #dce7d1;
+      border: 1px solid rgba(255, 255, 255, 0.11);
       border-radius: 12px;
       padding: 12px;
-      background: #fbfdf8;
+      background: rgba(255, 255, 255, 0.03);
       display: grid;
       gap: 6px;
     }
@@ -401,33 +434,33 @@
       font-weight: 800;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      color: #46663e;
-      background: #eaf4e0;
-      border: 1px solid #d3e4c2;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border: 1px solid rgba(0, 245, 160, 0.22);
       padding: 4px 8px;
       border-radius: 999px;
     }
 
     .insight-time {
       font-size: 11px;
-      color: #718468;
+      color: rgba(255, 255, 255, 0.48);
       font-weight: 700;
     }
 
     .insight p {
       font-size: 14px;
-      color: #2f4328;
+      color: rgba(255, 255, 255, 0.82);
       line-height: 1.6;
     }
 
     .empty {
-      color: #607456;
+      color: rgba(255, 255, 255, 0.52);
       font-size: 13px;
       text-align: center;
       padding: 8px;
-      border: 1px dashed #cddcc0;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
       border-radius: 10px;
-      background: #f8fbf2;
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .chat-wrap {
@@ -439,9 +472,9 @@
     }
 
     .chat-log {
-      border: 1px solid #d7e3cb;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
-      background: #fcfef9;
+      background: rgba(255, 255, 255, 0.04);
       padding: 12px;
       overflow: auto;
       display: grid;
@@ -460,25 +493,25 @@
 
     .msg.user {
       justify-self: end;
-      background: #dcf0de;
-      border-color: #b9dcbf;
-      color: #15391d;
+      background: rgba(102, 126, 234, 0.16);
+      border-color: rgba(102, 126, 234, 0.34);
+      color: #fff;
       border-bottom-right-radius: 5px;
     }
 
     .msg.bot {
       justify-self: start;
-      background: #f1f6eb;
-      border-color: #d8e5cb;
-      color: #2d4226;
+      background: rgba(0, 245, 160, 0.1);
+      border-color: rgba(0, 245, 160, 0.25);
+      color: rgba(255, 255, 255, 0.9);
       border-bottom-left-radius: 5px;
     }
 
     .msg.system {
       justify-self: center;
-      background: #fff6df;
-      border-color: #ecd697;
-      color: #7c5a13;
+      background: rgba(245, 197, 66, 0.12);
+      border-color: rgba(245, 197, 66, 0.3);
+      color: #f5c542;
       text-align: center;
       max-width: 100%;
       font-size: 12px;
@@ -495,20 +528,20 @@
       min-height: 52px;
       max-height: 120px;
       resize: vertical;
-      border: 1px solid #cfdcc2;
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 12px;
       padding: 12px;
       font-family: inherit;
       font-size: 14px;
       line-height: 1.45;
       color: var(--text);
-      background: #fff;
+      background: rgba(255, 255, 255, 0.04);
       outline: none;
     }
 
     .chat-form textarea:focus {
-      border-color: #79a26d;
-      box-shadow: 0 0 0 3px rgba(45, 122, 74, 0.13);
+      border-color: rgba(0, 245, 160, 0.45);
+      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.13);
     }
 
     .chat-actions {
@@ -520,7 +553,7 @@
 
     .footer-note {
       margin-top: 12px;
-      color: #5a6e50;
+      color: rgba(255, 255, 255, 0.48);
       font-size: 12px;
       text-align: center;
       line-height: 1.5;
@@ -530,7 +563,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: #4f6645;
+      color: rgba(255, 255, 255, 0.6);
       font-size: 13px;
       font-weight: 700;
     }
@@ -612,10 +645,10 @@
     <section class="hero">
       <div class="hero-inner">
         <div>
-          <h1>Garmin Health Intelligence Snapshot</h1>
+          <h1>Garmin Health Intelligence Dashboard v3</h1>
           <p>
-            Deterministic statistics first, multi-agent reasoning second. This page consumes your Heroku API
-            and shows current body-state metrics plus agent-generated insights in one operational dashboard.
+            Deterministic statistics first, multi-agent reasoning second. This page mirrors your Streamlit v3
+            structure and consumes your Heroku API for snapshot metrics, insights, and interactive agent chat.
           </p>
         </div>
         <div class="hero-kpis">
@@ -639,34 +672,23 @@
       </div>
     </section>
 
+    <nav class="mode-nav" aria-label="Dashboard sections">
+      <a class="mode-pill" href="#snapshot">Overview</a>
+      <a class="mode-pill" href="#insights">Insights</a>
+      <a class="mode-pill" href="#chat">Agent Chat</a>
+      <a class="mode-pill" href="#roadmap">Trends</a>
+      <a class="mode-pill" href="#roadmap">Correlations</a>
+      <a class="mode-pill" href="#roadmap">Deep Dive</a>
+      <a class="mode-pill" href="#roadmap">Date Explorer</a>
+      <a class="mode-pill" href="#roadmap">Daily Input</a>
+      <a class="mode-pill" href="#roadmap">Agent Analysis</a>
+      <a class="mode-pill" href="#roadmap">Goals</a>
+    </nav>
+
     <main class="layout">
       <section class="stack">
-        <article class="card">
-          <header class="card-head">
-            <h2 class="card-title">
-              <i data-lucide="plug-zap" style="width:17px;height:17px;"></i>
-              API Connection
-            </h2>
-          </header>
-          <div class="card-body">
-            <div class="settings-grid">
-              <div class="field">
-                <label for="apiBaseInput">Heroku API Base URL</label>
-                <input id="apiBaseInput" type="text" placeholder="https://your-heroku-app.herokuapp.com" />
-              </div>
-              <button class="button primary" id="saveApiBtn" type="button">
-                <i data-lucide="save" style="width:14px;height:14px;"></i>
-                Save + Reload
-              </button>
-            </div>
-            <p class="help">
-              Required endpoints: <code>/health-check</code>, <code>/api/v1/snapshot/latest</code>,
-              <code>/api/v1/insights/latest</code>, <code>/api/v1/chat</code>
-            </p>
-          </div>
-        </article>
 
-        <article class="card">
+        <article id="snapshot" class="card">
           <header class="card-head">
             <h2 class="card-title">
               <i data-lucide="heart-pulse" style="width:17px;height:17px;"></i>
@@ -717,7 +739,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article id="insights" class="card">
           <header class="card-head">
             <h2 class="card-title">
               <i data-lucide="sparkles" style="width:17px;height:17px;"></i>
@@ -739,7 +761,7 @@
         </article>
       </section>
 
-      <section class="card">
+      <section id="chat" class="card">
         <header class="card-head">
           <h2 class="card-title">
             <i data-lucide="messages-square" style="width:17px;height:17px;"></i>
@@ -771,22 +793,88 @@
         </div>
       </section>
     </main>
+
+    <section id="roadmap" class="card" style="margin-top:16px;">
+      <header class="card-head">
+        <h2 class="card-title">
+          <i data-lucide="map" style="width:17px;height:17px;"></i>
+          Streamlit v3 Page Map
+        </h2>
+      </header>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Page</th>
+                <th>Frontend Status</th>
+                <th>Backend Endpoint Needed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Overview</td>
+                <td>Implemented</td>
+                <td><code>/api/v1/snapshot/latest</code>, <code>/api/v1/insights/latest</code></td>
+              </tr>
+              <tr>
+                <td>Agent Chat</td>
+                <td>Implemented</td>
+                <td><code>/api/v1/chat</code></td>
+              </tr>
+              <tr>
+                <td>Trends</td>
+                <td>Design ready</td>
+                <td><code>/api/v1/metrics/history?days=90</code></td>
+              </tr>
+              <tr>
+                <td>Correlations</td>
+                <td>Design ready</td>
+                <td><code>/api/v1/correlations/summary</code>, matrix endpoint</td>
+              </tr>
+              <tr>
+                <td>Deep Dive</td>
+                <td>Design ready</td>
+                <td>history endpoint + metric query filters</td>
+              </tr>
+              <tr>
+                <td>Date Explorer</td>
+                <td>Design ready</td>
+                <td><code>/api/v1/date/&lt;YYYY-MM-DD&gt;</code></td>
+              </tr>
+              <tr>
+                <td>Daily Input</td>
+                <td>Design ready</td>
+                <td><code>/api/v1/daily/wellness</code>, <code>/api/v1/daily/nutrition</code></td>
+              </tr>
+              <tr>
+                <td>Agent Analysis</td>
+                <td>Design ready</td>
+                <td><code>/api/v1/analysis/run</code></td>
+              </tr>
+              <tr>
+                <td>Goals</td>
+                <td>Design ready</td>
+                <td><code>/api/v1/goals/progress</code> (or weekly history endpoint)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script>
-    const DEFAULT_API_BASE = "https://liran-garmin-ai.herokuapp.com";
-    const API_STORAGE_KEY = "garmin_api_base";
+    const DEFAULT_API_BASE = "https://garmin-health-liran-f16faec73fc5.herokuapp.com";
 
     const state = {
-      apiBase: loadApiBase(),
+      apiBase: DEFAULT_API_BASE,
       snapshot: null,
       insights: []
     };
 
     const el = {
       statusBadge: document.getElementById("statusBadge"),
-      apiBaseInput: document.getElementById("apiBaseInput"),
-      saveApiBtn: document.getElementById("saveApiBtn"),
       refreshSnapshotBtn: document.getElementById("refreshSnapshotBtn"),
       refreshInsightsBtn: document.getElementById("refreshInsightsBtn"),
       snapshotStatus: document.getElementById("snapshotStatus"),
@@ -809,15 +897,7 @@
       mLoad: document.getElementById("mLoad")
     };
 
-    function loadApiBase() {
-      const stored = localStorage.getItem(API_STORAGE_KEY);
-      const raw = (stored || DEFAULT_API_BASE).trim();
-      return normalizeBase(raw);
-    }
 
-    function normalizeBase(value) {
-      return value.replace(/\/+$/, "");
-    }
 
     function endpoint(path) {
       return `${state.apiBase}${path}`;
@@ -1082,20 +1162,6 @@
     }
 
     function initEvents() {
-      el.apiBaseInput.value = state.apiBase;
-
-      el.saveApiBtn.addEventListener("click", () => {
-        const next = normalizeBase(el.apiBaseInput.value.trim());
-        if (!next) {
-          appendMessage("system", "Please enter a valid API base URL.");
-          return;
-        }
-
-        localStorage.setItem(API_STORAGE_KEY, next);
-        state.apiBase = next;
-        appendMessage("system", `API base updated to ${next}`);
-        boot();
-      });
 
       el.refreshSnapshotBtn.addEventListener("click", loadSnapshot);
       el.refreshInsightsBtn.addEventListener("click", loadInsights);
