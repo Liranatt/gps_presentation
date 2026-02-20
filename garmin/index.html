@@ -407,6 +407,87 @@
       color: rgba(255, 255, 255, 0.45);
     }
 
+    .trend-status {
+      margin-bottom: 10px;
+    }
+
+    .trend-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .trend-card {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .trend-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .trend-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.3px;
+    }
+
+    .trend-value {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .spark {
+      width: 100%;
+      height: 68px;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .spark path {
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 2.2;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    .spark circle {
+      fill: #fff;
+      stroke: var(--brand);
+      stroke-width: 1.7;
+    }
+
+    .trend-delta {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .trend-delta.up {
+      color: #4ade80;
+    }
+
+    .trend-delta.down {
+      color: #fb7185;
+    }
+
+    .trend-delta.flat {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
     .insights {
       display: grid;
       gap: 10px;
@@ -451,6 +532,39 @@
       font-size: 14px;
       color: rgba(255, 255, 255, 0.82);
       line-height: 1.6;
+    }
+
+    .insight-detail {
+      border-top: 1px dashed rgba(255, 255, 255, 0.14);
+      padding-top: 8px;
+    }
+
+    .insight-detail summary {
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      list-style: none;
+    }
+
+    .insight-detail summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .insight-detail pre {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.02);
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      max-height: 220px;
+      overflow: auto;
     }
 
     .empty {
@@ -603,7 +717,8 @@
       }
 
       .hero-kpis,
-      .metrics-grid {
+      .metrics-grid,
+      .trend-grid {
         grid-template-columns: 1fr;
       }
 
@@ -676,7 +791,7 @@
       <a class="mode-pill" href="#snapshot">Overview</a>
       <a class="mode-pill" href="#insights">Insights</a>
       <a class="mode-pill" href="#chat">Agent Chat</a>
-      <a class="mode-pill" href="#roadmap">Trends</a>
+      <a class="mode-pill" href="#trends">Trends</a>
       <a class="mode-pill" href="#roadmap">Correlations</a>
       <a class="mode-pill" href="#roadmap">Deep Dive</a>
       <a class="mode-pill" href="#roadmap">Date Explorer</a>
@@ -736,6 +851,26 @@
                 <div class="metric-meta">7-day</div>
               </article>
             </div>
+          </div>
+        </article>
+
+        <article id="trends" class="card">
+          <header class="card-head">
+            <h2 class="card-title">
+              <i data-lucide="line-chart" style="width:17px;height:17px;"></i>
+              Daily Trends (Last 90 Days)
+            </h2>
+            <button class="button ghost" id="refreshHistoryBtn" type="button">
+              <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
+              Refresh
+            </button>
+          </header>
+          <div class="card-body">
+            <div id="historyStatus" class="loading-row trend-status">
+              <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
+              Loading trend history...
+            </div>
+            <div class="trend-grid" id="trendGrid" hidden></div>
           </div>
         </article>
 
@@ -824,7 +959,7 @@
               </tr>
               <tr>
                 <td>Trends</td>
-                <td>Design ready</td>
+                <td>Implemented</td>
                 <td><code>/api/v1/metrics/history?days=90</code></td>
               </tr>
               <tr>
@@ -870,15 +1005,19 @@
     const state = {
       apiBase: DEFAULT_API_BASE,
       snapshot: null,
-      insights: []
+      insights: [],
+      history: []
     };
 
     const el = {
       statusBadge: document.getElementById("statusBadge"),
       refreshSnapshotBtn: document.getElementById("refreshSnapshotBtn"),
+      refreshHistoryBtn: document.getElementById("refreshHistoryBtn"),
       refreshInsightsBtn: document.getElementById("refreshInsightsBtn"),
       snapshotStatus: document.getElementById("snapshotStatus"),
       metricsGrid: document.getElementById("metricsGrid"),
+      historyStatus: document.getElementById("historyStatus"),
+      trendGrid: document.getElementById("trendGrid"),
       insightsList: document.getElementById("insightsList"),
       chatForm: document.getElementById("chatForm"),
       chatInput: document.getElementById("chatInput"),
@@ -942,6 +1081,149 @@
       };
     }
 
+    function numberOrNull(value) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function average(values) {
+      if (!values.length) {
+        return null;
+      }
+      return values.reduce((acc, value) => acc + value, 0) / values.length;
+    }
+
+    function normalizeHistory(payload) {
+      const rows = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload?.data)
+          ? payload.data
+          : Array.isArray(payload?.history)
+            ? payload.history
+            : [];
+
+      return rows.map((row) => ({
+        date: findFirst(row, ["date", "timestamp", "as_of"]),
+        restingHr: numberOrNull(findFirst(row, ["resting_hr", "restingHr", "rhr"])),
+        hrv: numberOrNull(findFirst(row, ["hrv", "hrv_last_night", "hrv_ms", "rmssd"])),
+        sleep: numberOrNull(findFirst(row, ["sleep_score", "sleepScore", "sleep"])),
+        stress: numberOrNull(findFirst(row, ["stress", "stress_level", "stress_score", "avg_stress"])),
+        battery: numberOrNull(findFirst(row, ["battery", "body_battery", "bb_peak"])),
+        load: numberOrNull(findFirst(row, ["training_load", "daily_load_acute", "load", "acute_load"]))
+      })).filter((row) => row.date).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+    }
+
+    function sparklineModel(values, width = 320, height = 68, pad = 7) {
+      const points = values.filter((value) => value !== null && value !== undefined);
+      if (points.length === 0) {
+        return { path: "", lastX: 0, lastY: 0 };
+      }
+
+      const min = Math.min(...points);
+      const max = Math.max(...points);
+      const range = max - min || 1;
+      const step = points.length > 1 ? (width - (pad * 2)) / (points.length - 1) : 0;
+
+      const mapped = points.map((value, index) => {
+        const x = pad + (index * step);
+        const y = height - pad - (((value - min) / range) * (height - (pad * 2)));
+        return { x, y };
+      });
+
+      const path = mapped.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(" ");
+      const last = mapped[mapped.length - 1];
+      return { path, lastX: last.x, lastY: last.y };
+    }
+
+    function trendDelta(values) {
+      const clean = values.filter((value) => value !== null && value !== undefined);
+      if (clean.length < 14) {
+        return null;
+      }
+      const recent = average(clean.slice(-7));
+      const previous = average(clean.slice(-14, -7));
+      if (recent === null || previous === null || previous === 0) {
+        return null;
+      }
+      return ((recent - previous) / Math.abs(previous)) * 100;
+    }
+
+    function trendClass(delta, higherIsBetter) {
+      if (delta === null || Math.abs(delta) < 0.5) {
+        return "flat";
+      }
+      if (higherIsBetter) {
+        return delta >= 0 ? "up" : "down";
+      }
+      return delta >= 0 ? "down" : "up";
+    }
+
+    function renderHistory(rows) {
+      state.history = rows;
+      if (!rows.length) {
+        el.trendGrid.hidden = true;
+        el.historyStatus.innerHTML = '<span class="empty">No daily history rows returned yet.</span>';
+        return;
+      }
+
+      const metrics = [
+        { key: "restingHr", label: "Resting HR", unit: "bpm", higherIsBetter: false },
+        { key: "hrv", label: "HRV", unit: "ms", higherIsBetter: true },
+        { key: "sleep", label: "Sleep Score", unit: "", higherIsBetter: true },
+        { key: "stress", label: "Stress", unit: "", higherIsBetter: false },
+        { key: "battery", label: "Body Battery", unit: "", higherIsBetter: true },
+        { key: "load", label: "Training Load", unit: "", higherIsBetter: true }
+      ];
+
+      const cards = metrics.map((metric) => {
+        const values = rows.map((row) => row[metric.key]).filter((value) => value !== null && value !== undefined);
+        if (!values.length) {
+          return `
+            <article class="trend-card">
+              <div class="trend-top">
+                <span class="trend-label">${metric.label}</span>
+                <strong class="trend-value">--</strong>
+              </div>
+              <div class="trend-delta flat">No data</div>
+            </article>
+          `;
+        }
+
+        const latest = values[values.length - 1];
+        const spark = sparklineModel(values);
+        const delta = trendDelta(values);
+        const klass = trendClass(delta, metric.higherIsBetter);
+        const deltaText = delta === null
+          ? "Need at least 14 data points"
+          : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% vs previous 7 days`;
+
+        return `
+          <article class="trend-card">
+            <div class="trend-top">
+              <span class="trend-label">${metric.label}</span>
+              <strong class="trend-value">${fmt(latest)}${metric.unit ? ` ${metric.unit}` : ""}</strong>
+            </div>
+            <svg class="spark" viewBox="0 0 320 68" preserveAspectRatio="none">
+              <path d="${spark.path}"></path>
+              <circle cx="${spark.lastX.toFixed(2)}" cy="${spark.lastY.toFixed(2)}" r="3"></circle>
+            </svg>
+            <div class="trend-delta ${klass}">${escapeHtml(deltaText)}</div>
+          </article>
+        `;
+      }).join("");
+
+      const firstDate = rows[0].date;
+      const lastDate = rows[rows.length - 1].date;
+      el.historyStatus.textContent = `Loaded ${rows.length} daily rows (${firstDate} → ${lastDate})`;
+      el.trendGrid.innerHTML = cards;
+      el.trendGrid.hidden = false;
+    }
+
+    function renderHistoryError(message) {
+      el.trendGrid.hidden = true;
+      el.historyStatus.innerHTML = `<span class="empty">${escapeHtml(message)}</span>`;
+    }
+
     function renderSnapshot(metrics) {
       state.snapshot = metrics;
 
@@ -969,26 +1251,200 @@
     }
 
     function normalizeInsights(payload) {
-      if (Array.isArray(payload)) {
-        return payload;
+      const raw = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload?.insights)
+          ? payload.insights
+          : Array.isArray(payload?.data)
+            ? payload.data
+            : (payload?.insight || payload?.message || payload?.text)
+              ? [payload]
+              : [];
+
+      return expandCompositeInsights(raw);
+    }
+
+    function rawInsightText(item) {
+      if (typeof item === "string") {
+        return item;
       }
-      if (Array.isArray(payload?.insights)) {
-        return payload.insights;
+      return findFirst(item, ["insight", "message", "text", "summary", "content"]) || "";
+    }
+
+    function rawInsightAgent(item) {
+      if (typeof item === "string") {
+        return "agent";
       }
-      if (Array.isArray(payload?.data)) {
-        return payload.data;
+      return findFirst(item, ["agent", "agent_name", "source", "role"]) || "agent";
+    }
+
+    function rawInsightTime(item) {
+      if (typeof item === "string") {
+        return "";
       }
-      if (payload?.insight || payload?.message || payload?.text) {
-        return [payload];
+      return findFirst(item, ["timestamp", "created_at", "date", "time"]) || "";
+    }
+
+    function summarizeInsightText(text, maxLen = 320) {
+      const blocks = text.split(/\n\s*\n/).map((part) => part.trim()).filter(Boolean);
+      let best = blocks.find((part) => !/^\|/.test(part) && part.length >= 30) || blocks[0] || "";
+      best = best.replace(/\s+/g, " ").trim();
+      if (best.length <= maxLen) {
+        return best;
       }
-      return [];
+      return `${best.slice(0, maxLen - 3)}...`;
+    }
+
+    function formatSectionTitle(title) {
+      return title
+        .replace(/_/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function splitReportSections(text) {
+      const lines = text.split(/\r?\n/);
+      const sections = [];
+      let title = "";
+      let buffer = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        const next = (lines[i + 1] || "").trim();
+        const next2 = (lines[i + 2] || "").trim();
+
+        if (/^={8,}$/.test(line) && next && /^={8,}$/.test(next2)) {
+          const content = buffer.join("\n").trim();
+          if (content) {
+            sections.push({
+              title: title || "Daily Report",
+              content
+            });
+          }
+          title = formatSectionTitle(next);
+          buffer = [];
+          i += 2;
+          continue;
+        }
+
+        buffer.push(lines[i]);
+      }
+
+      const tail = buffer.join("\n").trim();
+      if (tail) {
+        sections.push({
+          title: title || "Daily Report",
+          content: tail
+        });
+      }
+
+      if (!sections.length && text.trim()) {
+        return [{ title: "Daily Report", content: text.trim() }];
+      }
+      return sections;
+    }
+
+    function extractQuickWins(text, timestamp) {
+      const lines = text.split(/\r?\n/);
+      const wins = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        const match = line.match(/^RECOMMENDATION\s*\d*\s*:\s*(.+)$/i);
+        if (!match) {
+          continue;
+        }
+
+        const block = [line];
+        let target = "";
+        let direction = "";
+
+        for (let j = i + 1; j < lines.length; j++) {
+          const look = lines[j].trim();
+          if (/^RECOMMENDATION\s*\d*\s*:/i.test(look)) {
+            break;
+          }
+          block.push(lines[j]);
+          const targetMatch = look.match(/^TARGET_METRIC\s*:\s*(.+)$/i);
+          if (targetMatch) {
+            target = targetMatch[1].trim();
+          }
+          const directionMatch = look.match(/^EXPECTED_DIRECTION\s*:\s*(.+)$/i);
+          if (directionMatch) {
+            direction = directionMatch[1].trim();
+          }
+        }
+
+        const summaryParts = [match[1].trim()];
+        if (target) {
+          summaryParts.push(`Target: ${target}`);
+        }
+        if (direction) {
+          summaryParts.push(`Expected: ${direction}`);
+        }
+
+        wins.push({
+          agent: "Quick Win",
+          summary: summaryParts.join(" • "),
+          detail: block.join("\n").trim(),
+          timestamp
+        });
+
+        if (wins.length >= 3) {
+          break;
+        }
+      }
+
+      return wins;
+    }
+
+    function expandCompositeInsights(items) {
+      const expanded = [];
+
+      for (const item of items) {
+        const text = rawInsightText(item);
+        const agent = rawInsightAgent(item);
+        const timestamp = rawInsightTime(item);
+
+        if (!text) {
+          continue;
+        }
+
+        const sections = splitReportSections(text);
+        const isComposite = sections.length > 1 || text.length > 1000;
+
+        if (!isComposite) {
+          expanded.push(item);
+          continue;
+        }
+
+        const wins = extractQuickWins(text, timestamp);
+        if (wins.length) {
+          expanded.push(...wins);
+        }
+
+        for (const section of sections) {
+          const detail = section.content.trim();
+          if (!detail) {
+            continue;
+          }
+          expanded.push({
+            agent: section.title || agent,
+            summary: summarizeInsightText(detail),
+            detail,
+            timestamp
+          });
+        }
+      }
+
+      return expanded.slice(0, 12);
     }
 
     function insightText(item) {
       if (typeof item === "string") {
         return item;
       }
-      return findFirst(item, ["insight", "message", "text", "summary", "content"]) || "No text";
+      return findFirst(item, ["summary", "insight", "message", "text", "content"]) || "No text";
     }
 
     function insightAgent(item) {
@@ -1005,6 +1461,13 @@
       return findFirst(item, ["timestamp", "created_at", "date", "time"]) || "";
     }
 
+    function insightDetail(item) {
+      if (typeof item === "string") {
+        return "";
+      }
+      return findFirst(item, ["detail", "text", "content", "raw"]) || "";
+    }
+
     function renderInsights(items) {
       state.insights = items;
 
@@ -1014,9 +1477,13 @@
       }
 
       const html = items.slice(0, 10).map((item) => {
-        const text = escapeHtml(insightText(item));
+        const summaryText = insightText(item);
+        const summary = escapeHtml(summaryText).replace(/\n/g, "<br>");
         const agent = escapeHtml(String(insightAgent(item)).replace(/_/g, " "));
         const time = escapeHtml(insightTime(item));
+        const detailRaw = insightDetail(item);
+        const detail = escapeHtml(detailRaw);
+        const hasDetail = detailRaw && detailRaw.trim() && detailRaw.trim() !== summaryText.trim();
 
         return `
           <article class="insight">
@@ -1024,7 +1491,13 @@
               <span class="insight-agent">${agent}</span>
               ${time ? `<span class="insight-time">${time}</span>` : ""}
             </div>
-            <p>${text}</p>
+            <p>${summary}</p>
+            ${hasDetail ? `
+              <details class="insight-detail">
+                <summary>View full section</summary>
+                <pre>${detail}</pre>
+              </details>
+            ` : ""}
           </article>
         `;
       }).join("");
@@ -1134,6 +1607,19 @@
       }
     }
 
+    async function loadHistory() {
+      el.historyStatus.innerHTML = '<span class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading trend history...</span>';
+      lucide.createIcons();
+
+      try {
+        const data = await getJson("/api/v1/metrics/history?days=90");
+        const rows = normalizeHistory(data);
+        renderHistory(rows);
+      } catch (error) {
+        renderHistoryError(`Could not load trend history (${error.message}).`);
+      }
+    }
+
     async function loadInsights() {
       el.insightsList.innerHTML = '<div class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading latest insights...</div>';
       lucide.createIcons();
@@ -1164,6 +1650,7 @@
     function initEvents() {
 
       el.refreshSnapshotBtn.addEventListener("click", loadSnapshot);
+      el.refreshHistoryBtn.addEventListener("click", loadHistory);
       el.refreshInsightsBtn.addEventListener("click", loadInsights);
 
       el.chatForm.addEventListener("submit", async (event) => {
@@ -1196,7 +1683,7 @@
 
     async function boot() {
       await loadHealth();
-      await Promise.all([loadSnapshot(), loadInsights()]);
+      await Promise.all([loadSnapshot(), loadHistory(), loadInsights()]);
     }
 
     lucide.createIcons();
