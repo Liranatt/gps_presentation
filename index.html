@@ -7,24 +7,20 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    function toggleCard(id) {
-      var extra = document.getElementById(id + '-extra');
-      var btn   = document.getElementById(id + '-btn');
-      var isOpen = extra.classList.contains('open');
-      extra.classList.toggle('open', !isOpen);
-      btn.textContent = isOpen ? 'Read more ↓' : 'Read less ↑';
-    }
-  </script>
   <style>
     :root {
       --indigo: #6366f1;
       --purple: #a855f7;
       --cyan: #06b6d4;
       --dark: #09111f;
+      --dark-soft: #0f172a;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -32,7 +28,6 @@
       color: #f1f5f9;
     }
 
-    /* ── Noise overlay ── */
     body::after {
       content: '';
       position: fixed;
@@ -42,60 +37,71 @@
       z-index: 999;
     }
 
-    /* ── Orbs ── */
     .orb {
       position: absolute;
       border-radius: 50%;
       filter: blur(90px);
       pointer-events: none;
     }
+
     .orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(99,102,241,0.16) 0%, transparent 70%);
-      top: -150px; left: -150px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, transparent 70%);
+      top: -150px;
+      left: -150px;
       animation: drift1 16s ease-in-out infinite alternate;
     }
+
     .orb-2 {
-      width: 450px; height: 450px;
-      background: radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%);
-      top: 5%; right: -100px;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+      top: 5%;
+      right: -100px;
       animation: drift2 20s ease-in-out infinite alternate;
     }
+
     .orb-3 {
-      width: 380px; height: 380px;
-      background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%);
-      bottom: 10%; left: 35%;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+      bottom: 10%;
+      left: 35%;
       animation: drift1 18s ease-in-out infinite alternate-reverse;
     }
+
     @keyframes drift1 {
-      from { transform: translate(0,0); }
-      to   { transform: translate(50px, 35px); }
-    }
-    @keyframes drift2 {
-      from { transform: translate(0,0); }
-      to   { transform: translate(-40px, 50px); }
+      from { transform: translate(0, 0); }
+      to { transform: translate(50px, 35px); }
     }
 
-    /* ── Dot grid ── */
+    @keyframes drift2 {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-40px, 50px); }
+    }
+
     .dot-grid {
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
       background-size: 38px 38px;
       pointer-events: none;
       mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 100%);
     }
 
-    /* ── Nav ── */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       padding: 14px 48px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       background: rgba(9, 17, 31, 0.8);
       backdrop-filter: blur(16px);
     }
@@ -103,8 +109,10 @@
     .nav-btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      text-align: center;
       gap: 8px;
-      padding: 9px 20px;
+      padding: 9px 18px;
       border-radius: 100px;
       font-size: 13px;
       font-weight: 500;
@@ -114,28 +122,29 @@
     }
 
     .nav-btn-github {
-      background: rgba(99,102,241,0.12);
+      background: rgba(99, 102, 241, 0.12);
       color: #a5b4fc;
-      border: 1px solid rgba(99,102,241,0.25);
+      border: 1px solid rgba(99, 102, 241, 0.25);
     }
+
     .nav-btn-github:hover {
-      background: rgba(99,102,241,0.25);
+      background: rgba(99, 102, 241, 0.25);
       color: #fff;
       transform: translateY(-1px);
     }
 
     .nav-btn-linkedin {
-      background: rgba(59,130,246,0.12);
+      background: rgba(59, 130, 246, 0.12);
       color: #93c5fd;
-      border: 1px solid rgba(59,130,246,0.25);
+      border: 1px solid rgba(59, 130, 246, 0.25);
     }
+
     .nav-btn-linkedin:hover {
-      background: rgba(59,130,246,0.25);
+      background: rgba(59, 130, 246, 0.25);
       color: #fff;
       transform: translateY(-1px);
     }
 
-    /* ── Hero ── */
     .hero {
       position: relative;
       min-height: 100vh;
@@ -154,14 +163,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: min(680px, 100%);
     }
 
     .hero-welcome {
-      font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       font-weight: 400;
       font-style: italic;
-      color: #475569;
+      color: #64748b;
       margin-bottom: 22px;
       letter-spacing: 0.5px;
       animation: fadeUp 0.6s ease both;
@@ -182,18 +191,17 @@
     .hero-sep {
       width: 1px;
       height: 46px;
-      background: linear-gradient(to bottom, rgba(99,102,241,0.7), transparent);
+      background: linear-gradient(to bottom, rgba(99, 102, 241, 0.7), transparent);
       margin: 0 auto 34px;
       animation: fadeUp 0.6s ease 0.2s both;
     }
 
     .hero-tagline {
-      font-family: 'DM Sans', sans-serif;
       font-size: clamp(15px, 2vw, 19px);
       font-weight: 300;
       color: #94a3b8;
       line-height: 1.75;
-      max-width: 500px;
+      max-width: 560px;
       margin-bottom: 22px;
       animation: fadeUp 0.6s ease 0.25s both;
     }
@@ -218,11 +226,11 @@
       font-weight: 500;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #475569;
+      color: #64748b;
       padding: 5px 14px;
       border-radius: 100px;
-      border: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .hero-ctas {
@@ -233,10 +241,13 @@
       animation: fadeUp 0.6s ease 0.45s both;
     }
 
-    .cta-primary {
+    .cta-btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
+      text-align: center;
+      min-width: 168px;
       padding: 13px 28px;
       border-radius: 100px;
       font-size: 14px;
@@ -246,32 +257,13 @@
       background: linear-gradient(135deg, var(--indigo), var(--purple));
       color: #fff;
       transition: all 0.25s ease;
-    }
-    .cta-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 36px -8px rgba(99,102,241,0.5);
+      border: 1px solid transparent;
     }
 
-    .cta-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 13px 28px;
-      border-radius: 100px;
-      font-size: 14px;
-      font-weight: 500;
-      font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
-      color: #64748b;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      transition: all 0.25s ease;
-    }
-    .cta-secondary:hover {
-      color: #e2e8f0;
-      border-color: rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.07);
-      transform: translateY(-2px);
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px -8px rgba(99, 102, 241, 0.5);
+      filter: brightness(1.06);
     }
 
     .scroll-hint {
@@ -284,25 +276,28 @@
       align-items: center;
       gap: 8px;
       animation: fadeUp 0.6s ease 0.8s both;
+      z-index: 2;
     }
+
     .scroll-hint span {
       font-size: 10px;
       letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: #2d3748;
+      color: #334155;
     }
+
     .scroll-line {
       width: 1px;
       height: 36px;
       background: linear-gradient(to bottom, #334155, transparent);
       animation: linePulse 2.5s ease-in-out infinite;
     }
+
     @keyframes linePulse {
       0%, 100% { opacity: 0.25; }
       50% { opacity: 0.8; }
     }
 
-    /* ── Projects ── */
     .projects-section {
       position: relative;
       padding: 100px 24px 120px;
@@ -311,18 +306,11 @@
     .projects-section::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
-    }
-
-    .section-eyebrow {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #4f46e5;
-      margin-bottom: 10px;
-      font-weight: 600;
+      background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
     }
 
     .section-title {
@@ -341,17 +329,129 @@
       gap: 22px;
       max-width: 1080px;
       margin: 0 auto;
-      align-items: start;
+      align-items: stretch;
+    }
+
+    .project-card {
+      position: relative;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 34px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+      transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.8), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(99, 102, 241, 0.22);
+      box-shadow: 0 28px 55px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(99, 102, 241, 0.08);
+    }
+
+    .project-card:hover::after {
+      opacity: 1;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .card-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-indigo {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.18);
+      color: #818cf8;
+    }
+
+    .icon-cyan {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.18);
+      color: #22d3ee;
+    }
+
+    .card-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 100px;
+    }
+
+    .badge-green {
+      background: rgba(16, 185, 129, 0.09);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.18);
+    }
+
+    .badge-blue {
+      background: rgba(59, 130, 246, 0.09);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.18);
+    }
+
+    .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 21px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+      max-width: 95%;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      line-height: 1.78;
+      color: #94a3b8;
+      margin-bottom: 14px;
+      flex-grow: 1;
+      max-width: 95%;
     }
 
     .card-extra {
       display: none;
-      margin-top: 10px;
+      margin-top: 4px;
+      margin-bottom: 10px;
       color: #64748b;
       font-size: 14px;
-      line-height: 1.78;
+      line-height: 1.72;
+      max-width: 95%;
     }
-    .card-extra.open { display: block; }
+
+    .card-extra.open {
+      display: block;
+    }
 
     .read-more-btn {
       background: none;
@@ -365,91 +465,22 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 4px;
       transition: color 0.15s ease;
     }
-    .read-more-btn:hover { color: #a5b4fc; }
 
-    .project-card {
-      position: relative;
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 20px;
-      padding: 34px;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
+    .read-more-btn:hover {
+      color: #a5b4fc;
     }
-
-    .project-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 10%; right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.8), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(99,102,241,0.22);
-      box-shadow: 0 28px 55px -15px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.08);
-    }
-
-    .project-card:hover::after { opacity: 1; }
-
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 26px;
-    }
-
-    .card-icon {
-      width: 46px; height: 46px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .icon-indigo { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.18); color: #818cf8; }
-    .icon-cyan   { background: rgba(6,182,212,0.1);  border: 1px solid rgba(6,182,212,0.18);  color: #22d3ee; }
-
-    .card-badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 11px;
-      border-radius: 100px;
-    }
-    .badge-green { background: rgba(16,185,129,0.09); color: #34d399; border: 1px solid rgba(16,185,129,0.18); }
-    .badge-blue  { background: rgba(59,130,246,0.09); color: #60a5fa; border: 1px solid rgba(59,130,246,0.18); }
-
-    .card-title {
-      font-family: 'Fraunces', serif;
-      font-size: 21px;
-      font-weight: 600;
-      color: #f1f5f9;
-      margin-bottom: 12px;
-      letter-spacing: -0.3px;
-    }
-
-    .card-desc {
-      font-size: 14px;
-      line-height: 1.78;
-      color: #64748b;
-      margin-bottom: 26px;
-      flex-grow: 1;
-    }
-    .card-desc strong { color: #94a3b8; font-weight: 500; }
 
     .card-tags {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 7px;
       margin-bottom: 26px;
+      max-width: 95%;
     }
 
     .tag {
@@ -459,20 +490,25 @@
       border-radius: 100px;
       background: rgba(30, 41, 59, 0.7);
       color: #94a3b8;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .card-actions {
       display: flex;
       gap: 8px;
       margin-top: auto;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      text-align: center;
       gap: 6px;
-      padding: 9px 15px;
+      padding: 10px 15px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 600;
@@ -480,52 +516,153 @@
       text-decoration: none;
       transition: all 0.2s ease;
       white-space: nowrap;
-      flex: 1;
-      justify-content: center;
+      min-width: 150px;
+      flex: 1 1 180px;
+      max-width: 240px;
     }
 
-    .btn-indigo { background: linear-gradient(135deg, var(--indigo), var(--purple)); color: #fff; }
-    .btn-indigo:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-indigo {
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: #fff;
+    }
 
-    .btn-cyan { background: rgba(6,182,212,0.1); color: #22d3ee; border: 1px solid rgba(6,182,212,0.18); }
-    .btn-cyan:hover { background: rgba(6,182,212,0.18); transform: translateY(-1px); }
+    .btn-indigo:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
 
-    .btn-ghost { background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.07); }
-    .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; transform: translateY(-1px); }
+    .btn-cyan {
+      background: rgba(6, 182, 212, 0.1);
+      color: #22d3ee;
+      border: 1px solid rgba(6, 182, 212, 0.18);
+    }
 
-    /* ── Footer ── */
+    .btn-cyan:hover {
+      background: rgba(6, 182, 212, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.04);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      transform: translateY(-1px);
+    }
+
     footer {
       background: rgba(5, 10, 20, 0.9);
-      border-top: 1px solid rgba(255,255,255,0.04);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
       padding: 44px 24px;
       text-align: center;
       font-size: 13px;
       color: #334155;
     }
-    footer a { color: #6366f1; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+
+    footer a {
+      color: #6366f1;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        padding: 12px 18px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 120px 20px 80px;
+      }
+
+      .projects-section {
+        padding: 80px 20px 90px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card {
+        padding: 28px 22px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      nav {
+        position: sticky;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 10px 12px;
+      }
+
+      .nav-btn {
+        flex: 1 1 160px;
+        max-width: 220px;
+      }
+
+      .hero-name {
+        letter-spacing: -2px;
+      }
+
+      .hero-tagline {
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .hero-chips {
+        margin-bottom: 36px;
+      }
+
+      .cta-btn {
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .card-title {
+        font-size: 19px;
+      }
+
+      .card-desc,
+      .card-extra {
+        max-width: 100%;
+      }
+
+      .btn {
+        min-width: 100%;
+        max-width: 100%;
+      }
+
+      .scroll-hint {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- Nav: GitHub left, LinkedIn right -->
   <nav>
-    <a href="https://github.com/liranatt" target="_blank" class="nav-btn nav-btn-github">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="margin-right:6px;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.339-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.847-2.338 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.417-.012 2.747 0 .267.18.577.688.479C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2Z"/></svg>
+    <a href="https://github.com/liranatt" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-github">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.339-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.847-2.338 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.417-.012 2.747 0 .267.18.577.688.479C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2Z"/></svg>
       GitHub Profile
     </a>
-    <a href="https://www.linkedin.com/in/liran-attar/" target="_blank" class="nav-btn nav-btn-linkedin">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="margin-right:6px;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 0 1 6 6v5.25A2.75 2.75 0 0 1 19.25 22H4.75A2.75 2.75 0 0 1 2 19.25V8A2.75 2.75 0 0 1 4.75 5.25h14.5A2.75 2.75 0 0 1 22 8Zm-9.25 9.25V10.5a.75.75 0 0 1 1.5 0v6.75a.75.75 0 0 1-1.5 0Zm4.25 0V14a2 2 0 1 1 4 0v3.25a.75.75 0 0 1-1.5 0V14a.5.5 0 0 0-1 0v3.25a.75.75 0 0 1-1.5 0Z"/></svg>
+    <a href="https://www.linkedin.com/in/liran-attar/" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-linkedin">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 0 1 6 6v5.25A2.75 2.75 0 0 1 19.25 22H4.75A2.75 2.75 0 0 1 2 19.25V8A2.75 2.75 0 0 1 4.75 5.25h14.5A2.75 2.75 0 0 1 22 8Zm-9.25 9.25V10.5a.75.75 0 0 1 1.5 0v6.75a.75.75 0 0 1-1.5 0Zm4.25 0V14a2 2 0 1 1 4 0v3.25a.75.75 0 0 1-1.5 0V14a.5.5 0 0 0-1 0v3.25a.75.75 0 0 1-1.5 0Z"/></svg>
       LinkedIn Profile
     </a>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -534,15 +671,13 @@
 
     <div class="hero-inner">
       <p class="hero-welcome">welcome to my corner of the internet</p>
-
       <h1 class="hero-name">Liran Attar</h1>
-
       <div class="hero-sep"></div>
 
       <p class="hero-tagline">
         CS student at BGU. I like asking hard questions,<br>
         then writing code until they have an answer.<br>
-        <em>Data science, deep learning, and Algotrading.</em>
+        <em>Data science, deep learning, and algorithmic trading.</em>
       </p>
 
       <div class="hero-chips">
@@ -553,23 +688,29 @@
       </div>
 
       <div class="hero-ctas">
-        <a href="#projects" class="cta-primary">
-          See my work <i data-lucide="arrow-down" style="width:15px;height:15px;"></i>
+        <a href="#projects" class="cta-btn">
+          <i data-lucide="arrow-down" style="width:15px;height:15px;"></i>
+          <span>See my work</span>
         </a>
-        <a href="/cdn-cgi/l/email-protection#7f13160d1e0b0b1e0d3f18121e1613511c1012" class="cta-secondary">
-          <i data-lucide="mail" style="width:15px;height:15px;"></i> Say hello
+        <a href="mailto:lirattar@gmail.com" class="cta-btn">
+          <i data-lucide="mail" style="width:15px;height:15px;"></i>
+          <span>Say hello</span>
         </a>
       </div>
     </div>
 
-  <!-- Projects -->
+    <div class="scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
   <section id="projects" class="projects-section">
     <div style="max-width:1080px; margin:0 auto; text-align:center; margin-bottom:60px;">
       <h2 class="section-title">Featured Projects</h2>
     </div>
 
     <div class="projects-grid">
-
       <div class="project-card">
         <div class="card-top">
           <div class="card-icon icon-indigo">
@@ -577,26 +718,34 @@
           </div>
           <span class="card-badge badge-green">Live Agent System</span>
         </div>
+
         <h3 class="card-title">Garmin Health Intelligence: Deterministic Math Meets Multi-Agent AI</h3>
         <p class="card-desc">
           An autonomous Data Engineering and AI platform built to analyze personal Garmin watch data.
-          The system solves LLM hallucination through a "Determinism before Semantics" architecture —
+          The system solves LLM hallucination through a "Determinism before Semantics" architecture -
           mathematical ground truth is established before any AI touches the data.
-          A custom statistical engine runs Pearson correlations, AR(1) models, and anomaly detection first.
         </p>
+
         <div class="card-extra" id="garmin-extra">
-          <strong style="color:#94a3b8;">Multi-Agent System:</strong> A squad of 5 specialized AI agents (CrewAI) interprets the pre-validated results in parallel. From sleep architecture to training load optimization, they synthesize insights grounded in personal physiological data — not generic training sets.<br><br>
-          The result is an N-of-1 scientific instrument that understands your body better than any standard health app.
+          <strong style="color:#94a3b8;">Multi-Agent System:</strong> A squad of 5 specialized AI agents (CrewAI)
+          interprets pre-validated results in parallel. From sleep architecture to training load optimization,
+          they synthesize insights grounded in your own physiological data.
         </div>
-        <button class="read-more-btn" id="garmin-btn" onclick="toggleCard('garmin')">Read more ↓</button>
+
+        <button class="read-more-btn" id="garmin-btn" onclick="toggleCard('garmin')">Read more</button>
+
         <div class="card-tags">
           <span class="tag">Python</span>
           <span class="tag">GenAI Agents</span>
           <span class="tag">Heroku DB</span>
         </div>
+
         <div class="card-actions">
           <a href="/garmin" class="btn btn-indigo">
             Case Study &amp; Demo <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+          </a>
+          <a href="https://github.com/Liranatt/garmin-project" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+            GitHub Repo <i data-lucide="github" style="width:13px;height:13px;"></i>
           </a>
         </div>
       </div>
@@ -608,38 +757,61 @@
           </div>
           <span class="card-badge badge-blue">Deep Learning Research</span>
         </div>
+
         <h3 class="card-title">Visual Localization: Direct Coordinate Regression via Deep Ensembles</h3>
         <p class="card-desc">
-          A Deep Learning system that treats visual localization as a continuous regression problem
-          rather than a discrete retrieval task — no GPS signal, just a photo and a prediction.
-          Tested on BGU campus with 3,646 images captured at 360° rotations for viewpoint invariance.
-          Physics-aware Haversine Loss optimizes for real geodesic distance, not flat coordinate MSE.
+          A deep learning system that treats visual localization as a continuous regression problem
+          rather than a discrete retrieval task - no GPS signal, just a photo and a prediction.
+          Tested on BGU campus with 3,646 images captured in 360 degree rotations for viewpoint invariance.
         </p>
+
         <div class="card-extra" id="gps-extra">
-          <strong style="color:#94a3b8;">Architecture:</strong> An ensemble of EfficientNet-B0, ResNet18, and ConvNeXt with Transfer Learning, extracting spatial features robust to lighting and viewpoint changes.<br><br>
-          <strong style="color:#94a3b8;">Result:</strong> 5.24m mean error in a GPS-denied environment — proving autonomous navigation is viable with monocular vision alone.
+          <strong style="color:#94a3b8;">Architecture:</strong> Ensemble of EfficientNet-B0, ResNet18, and ConvNeXt
+          with transfer learning, extracting spatial features robust to lighting and viewpoint changes.
+          <br><br>
+          <strong style="color:#94a3b8;">Result:</strong> 5.24m mean error in a GPS-denied environment.
         </div>
-        <button class="read-more-btn" id="gps-btn" onclick="toggleCard('gps')">Read more ↓</button>
+
+        <button class="read-more-btn" id="gps-btn" onclick="toggleCard('gps')">Read more</button>
+
         <div class="card-tags">
           <span class="tag">PyTorch</span>
           <span class="tag">EfficientNet</span>
           <span class="tag">Interactive Map</span>
         </div>
+
         <div class="card-actions">
           <a href="/gps/GPS_PRESENTATION.html" class="btn btn-indigo">
             Slides <i data-lucide="monitor" style="width:13px;height:13px;"></i>
           </a>
-          <a href="https://huggingface.co/spaces/liranatt/GPU_Modell_Liran_and_Tom" target="_blank" class="btn btn-cyan">
+          <a href="https://huggingface.co/spaces/liranatt/GPU_Modell_Liran_and_Tom" target="_blank" rel="noopener noreferrer" class="btn btn-cyan">
             Demo <i data-lucide="rocket" style="width:13px;height:13px;"></i>
           </a>
-          <a href="/FINAL_GPS_PROJECT%20(3).pdf" target="_blank" class="btn btn-ghost">
+          <a href="/FINAL_GPS_PROJECT%20(3).pdf" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
             Paper <i data-lucide="file-text" style="width:13px;height:13px;"></i>
+          </a>
+          <a href="https://github.com/tomimran87/Campus-GPS-Project" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+            GitHub Repo <i data-lucide="github" style="width:13px;height:13px;"></i>
           </a>
         </div>
       </div>
-
     </div>
   </section>
 
   <footer>
-    <span>© 2026 <a href="https://liranattar.dev">Liran Attar</a>. All Rights Reserved.</span>
+    <span>&copy; 2026 <a href="https://liranattar.dev">Liran Attar</a>. All Rights Reserved.</span>
+  </footer>
+
+  <script>
+    function toggleCard(id) {
+      var extra = document.getElementById(id + '-extra');
+      var btn = document.getElementById(id + '-btn');
+      var isOpen = extra.classList.contains('open');
+      extra.classList.toggle('open', !isOpen);
+      btn.textContent = isOpen ? 'Read more' : 'Read less';
+    }
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

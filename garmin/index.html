@@ -1,58 +1,1141 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garmin Health Multi-Agent System</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garmin Health Intelligence | Liran Attar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    .glass {
-      background: rgba(30,41,59,0.6);
-      backdrop-filter: blur(12px);
-      border-radius: 1.5rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 4px 32px 0 rgba(0,0,0,0.25);
+    :root {
+      --bg: #f4f6ef;
+      --bg-soft: #eef2e5;
+      --surface: #ffffff;
+      --surface-2: #f8fbf2;
+      --text: #1c2716;
+      --text-dim: #51624a;
+      --line: #d8e2cf;
+      --brand: #2d7a4a;
+      --brand-dark: #1d5b36;
+      --brand-soft: #d5eed8;
+      --warn-soft: #ffeec4;
+      --warn-text: #8a5a00;
+      --bad-soft: #ffd8d8;
+      --bad-text: #8b2121;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --shadow-lg: 0 20px 50px -26px rgba(25, 48, 18, 0.3);
+      --shadow-md: 0 10px 24px -18px rgba(25, 48, 18, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Manrope", sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(60, 166, 102, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 85% 0%, rgba(255, 204, 92, 0.2) 0%, transparent 34%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1200px, calc(100% - 32px));
+      margin: 18px auto 36px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 10px 0;
+    }
+
+    .topbar-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      transition: all 0.2s ease;
+    }
+
+    .chip-link:hover {
+      border-color: #b8c8aa;
+      background: #ffffff;
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      background: linear-gradient(140deg, #edf8ea 0%, #fbfcf6 52%, #fff7e5 100%);
+      border: 1px solid #d6e4c8;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(60, 166, 102, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(28px, 4.8vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+      color: #16381f;
+    }
+
+    .hero p {
+      color: var(--text-dim);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 64ch;
+    }
+
+    .hero-kpis {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .hero-kpi {
+      border: 1px solid #cee1bf;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 12px;
+      min-height: 86px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-kpi .label {
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #5f7357;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .hero-kpi .value {
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1;
+      color: #20432b;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 16px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-2);
+    }
+
+    .card-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: #203718;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      min-width: 120px;
+      text-align: center;
+      border: 1px solid transparent;
+    }
+
+    .status.loading {
+      background: #eef3e7;
+      color: #54684d;
+      border-color: #d4e0c8;
+    }
+
+    .status.ok {
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+      border-color: #9bcea8;
+    }
+
+    .status.warm {
+      background: var(--warn-soft);
+      color: var(--warn-text);
+      border-color: #f0d38d;
+    }
+
+    .status.fail {
+      background: var(--bad-soft);
+      color: var(--bad-text);
+      border-color: #eaa7a7;
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .settings-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #5c6b54;
+      letter-spacing: 0.3px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid #cfdcc2;
+      background: #ffffff;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #79a26d;
+      box-shadow: 0 0 0 3px rgba(45, 122, 74, 0.13);
+    }
+
+    .button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .button.primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .button.primary:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    .button.ghost {
+      background: #f2f7eb;
+      color: #355a3f;
+      border: 1px solid #d1dfc5;
+    }
+
+    .button.ghost:hover {
+      background: #e7f0de;
+    }
+
+    .help {
+      margin-top: 8px;
+      color: #5f7158;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .metrics-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metric {
+      border: 1px solid #d7e3cc;
+      border-radius: 14px;
+      padding: 13px;
+      background: #fcfef9;
+      min-height: 104px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: #5f6f56;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .metric-value {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 700;
+      color: #1c4f2f;
+    }
+
+    .metric-meta {
+      margin-top: 5px;
+      font-size: 11px;
+      color: #6b7c62;
+    }
+
+    .insights {
+      display: grid;
+      gap: 10px;
+    }
+
+    .insight {
+      border: 1px solid #dce7d1;
+      border-radius: 12px;
+      padding: 12px;
+      background: #fbfdf8;
+      display: grid;
+      gap: 6px;
+    }
+
+    .insight-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .insight-agent {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #46663e;
+      background: #eaf4e0;
+      border: 1px solid #d3e4c2;
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+
+    .insight-time {
+      font-size: 11px;
+      color: #718468;
+      font-weight: 700;
+    }
+
+    .insight p {
+      font-size: 14px;
+      color: #2f4328;
+      line-height: 1.6;
+    }
+
+    .empty {
+      color: #607456;
+      font-size: 13px;
+      text-align: center;
+      padding: 8px;
+      border: 1px dashed #cddcc0;
+      border-radius: 10px;
+      background: #f8fbf2;
+    }
+
+    .chat-wrap {
+      display: grid;
+      gap: 10px;
+      height: 100%;
+      min-height: 520px;
+      grid-template-rows: 1fr auto;
+    }
+
+    .chat-log {
+      border: 1px solid #d7e3cb;
+      border-radius: 14px;
+      background: #fcfef9;
+      padding: 12px;
+      overflow: auto;
+      display: grid;
+      gap: 10px;
+    }
+
+    .msg {
+      max-width: 92%;
+      padding: 10px 11px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      word-break: break-word;
+      border: 1px solid transparent;
+    }
+
+    .msg.user {
+      justify-self: end;
+      background: #dcf0de;
+      border-color: #b9dcbf;
+      color: #15391d;
+      border-bottom-right-radius: 5px;
+    }
+
+    .msg.bot {
+      justify-self: start;
+      background: #f1f6eb;
+      border-color: #d8e5cb;
+      color: #2d4226;
+      border-bottom-left-radius: 5px;
+    }
+
+    .msg.system {
+      justify-self: center;
+      background: #fff6df;
+      border-color: #ecd697;
+      color: #7c5a13;
+      text-align: center;
+      max-width: 100%;
+      font-size: 12px;
+      padding: 8px 10px;
+    }
+
+    .chat-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    .chat-form textarea {
+      min-height: 52px;
+      max-height: 120px;
+      resize: vertical;
+      border: 1px solid #cfdcc2;
+      border-radius: 12px;
+      padding: 12px;
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    .chat-form textarea:focus {
+      border-color: #79a26d;
+      box-shadow: 0 0 0 3px rgba(45, 122, 74, 0.13);
+    }
+
+    .chat-actions {
+      display: grid;
+      gap: 8px;
+      align-content: stretch;
+      min-width: 120px;
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      color: #5a6e50;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .loading-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #4f6645;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .spin {
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 1000px) {
+      .hero-inner,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-wrap {
+        min-height: 500px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: calc(100% - 16px);
+        margin-top: 10px;
+      }
+
+      .hero,
+      .card-body {
+        padding: 14px;
+      }
+
+      .card-head {
+        padding: 11px 14px;
+      }
+
+      .hero-kpis,
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .settings-grid,
+      .chat-form {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-actions {
+        min-width: 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .button {
+        width: 100%;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-900 min-h-screen text-white">
-  <main class="flex flex-col items-center justify-center min-h-screen px-4">
-    <section class="glass p-8 max-w-xl w-full mt-16 text-center">
-      <div class="flex justify-center mb-4">
-        <i data-lucide="activity" class="w-12 h-12 text-green-400"></i>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-links">
+        <a class="chip-link" href="/">
+          <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+          Portfolio
+        </a>
+        <a class="chip-link" href="https://github.com/Liranatt/garmin-project" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="github" style="width:14px;height:14px;"></i>
+          Project Repo
+        </a>
       </div>
-      <h1 class="text-3xl md:text-4xl font-bold mb-2">Garmin Health Multi-Agent System</h1>
-      <p class="text-slate-300 mb-6">A GenAI-powered health intelligence system running on Heroku. This project demonstrates a multi-agent architecture for real-time health analytics and insights from Garmin data.</p>
-      <div class="flex flex-col items-center gap-4 mb-6">
-        <span id="status-badge" class="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-slate-700 text-orange-400">
-          <i data-lucide="loader" class="w-4 h-4 animate-spin mr-2"></i>Checking status...
-        </span>
-        <a href="https://liran-garmin-ai.herokuapp.com" target="_blank" class="mt-2 px-6 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-bold shadow-lg transition">Launch Live App</a>
+      <span id="statusBadge" class="status loading">
+        <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
+        Connecting
+      </span>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <h1>Garmin Health Intelligence Snapshot</h1>
+          <p>
+            Deterministic statistics first, multi-agent reasoning second. This page consumes your Heroku API
+            and shows current body-state metrics plus agent-generated insights in one operational dashboard.
+          </p>
+        </div>
+        <div class="hero-kpis">
+          <article class="hero-kpi">
+            <span class="label">Resting HR</span>
+            <strong class="value" id="heroRestHr">--</strong>
+          </article>
+          <article class="hero-kpi">
+            <span class="label">HRV</span>
+            <strong class="value" id="heroHrv">--</strong>
+          </article>
+          <article class="hero-kpi">
+            <span class="label">Sleep Score</span>
+            <strong class="value" id="heroSleep">--</strong>
+          </article>
+          <article class="hero-kpi">
+            <span class="label">Body Battery</span>
+            <strong class="value" id="heroBattery">--</strong>
+          </article>
+        </div>
       </div>
     </section>
-  </main>
+
+    <main class="layout">
+      <section class="stack">
+        <article class="card">
+          <header class="card-head">
+            <h2 class="card-title">
+              <i data-lucide="plug-zap" style="width:17px;height:17px;"></i>
+              API Connection
+            </h2>
+          </header>
+          <div class="card-body">
+            <div class="settings-grid">
+              <div class="field">
+                <label for="apiBaseInput">Heroku API Base URL</label>
+                <input id="apiBaseInput" type="text" placeholder="https://your-heroku-app.herokuapp.com" />
+              </div>
+              <button class="button primary" id="saveApiBtn" type="button">
+                <i data-lucide="save" style="width:14px;height:14px;"></i>
+                Save + Reload
+              </button>
+            </div>
+            <p class="help">
+              Required endpoints: <code>/health-check</code>, <code>/api/v1/snapshot/latest</code>,
+              <code>/api/v1/insights/latest</code>, <code>/api/v1/chat</code>
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <header class="card-head">
+            <h2 class="card-title">
+              <i data-lucide="heart-pulse" style="width:17px;height:17px;"></i>
+              Latest Snapshot
+            </h2>
+            <button class="button ghost" id="refreshSnapshotBtn" type="button">
+              <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
+              Refresh
+            </button>
+          </header>
+          <div class="card-body">
+            <div id="snapshotStatus" class="loading-row">
+              <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
+              Loading snapshot metrics...
+            </div>
+            <div class="metrics-grid" id="metricsGrid" hidden>
+              <article class="metric">
+                <div class="metric-label">Resting Heart Rate</div>
+                <div class="metric-value" id="mRestHr">--</div>
+                <div class="metric-meta">bpm</div>
+              </article>
+              <article class="metric">
+                <div class="metric-label">HRV</div>
+                <div class="metric-value" id="mHrv">--</div>
+                <div class="metric-meta">ms</div>
+              </article>
+              <article class="metric">
+                <div class="metric-label">Sleep Score</div>
+                <div class="metric-value" id="mSleep">--</div>
+                <div class="metric-meta">0-100</div>
+              </article>
+              <article class="metric">
+                <div class="metric-label">Body Battery</div>
+                <div class="metric-value" id="mBattery">--</div>
+                <div class="metric-meta">0-100</div>
+              </article>
+              <article class="metric">
+                <div class="metric-label">Stress</div>
+                <div class="metric-value" id="mStress">--</div>
+                <div class="metric-meta">daily index</div>
+              </article>
+              <article class="metric">
+                <div class="metric-label">Training Load</div>
+                <div class="metric-value" id="mLoad">--</div>
+                <div class="metric-meta">7-day</div>
+              </article>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <header class="card-head">
+            <h2 class="card-title">
+              <i data-lucide="sparkles" style="width:17px;height:17px;"></i>
+              Agent Insights
+            </h2>
+            <button class="button ghost" id="refreshInsightsBtn" type="button">
+              <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
+              Refresh
+            </button>
+          </header>
+          <div class="card-body">
+            <div id="insightsList" class="insights">
+              <div class="loading-row">
+                <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
+                Loading latest insights...
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="card">
+        <header class="card-head">
+          <h2 class="card-title">
+            <i data-lucide="messages-square" style="width:17px;height:17px;"></i>
+            Interactive Agent Chat
+          </h2>
+        </header>
+        <div class="card-body chat-wrap">
+          <div id="chatLog" class="chat-log">
+            <div class="msg system">Ask the agent about sleep patterns, training load, correlations, or recovery trends.</div>
+          </div>
+
+          <form id="chatForm" class="chat-form">
+            <textarea id="chatInput" placeholder="Example: Why did my recovery score drop this week?"></textarea>
+            <div class="chat-actions">
+              <button class="button primary" type="submit" id="sendBtn">
+                <i data-lucide="send" style="width:14px;height:14px;"></i>
+                Send
+              </button>
+              <button class="button ghost" type="button" id="clearChatBtn">
+                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                Clear
+              </button>
+            </div>
+          </form>
+
+          <p class="footer-note">
+            This UI is Streamlit-free. It talks directly to your backend API so you can fully host on Heroku.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
   <script>
+    const DEFAULT_API_BASE = "https://liran-garmin-ai.herokuapp.com";
+    const API_STORAGE_KEY = "garmin_api_base";
+
+    const state = {
+      apiBase: loadApiBase(),
+      snapshot: null,
+      insights: []
+    };
+
+    const el = {
+      statusBadge: document.getElementById("statusBadge"),
+      apiBaseInput: document.getElementById("apiBaseInput"),
+      saveApiBtn: document.getElementById("saveApiBtn"),
+      refreshSnapshotBtn: document.getElementById("refreshSnapshotBtn"),
+      refreshInsightsBtn: document.getElementById("refreshInsightsBtn"),
+      snapshotStatus: document.getElementById("snapshotStatus"),
+      metricsGrid: document.getElementById("metricsGrid"),
+      insightsList: document.getElementById("insightsList"),
+      chatForm: document.getElementById("chatForm"),
+      chatInput: document.getElementById("chatInput"),
+      chatLog: document.getElementById("chatLog"),
+      sendBtn: document.getElementById("sendBtn"),
+      clearChatBtn: document.getElementById("clearChatBtn"),
+      heroRestHr: document.getElementById("heroRestHr"),
+      heroHrv: document.getElementById("heroHrv"),
+      heroSleep: document.getElementById("heroSleep"),
+      heroBattery: document.getElementById("heroBattery"),
+      mRestHr: document.getElementById("mRestHr"),
+      mHrv: document.getElementById("mHrv"),
+      mSleep: document.getElementById("mSleep"),
+      mBattery: document.getElementById("mBattery"),
+      mStress: document.getElementById("mStress"),
+      mLoad: document.getElementById("mLoad")
+    };
+
+    function loadApiBase() {
+      const stored = localStorage.getItem(API_STORAGE_KEY);
+      const raw = (stored || DEFAULT_API_BASE).trim();
+      return normalizeBase(raw);
+    }
+
+    function normalizeBase(value) {
+      return value.replace(/\/+$/, "");
+    }
+
+    function endpoint(path) {
+      return `${state.apiBase}${path}`;
+    }
+
+    function fmt(value, fallback = "--") {
+      if (value === null || value === undefined || value === "") {
+        return fallback;
+      }
+      if (typeof value === "number" && Number.isFinite(value)) {
+        return Number.isInteger(value) ? String(value) : value.toFixed(1);
+      }
+      return String(value);
+    }
+
+    function setStatus(kind, text, icon = "activity") {
+      el.statusBadge.className = `status ${kind}`;
+      el.statusBadge.innerHTML = `<i data-lucide="${icon}" style="width:14px;height:14px;"></i>${text}`;
+      lucide.createIcons();
+    }
+
+    function findFirst(source, keys) {
+      for (const key of keys) {
+        const value = source?.[key];
+        if (value !== undefined && value !== null && value !== "") {
+          return value;
+        }
+      }
+      return null;
+    }
+
+    function normalizeSnapshot(data) {
+      const source = data?.snapshot || data?.data || data || {};
+      return {
+        restingHr: findFirst(source, ["resting_hr", "restingHeartRate", "rhr", "resting_hr_avg"]),
+        hrv: findFirst(source, ["hrv", "hrv_ms", "rmssd"]),
+        sleep: findFirst(source, ["sleep_score", "sleepScore", "sleep"]),
+        battery: findFirst(source, ["body_battery", "bodyBattery", "battery"]),
+        stress: findFirst(source, ["stress", "stress_score", "avg_stress"]),
+        load: findFirst(source, ["training_load", "load", "acute_load", "seven_day_load"]),
+        timestamp: findFirst(source, ["timestamp", "created_at", "date", "as_of"])
+      };
+    }
+
+    function renderSnapshot(metrics) {
+      state.snapshot = metrics;
+
+      el.mRestHr.textContent = fmt(metrics.restingHr);
+      el.mHrv.textContent = fmt(metrics.hrv);
+      el.mSleep.textContent = fmt(metrics.sleep);
+      el.mBattery.textContent = fmt(metrics.battery);
+      el.mStress.textContent = fmt(metrics.stress);
+      el.mLoad.textContent = fmt(metrics.load);
+
+      el.heroRestHr.textContent = fmt(metrics.restingHr);
+      el.heroHrv.textContent = fmt(metrics.hrv);
+      el.heroSleep.textContent = fmt(metrics.sleep);
+      el.heroBattery.textContent = fmt(metrics.battery);
+
+      el.snapshotStatus.innerHTML = metrics.timestamp
+        ? `As of ${fmt(metrics.timestamp)}`
+        : "Latest available snapshot";
+      el.metricsGrid.hidden = false;
+    }
+
+    function renderSnapshotError(message) {
+      el.metricsGrid.hidden = true;
+      el.snapshotStatus.innerHTML = `<span class="empty">${message}</span>`;
+    }
+
+    function normalizeInsights(payload) {
+      if (Array.isArray(payload)) {
+        return payload;
+      }
+      if (Array.isArray(payload?.insights)) {
+        return payload.insights;
+      }
+      if (Array.isArray(payload?.data)) {
+        return payload.data;
+      }
+      if (payload?.insight || payload?.message || payload?.text) {
+        return [payload];
+      }
+      return [];
+    }
+
+    function insightText(item) {
+      if (typeof item === "string") {
+        return item;
+      }
+      return findFirst(item, ["insight", "message", "text", "summary", "content"]) || "No text";
+    }
+
+    function insightAgent(item) {
+      if (typeof item === "string") {
+        return "agent";
+      }
+      return findFirst(item, ["agent", "agent_name", "source", "role"]) || "agent";
+    }
+
+    function insightTime(item) {
+      if (typeof item === "string") {
+        return "";
+      }
+      return findFirst(item, ["timestamp", "created_at", "date", "time"]) || "";
+    }
+
+    function renderInsights(items) {
+      state.insights = items;
+
+      if (!items.length) {
+        el.insightsList.innerHTML = '<div class="empty">No insights returned yet. Trigger your pipeline and refresh.</div>';
+        return;
+      }
+
+      const html = items.slice(0, 10).map((item) => {
+        const text = escapeHtml(insightText(item));
+        const agent = escapeHtml(String(insightAgent(item)).replace(/_/g, " "));
+        const time = escapeHtml(insightTime(item));
+
+        return `
+          <article class="insight">
+            <div class="insight-top">
+              <span class="insight-agent">${agent}</span>
+              ${time ? `<span class="insight-time">${time}</span>` : ""}
+            </div>
+            <p>${text}</p>
+          </article>
+        `;
+      }).join("");
+
+      el.insightsList.innerHTML = html;
+    }
+
+    function renderInsightsError(message) {
+      el.insightsList.innerHTML = `<div class="empty">${escapeHtml(message)}</div>`;
+    }
+
+    function appendMessage(role, text) {
+      const node = document.createElement("div");
+      node.className = `msg ${role}`;
+      node.textContent = text;
+      el.chatLog.appendChild(node);
+      el.chatLog.scrollTop = el.chatLog.scrollHeight;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    async function getJson(path) {
+      const response = await fetch(endpoint(path), {
+        method: "GET",
+        headers: { "Accept": "application/json" },
+        mode: "cors"
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const text = await response.text();
+      if (!text) {
+        return {};
+      }
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        return { raw: text };
+      }
+    }
+
+    async function postJson(path, body) {
+      const response = await fetch(endpoint(path), {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body),
+        mode: "cors"
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(errText || `HTTP ${response.status}`);
+      }
+
+      const text = await response.text();
+      if (!text) {
+        return {};
+      }
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        return { raw: text };
+      }
+    }
+
+    async function loadHealth() {
+      try {
+        const result = await getJson("/health-check");
+        const statusText =
+          findFirst(result, ["status", "message"]) ||
+          (Object.keys(result).length ? "Healthy" : "Online");
+
+        if (/wake|boot|starting/i.test(statusText)) {
+          setStatus("warm", "Waking up", "clock-3");
+        } else {
+          setStatus("ok", "Online", "check-circle-2");
+        }
+      } catch {
+        setStatus("fail", "Offline", "x-circle");
+      }
+    }
+
+    async function loadSnapshot() {
+      el.snapshotStatus.innerHTML = '<span class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading snapshot metrics...</span>';
+      lucide.createIcons();
+
+      try {
+        const data = await getJson("/api/v1/snapshot/latest");
+        const metrics = normalizeSnapshot(data);
+        renderSnapshot(metrics);
+      } catch (error) {
+        renderSnapshotError(`Could not load snapshot (${error.message}).`);
+      }
+    }
+
+    async function loadInsights() {
+      el.insightsList.innerHTML = '<div class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading latest insights...</div>';
+      lucide.createIcons();
+
+      try {
+        const data = await getJson("/api/v1/insights/latest");
+        const items = normalizeInsights(data);
+        renderInsights(items);
+      } catch (error) {
+        renderInsightsError(`Could not load insights (${error.message}).`);
+      }
+    }
+
+    async function sendChat(message) {
+      appendMessage("user", message);
+      appendMessage("bot", "Thinking...");
+      const pendingNode = el.chatLog.lastElementChild;
+
+      try {
+        const result = await postJson("/api/v1/chat", { message });
+        const reply = findFirst(result, ["answer", "response", "message", "text", "output"]) || "No response field returned by API.";
+        pendingNode.textContent = String(reply);
+      } catch (error) {
+        pendingNode.textContent = `Request failed: ${error.message}`;
+      }
+    }
+
+    function initEvents() {
+      el.apiBaseInput.value = state.apiBase;
+
+      el.saveApiBtn.addEventListener("click", () => {
+        const next = normalizeBase(el.apiBaseInput.value.trim());
+        if (!next) {
+          appendMessage("system", "Please enter a valid API base URL.");
+          return;
+        }
+
+        localStorage.setItem(API_STORAGE_KEY, next);
+        state.apiBase = next;
+        appendMessage("system", `API base updated to ${next}`);
+        boot();
+      });
+
+      el.refreshSnapshotBtn.addEventListener("click", loadSnapshot);
+      el.refreshInsightsBtn.addEventListener("click", loadInsights);
+
+      el.chatForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const message = el.chatInput.value.trim();
+        if (!message) {
+          return;
+        }
+
+        el.chatInput.value = "";
+        el.sendBtn.disabled = true;
+
+        await sendChat(message);
+
+        el.sendBtn.disabled = false;
+        el.chatInput.focus();
+      });
+
+      el.clearChatBtn.addEventListener("click", () => {
+        el.chatLog.innerHTML = '<div class="msg system">Chat cleared.</div>';
+      });
+
+      el.chatInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          el.chatForm.requestSubmit();
+        }
+      });
+    }
+
+    async function boot() {
+      await loadHealth();
+      await Promise.all([loadSnapshot(), loadInsights()]);
+    }
+
     lucide.createIcons();
-    // Hybrid System Status Logic
-    window.addEventListener('DOMContentLoaded', () => {
-      const badge = document.getElementById('status-badge');
-      fetch('https://liran-garmin-ai.herokuapp.com/health-check', {method: 'GET', mode: 'cors'})
-        .then(res => {
-          if (res.ok) {
-            badge.className = 'inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-green-700 text-green-300';
-            badge.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 mr-2"></i>System Online';
-            lucide.createIcons();
-          } else {
-            throw new Error('Not OK');
-          }
-        })
-        .catch(() => {
-          badge.className = 'inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-orange-700 text-orange-300';
-          badge.innerHTML = '<i data-lucide="clock" class="w-4 h-4 mr-2"></i>Waking up Agents...';
-          lucide.createIcons();
-        });
-    });
+    initEvents();
+    boot();
   </script>
 </body>
 </html>

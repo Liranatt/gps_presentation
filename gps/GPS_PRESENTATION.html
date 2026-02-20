@@ -28,16 +28,13 @@
             font-family: 'Inter', sans-serif;
             background: var(--dark);
             color: #e2e8f0;
-            height: 100vh;
+            min-height: 100dvh;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .presentation-container {
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             position: relative;
             overflow: hidden;
         }
@@ -67,6 +64,10 @@
             justify-content: flex-start;
             background: var(--dark);
             animation: fadeIn 0.35s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .slide.active {
@@ -112,7 +113,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            overflow: hidden;
+            overflow: visible;
         }
 
         /* Navigation */
@@ -613,8 +614,8 @@
 
         /* Scrollable content fix */
         .slide-content.scrollable {
-            overflow-y: auto;
-            padding-right: 10px;
+            overflow: visible;
+            padding-right: 0;
         }
 
         /* Stacked images */
@@ -629,6 +630,143 @@
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 42px 36px 110px;
+            }
+
+            .slide-header {
+                font-size: 26px;
+            }
+
+            .split-layout {
+                gap: 20px;
+            }
+
+            .title-slide h1 {
+                font-size: 46px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 28px 16px 110px;
+            }
+
+            .slide-counter {
+                top: 10px;
+                right: 10px;
+                font-size: 12px;
+            }
+
+            .navigation {
+                bottom: 12px;
+                width: calc(100% - 20px);
+                gap: 8px;
+            }
+
+            .nav-btn {
+                flex: 1;
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .slide-header {
+                font-size: 22px;
+            }
+
+            .slide-subheader {
+                font-size: 13px;
+                margin-bottom: 14px;
+            }
+
+            .title-slide h1 {
+                font-size: 34px;
+                letter-spacing: -1px;
+            }
+
+            .title-slide h2 {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            .title-slide .tagline {
+                font-size: 15px;
+                margin-bottom: 24px;
+            }
+
+            .title-slide .authors {
+                font-size: 15px;
+            }
+
+            .grid-2,
+            .grid-3,
+            .split-layout {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .stats-row {
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: center;
+                padding: 14px;
+            }
+
+            .flow-horizontal {
+                justify-content: flex-start;
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .flow-box {
+                flex: 1 1 calc(50% - 8px);
+                min-width: 130px;
+            }
+
+            .bullet-point {
+                font-size: 14px;
+                padding: 10px 0;
+            }
+
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .figure-container img,
+            .split-layout .image-side img {
+                max-height: 260px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-box {
+                flex-basis: 100%;
+            }
+
+            .title-slide h1 {
+                font-size: 30px;
+            }
+
+            .metric {
+                font-size: 32px;
+            }
+
+            .metric-small {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -1190,6 +1328,10 @@
             slides[currentSlide].classList.remove('active');
             currentSlide = (n + totalSlides) % totalSlides;
             slides[currentSlide].classList.add('active');
+            slides[currentSlide].scrollTop = 0;
+            slides[currentSlide]
+                .querySelectorAll('.slide-content')
+                .forEach((el) => { el.scrollTop = 0; });
             document.getElementById('current-slide').textContent = currentSlide + 1;
             updateProgress();
         }
@@ -1222,22 +1364,30 @@
         // Touch/swipe support
         let touchStartX = 0;
         let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
 
         document.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
         });
 
         document.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
             handleSwipe();
         });
 
         function handleSwipe() {
             const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) {
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            const isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY);
+
+            if (isHorizontalSwipe && deltaX < -swipeThreshold) {
                 nextSlide();
             }
-            if (touchEndX > touchStartX + swipeThreshold) {
+            if (isHorizontalSwipe && deltaX > swipeThreshold) {
                 previousSlide();
             }
         }
