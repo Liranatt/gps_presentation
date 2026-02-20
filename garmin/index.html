@@ -1921,7 +1921,13 @@
         return "No response from agent.";
       }
 
-      if (clean.length <= 220 && !looksLikeNoise(clean)) {
+      const lower = clean.toLowerCase();
+      const isBackendFallback =
+        lower.includes("ai chat model is unavailable") ||
+        lower.includes("your question was:");
+
+      // Preserve backend fallback and concise answers as-is.
+      if (isBackendFallback || clean.length <= 420) {
         return clean;
       }
 
