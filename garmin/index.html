@@ -2581,13 +2581,46 @@
     }
     async function sendChat(message) {
       appendMessage("user", message);
-      appendMessage("bot", "Thinking...");
+      appendMessage("bot", "Analyzing data in 3 layers (this may take up to a minute)...");
       const pendingNode = el.chatLog.lastElementChild;
 
       try {
-        const result = await postJson("/api/v1/chat", { message });
-        const reply = findFirst(result, ["answer", "response", "message", "text", "output"]) || "No response field returned by API.";
-        pendingNode.textContent = formatChatReply(String(reply));
+        // 1. נשלח בקשה ראשונית לשרת שמתחילה את משימת הרקע
+        const initResult = await postJson("/api/v1/chat", { message });
+        
+        // מוודאים שקיבלנו Job ID מהשרת
+        if (!initResult.job_id) {
+          throw new Error("No job_id returned from server. Check backend logic.");
+        }
+        
+        const jobId = initResult.job_id;
+        
+        // 2. מתחילים לדגום את הסטטוס כל 3 שניות (3000ms)
+        const pollInterval = setInterval(async () => {
+          try {
+            // משתמשים ב-getJson הקיים שלך כדי לתשאל את הנתיב החדש
+            const statusResult = await getJson(`/api/v1/chat/status/${jobId}`);
+            
+            // 3. אם הסוכן סיים - מציגים את התשובה ועוצרים את הדגימה
+            if (statusResult.status === "completed") {
+              clearInterval(pollInterval);
+              const reply = findFirst(statusResult, ["answer", "response", "message", "text", "output"]) || "No response field returned.";
+              pendingNode.textContent = formatChatReply(String(reply));
+            } 
+            // אם יש שגיאה בעיבוד ברקע
+            else if (statusResult.status === "failed" || statusResult.error) {
+              clearInterval(pollInterval);
+              pendingNode.textContent = `Analysis failed: ${statusResult.error || "Unknown error"}`;
+            }
+            // אם הסטטוס הוא "processing", הלולאה פשוט תמשיך לרוץ בסבב הבא
+            
+          } catch (pollErr) {
+            // במקרה של שגיאת תקשורת בזמן הדגימה
+            clearInterval(pollInterval);
+            pendingNode.textContent = `Polling failed: ${pollErr.message}`;
+          }
+        }, 3000);
+
       } catch (error) {
         pendingNode.textContent = `Request failed: ${error.message}`;
       }
