@@ -752,6 +752,47 @@
 
       <div class="project-card">
         <div class="card-top">
+          <div class="card-icon icon-cyan" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%);">
+            <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
+          </div>
+          <span class="card-badge badge-green">Live Trading Bot</span>
+        </div>
+
+        <h3 class="card-title">AlgoTrading: Mean-Reversion &amp; Momentum Bot</h3>
+        <p class="card-desc">
+          A fully automated trading system that scans the NASDAQ-100 daily for mean-reversion and momentum signals,
+          executes bracket orders through Interactive Brokers, and persists every trade, portfolio snapshot,
+          and performance metric to a Postgres database.
+        </p>
+
+        <div class="card-extra" id="algo-extra">
+          <strong style="color:#94a3b8;">Architecture:</strong> Daily batch pipeline — Yahoo Finance data → technical indicators
+          (Bollinger, RSI, MACD, ATR) → signal generation → IB Gateway bracket orders (stop-loss + take-profit).
+          <br><br>
+          <strong style="color:#94a3b8;">Stack:</strong> Python · FastAPI · Heroku Postgres · GitHub Actions CI/CD · Chart.js dashboard.
+        </div>
+
+        <button class="read-more-btn" id="algo-btn" onclick="toggleCard('algo')">Read more</button>
+
+        <div class="card-tags">
+          <span class="tag">Python</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">IB Gateway</span>
+          <span class="tag">Heroku DB</span>
+        </div>
+
+        <div class="card-actions">
+          <a href="/algotrading" class="btn btn-indigo">
+            Dashboard <i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i>
+          </a>
+          <a href="https://github.com/Liranatt/meanreversion_momentum_bot" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+            GitHub Repo <i data-lucide="github" style="width:13px;height:13px;"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="card-top">
           <div class="card-icon icon-cyan">
             <i data-lucide="map-pin" style="width:20px;height:20px;"></i>
           </div>

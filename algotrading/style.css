@@ -1,29 +1,16 @@
-/* style.css — Supplementary styles for the AlgoTrading dashboard */
-
-/* ── Cards ─────────────────────────────────────────────── */
+/* AlgoTrading Dashboard — supplemental styles */
+body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
 .card {
-  @apply bg-gray-900 border border-gray-800 rounded-2xl p-5 flex flex-col gap-1;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  transition: border-color .2s;
 }
-.card-label {
-  @apply text-xs uppercase tracking-wider text-gray-400;
-}
-.card-value {
-  @apply text-2xl font-bold text-white;
-}
-
-/* ── Table ─────────────────────────────────────────────── */
-table th {
-  @apply text-xs uppercase tracking-wider;
-}
-
-/* ── Scrollbar ─────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-700 rounded-full;
-}
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
+.card:hover { border-color: #374151; }
+.card-label { font-size: .75rem; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; }
+.card-value { font-size: 1.5rem; font-weight: 600; margin-top: .25rem; }
+canvas { max-height: 320px; }
+table th, table td { padding: .5rem .75rem; }
+tbody tr { border-bottom: 1px solid #1f2937; }
+tbody tr:last-child { border-bottom: none; }

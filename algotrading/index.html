@@ -4,30 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AlgoTrading Dashboard — Liran Attar</title>
-
-  <!-- Tailwind CSS (same stack as liranattar.dev) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen font-sans">
-
-  <!-- ── Navigation ─────────────────────────────────────── -->
   <nav class="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
-    <a href="/" class="text-lg font-bold tracking-tight text-white hover:text-blue-400 transition">
-      ← liranattar.dev
-    </a>
+    <a href="/" class="text-lg font-bold tracking-tight text-white hover:text-blue-400 transition">← liranattar.dev</a>
     <h1 class="text-xl font-semibold">AlgoTrading Dashboard</h1>
     <span id="last-updated" class="text-xs text-gray-500"></span>
   </nav>
 
   <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
-
-    <!-- ── Summary Cards ──────────────────────────────────── -->
     <section id="summary-cards" class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="card">
         <p class="card-label">Portfolio Value</p>
@@ -47,13 +36,11 @@
       </div>
     </section>
 
-    <!-- ── Equity Curve Chart ─────────────────────────────── -->
     <section class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <h2 class="text-lg font-semibold mb-4">Equity Curve</h2>
       <canvas id="equityChart" height="120"></canvas>
     </section>
 
-    <!-- ── Recent Trades Table ────────────────────────────── -->
     <section class="bg-gray-900 rounded-2xl p-6 border border-gray-800 overflow-x-auto">
       <h2 class="text-lg font-semibold mb-4">Recent Trades</h2>
       <table class="w-full text-sm">
@@ -74,7 +61,6 @@
       </table>
     </section>
 
-    <!-- ── Extra Metrics ──────────────────────────────────── -->
     <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="card">
         <p class="card-label">Total Return</p>
@@ -96,10 +82,7 @@
 
   </main>
 
-  <footer class="text-center text-xs text-gray-600 py-6">
-    Mean-Reversion / Momentum Bot &mdash; Data updates daily after US market close.
-  </footer>
-
+  <footer class="text-center text-xs text-gray-600 py-6">Mean-Reversion / Momentum Bot — Data updates daily after US market close.</footer>
   <script src="app.js"></script>
 </body>
 </html>
