@@ -2585,42 +2585,36 @@
       const pendingNode = el.chatLog.lastElementChild;
 
       try {
-        // 1. נשלח בקשה ראשונית לשרת שמתחילה את משימת הרקע
-        const initResult = await postJson("/api/v1/chat", { message });
-        
-        // מוודאים שקיבלנו Job ID מהשרת
-        if (!initResult.job_id) {
-          throw new Error("No job_id returned from server. Check backend logic.");
-        }
-        
-        const jobId = initResult.job_id;
-        
-        // 2. מתחילים לדגום את הסטטוס כל 3 שניות (3000ms)
-        const pollInterval = setInterval(async () => {
-          try {
-            // משתמשים ב-getJson הקיים שלך כדי לתשאל את הנתיב החדש
-            const statusResult = await getJson(`/api/v1/chat/status/${jobId}`);
-            
-            // 3. אם הסוכן סיים - מציגים את התשובה ועוצרים את הדגימה
-            if (statusResult.status === "completed") {
-              clearInterval(pollInterval);
-              const reply = findFirst(statusResult, ["answer", "response", "message", "text", "output"]) || "No response field returned.";
-              pendingNode.textContent = formatChatReply(String(reply));
-            } 
-            // אם יש שגיאה בעיבוד ברקע
-            else if (statusResult.status === "failed" || statusResult.error) {
-              clearInterval(pollInterval);
-              pendingNode.textContent = `Analysis failed: ${statusResult.error || "Unknown error"}`;
-            }
-            // אם הסטטוס הוא "processing", הלולאה פשוט תמשיך לרוץ בסבב הבא
-            
-          } catch (pollErr) {
-            // במקרה של שגיאת תקשורת בזמן הדגימה
-            clearInterval(pollInterval);
-            pendingNode.textContent = `Polling failed: ${pollErr.message}`;
-          }
-        }, 3000);
+        const result = await postJson("/api/v1/chat", { message });
 
+        if (result.job_id && result.status === "processing") {
+          pendingNode.textContent = "Agent is working...";
+          const maxAttempts = 90;
+          const interval = 2000;
+          for (let i = 0; i < maxAttempts; i++) {
+            await new Promise(r => setTimeout(r, interval));
+            try {
+              const status = await getJson(`/api/v1/chat/status/${result.job_id}`);
+              if (status.status === "completed") {
+                const reply = findFirst(status, ["answer", "response", "message", "text", "output"]) || "No response field returned by API.";
+                pendingNode.innerHTML = formatChatReply(String(reply));
+                return;
+              }
+              if (status.status === "failed" || status.error) {
+                pendingNode.textContent = `Analysis failed: ${status.error || "Unknown error"}`;
+                return;
+              }
+              const dots = ".".repeat((i % 3) + 1);
+              pendingNode.textContent = `Agent is working${dots}`;
+            } catch {
+              // transient network blip — keep polling
+            }
+          }
+          pendingNode.textContent = "Agent timed out. Please try again.";
+        } else {
+          const reply = findFirst(result, ["answer", "response", "message", "text", "output"]) || "No response field returned by API.";
+          pendingNode.innerHTML = formatChatReply(String(reply));
+        }
       } catch (error) {
         pendingNode.textContent = `Request failed: ${error.message}`;
       }
