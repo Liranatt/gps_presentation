@@ -8,16 +8,56 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen font-sans">
+<body class="bg-slate-900 text-gray-100 min-h-screen font-sans">
 
   <!-- Navigation -->
-  <nav class="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+  <nav class="nav-bar px-6 py-4 flex items-center justify-between">
     <a href="/" class="text-lg font-bold tracking-tight text-white hover:text-blue-400 transition">← liranattar.dev</a>
-    <h1 class="text-xl font-semibold">AlgoTrading Dashboard</h1>
-    <span id="last-updated" class="text-xs text-gray-500"></span>
+    <h1 class="text-xl font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">AlgoTrading Dashboard</h1>
+    <span id="last-updated" class="text-xs text-slate-400"></span>
   </nav>
 
   <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+
+    <!-- ── Strategy Overview ──────────────────────────── -->
+    <section class="glass-card p-6 border-l-4 border-blue-500">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">📊</span> Strategy Overview
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6 text-sm text-slate-300 leading-relaxed">
+        <div>
+          <h3 class="text-white font-semibold mb-1">How it works</h3>
+          <p>This bot trades <strong class="text-blue-400">NASDAQ-100</strong> stocks using a dual-regime strategy.
+             Every day after market close, it scans all 100 tickers, computes technical indicators, and generates
+             BUY/SELL signals that execute at the next market open via Interactive Brokers.</p>
+          <h3 class="text-white font-semibold mt-3 mb-1">Bull Market (NDX &gt; 200-day SMA)</h3>
+          <p><strong>Momentum:</strong> BUY when ATR is high (volatility breakout, last ATR &gt; 1.5× 30-day ATR average)
+             <em>and</em> MACD crossover is strong or medium.</p>
+          <h3 class="text-white font-semibold mt-3 mb-1">Bear Market (NDX &lt; 200-day SMA)</h3>
+          <p><strong>Mean Reversion:</strong> BUY when price falls below the lower Bollinger Band (30-period, 2σ)
+             <em>and</em> RSI(14) drops below 40 — catching oversold bounces.</p>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold mb-1">Sell Rules</h3>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>Stop-Loss:</strong> price drops 10% below average cost</li>
+            <li><strong>Momentum Fading:</strong> (bull) MACD turns weak + RSI ≤ 70</li>
+            <li><strong>Mean-Rev Target:</strong> (bear) price recovers above SMA(30)</li>
+            <li><strong>Time Stop:</strong> (bear) held ≥ 20 days without target</li>
+          </ul>
+          <h3 class="text-white font-semibold mt-3 mb-1">Indicators Used</h3>
+          <div class="flex flex-wrap gap-2 mt-1">
+            <span class="indicator-badge">SMA(30)</span>
+            <span class="indicator-badge">Bollinger(30, 2σ)</span>
+            <span class="indicator-badge">RSI(14)</span>
+            <span class="indicator-badge">ATR(14)</span>
+            <span class="indicator-badge">MACD(24/52/18)</span>
+          </div>
+          <h3 class="text-white font-semibold mt-3 mb-1">Position Sizing</h3>
+          <p>10% of free cash per trade · $5,000 minimum · 10% stop-loss · Paper account ~$1M</p>
+        </div>
+      </div>
+    </section>
 
     <!-- ── Account Overview Cards ─────────────────────── -->
     <section id="account-cards" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -68,20 +108,61 @@
     </section>
 
     <!-- ── Equity Curve ───────────────────────────────── -->
-    <section class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+    <section class="glass-card p-6">
       <h2 class="text-lg font-semibold mb-4">Equity Curve</h2>
       <canvas id="equityChart" height="120"></canvas>
     </section>
 
-    <!-- ── Positions Table ────────────────────────────── -->
-    <section class="bg-gray-900 rounded-2xl p-6 border border-gray-800 overflow-x-auto">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold">Current Positions</h2>
-        <span id="positions-count" class="text-xs text-gray-500"></span>
+    <!-- ── Market Scanner ─────────────────────────────── -->
+    <section class="glass-card p-6 overflow-x-auto">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
+        <div>
+          <h2 class="text-lg font-semibold">Market Scanner <span class="text-xs text-slate-400">(all NASDAQ-100 tickers)</span></h2>
+          <p id="scanner-date" class="text-xs text-slate-500 mt-1"></p>
+        </div>
+        <div class="flex items-center gap-3">
+          <input id="scanner-search" type="text" placeholder="Search ticker…"
+            class="bg-slate-700/60 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 w-36" />
+          <select id="scanner-filter" class="bg-slate-700/60 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+            <option value="all">All</option>
+            <option value="BUY">BUY signals</option>
+            <option value="SELL">SELL signals</option>
+            <option value="HOLD">HOLD</option>
+            <option value="held">Held only</option>
+          </select>
+          <span id="scanner-count" class="text-xs text-slate-500"></span>
+        </div>
       </div>
       <table class="w-full text-sm">
         <thead>
-          <tr class="text-left text-gray-400 border-b border-gray-700">
+          <tr class="text-left text-slate-400 border-b border-slate-600">
+            <th class="pb-2 cursor-pointer hover:text-white" onclick="sortScanner('symbol')">Symbol ↕</th>
+            <th class="pb-2 text-right cursor-pointer hover:text-white" onclick="sortScanner('close_price')">Price ↕</th>
+            <th class="pb-2 text-right cursor-pointer hover:text-white" onclick="sortScanner('sma_30')">SMA(30) ↕</th>
+            <th class="pb-2 text-center cursor-pointer hover:text-white" onclick="sortScanner('rsi_14')">RSI ↕</th>
+            <th class="pb-2 text-center">ATR</th>
+            <th class="pb-2 text-center">MACD</th>
+            <th class="pb-2 text-center">Bollinger</th>
+            <th class="pb-2 text-center">Regime</th>
+            <th class="pb-2 text-center cursor-pointer hover:text-white" onclick="sortScanner('signal_result')">Signal ↕</th>
+            <th class="pb-2">Reason</th>
+          </tr>
+        </thead>
+        <tbody id="scanner-body">
+          <tr><td colspan="10" class="py-4 text-center text-slate-500">Loading scanner …</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Positions Table ────────────────────────────── -->
+    <section class="glass-card p-6 overflow-x-auto">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold">Current Positions</h2>
+        <span id="positions-count" class="text-xs text-slate-500"></span>
+      </div>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-slate-400 border-b border-slate-600">
             <th class="pb-2 cursor-pointer hover:text-white" onclick="sortPositions('symbol')">Symbol ↕</th>
             <th class="pb-2 text-right cursor-pointer hover:text-white" onclick="sortPositions('quantity')">Qty ↕</th>
             <th class="pb-2 text-right cursor-pointer hover:text-white" onclick="sortPositions('avg_cost')">Avg Cost ↕</th>
@@ -94,20 +175,20 @@
           </tr>
         </thead>
         <tbody id="positions-body">
-          <tr><td colspan="9" class="py-4 text-center text-gray-500">Loading …</td></tr>
+          <tr><td colspan="9" class="py-4 text-center text-slate-500">Loading …</td></tr>
         </tbody>
       </table>
     </section>
 
     <!-- ── Pending Signals ────────────────────────────── -->
-    <section class="bg-gray-900 rounded-2xl p-6 border border-gray-800 overflow-x-auto">
+    <section class="glass-card p-6 overflow-x-auto">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold">Pending Signals <span class="text-xs text-gray-500">(next market open)</span></h2>
-        <span id="signals-count" class="text-xs text-gray-500"></span>
+        <h2 class="text-lg font-semibold">Pending Signals <span class="text-xs text-slate-400">(next market open)</span></h2>
+        <span id="signals-count" class="text-xs text-slate-500"></span>
       </div>
       <table class="w-full text-sm">
         <thead>
-          <tr class="text-left text-gray-400 border-b border-gray-700">
+          <tr class="text-left text-slate-400 border-b border-slate-600">
             <th class="pb-2">Generated</th>
             <th class="pb-2">Symbol</th>
             <th class="pb-2">Action</th>
@@ -118,17 +199,17 @@
           </tr>
         </thead>
         <tbody id="signals-body">
-          <tr><td colspan="7" class="py-4 text-center text-gray-500">Loading …</td></tr>
+          <tr><td colspan="7" class="py-4 text-center text-slate-500">Loading …</td></tr>
         </tbody>
       </table>
     </section>
 
     <!-- ── Recent Trades ──────────────────────────────── -->
-    <section class="bg-gray-900 rounded-2xl p-6 border border-gray-800 overflow-x-auto">
+    <section class="glass-card p-6 overflow-x-auto">
       <h2 class="text-lg font-semibold mb-4">Recent Trades</h2>
       <table class="w-full text-sm">
         <thead>
-          <tr class="text-left text-gray-400 border-b border-gray-700">
+          <tr class="text-left text-slate-400 border-b border-slate-600">
             <th class="pb-2">Date</th>
             <th class="pb-2">Symbol</th>
             <th class="pb-2">Action</th>
@@ -139,15 +220,15 @@
           </tr>
         </thead>
         <tbody id="trades-body">
-          <tr><td colspan="7" class="py-4 text-center text-gray-500">Loading …</td></tr>
+          <tr><td colspan="7" class="py-4 text-center text-slate-500">Loading …</td></tr>
         </tbody>
       </table>
     </section>
 
   </main>
 
-  <footer class="text-center text-xs text-gray-600 py-6">
-    Mean-Reversion / Momentum Bot — Signals generated after close, orders executed at open.
+  <footer class="text-center text-xs text-slate-500 py-6">
+    Mean-Reversion / Momentum Bot — Signals generated after close, orders executed at open via Interactive Brokers.
   </footer>
 
   <script src="app.js"></script>

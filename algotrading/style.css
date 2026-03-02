@@ -1,16 +1,91 @@
-/* AlgoTrading Dashboard — supplemental styles */
+/* AlgoTrading Dashboard — Brighter glassmorphism theme */
 body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
+
+/* Navigation */
+.nav-bar {
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+/* Glass cards */
+.glass-card {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 1rem;
+}
+
+/* Stat cards */
 .card {
-  background: #111827;
-  border: 1px solid #1f2937;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 1rem;
   padding: 1.25rem 1.5rem;
-  transition: border-color .2s;
+  transition: border-color .2s, transform .15s;
 }
-.card:hover { border-color: #374151; }
-.card-label { font-size: .75rem; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; }
+.card:hover {
+  border-color: rgba(96, 165, 250, 0.4);
+  transform: translateY(-1px);
+}
+.card-label { font-size: .75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .05em; }
 .card-value { font-size: 1.5rem; font-weight: 600; margin-top: .25rem; }
+
+/* Indicator badges in strategy overview */
+.indicator-badge {
+  display: inline-block;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  border-radius: 9999px;
+  padding: .125rem .75rem;
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+/* Scanner signal badges */
+.signal-badge {
+  display: inline-block;
+  padding: .125rem .5rem;
+  border-radius: .375rem;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+.signal-buy  { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+.signal-sell { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.signal-hold { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); }
+
+/* Scanner indicator pills */
+.ind-strong { color: #4ade80; font-weight: 600; }
+.ind-medium { color: #facc15; font-weight: 600; }
+.ind-weak   { color: #f87171; font-weight: 600; }
+.ind-high   { color: #4ade80; font-weight: 600; }
+.ind-low    { color: #94a3b8; }
+.ind-bull   { color: #4ade80; }
+.ind-bear   { color: #f87171; }
+
+/* RSI color coding */
+.rsi-oversold  { color: #4ade80; font-weight: 600; }
+.rsi-neutral   { color: #e2e8f0; }
+.rsi-overbought { color: #f87171; font-weight: 600; }
+
+/* Held row highlight */
+.row-held { background: rgba(59, 130, 246, 0.06); }
+
+/* Chart */
 canvas { max-height: 320px; }
+
+/* Tables */
 table th, table td { padding: .5rem .75rem; }
-tbody tr { border-bottom: 1px solid #1f2937; }
+tbody tr { border-bottom: 1px solid rgba(148, 163, 184, 0.1); }
 tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(148, 163, 184, 0.05); }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.35); }
