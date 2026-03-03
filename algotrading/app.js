@@ -138,6 +138,12 @@ function drawEquityChart(data) {
             callback: (v) => `$${(v / 1000).toFixed(0)}k`,
           },
           grid: { color: "rgba(148,163,184,0.06)" },
+          afterDataLimits: (scale) => {
+            const range = scale.max - scale.min;
+            const pad = Math.max(range * 0.15, scale.max * 0.005);
+            scale.min -= pad;
+            scale.max += pad;
+          },
         },
       },
     },
