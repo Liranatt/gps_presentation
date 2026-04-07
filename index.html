@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Liran Attar | Data Scientist & AI Engineer</title>
+  <title>Liran Attar | CS & AI Engineer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -420,6 +420,12 @@
       border: 1px solid rgba(59, 130, 246, 0.18);
     }
 
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.09);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.18);
+    }
+
     .card-title {
       font-family: 'Fraunces', serif;
       font-size: 21px;
@@ -675,16 +681,18 @@
       <div class="hero-sep"></div>
 
       <p class="hero-tagline">
-        CS student at BGU. I like asking hard questions,<br>
-        then writing code until they have an answer.<br>
-        <em>Data science, deep learning, and algorithmic trading.</em>
+        Final-year CS student at BGU — starting MSc in CS next year (with thesis).<br>
+        I like to take complex math, put it into code,<br>
+        <em>and experiment to see how I can benefit from it.</em>
       </p>
 
       <div class="hero-chips">
-        <span class="chip">Data Science</span>
+        <span class="chip">C++</span>
         <span class="chip">Deep Learning</span>
+        <span class="chip">Machine Learning</span>
+        <span class="chip">Quant Finance</span>
         <span class="chip">AI Agents</span>
-        <span class="chip">Algotrading</span>
+        <span class="chip">Concurrent Programming</span>
       </div>
 
       <div class="hero-ctas">
@@ -711,33 +719,36 @@
     </div>
 
     <div class="projects-grid">
+      <!-- Garmin -->
       <div class="project-card">
         <div class="card-top">
           <div class="card-icon icon-indigo">
             <i data-lucide="activity" style="width:20px;height:20px;"></i>
           </div>
-          <span class="card-badge badge-green">Live Agent System</span>
+          <span class="card-badge badge-green">Live System</span>
         </div>
 
-        <h3 class="card-title">Garmin Health Intelligence: Deterministic Math Meets Multi-Agent AI</h3>
+        <h3 class="card-title">Garmin Health Intelligence</h3>
         <p class="card-desc">
-          An autonomous Data Engineering and AI platform built to analyze personal Garmin watch data.
-          The system solves LLM hallucination through a "Determinism before Semantics" architecture -
-          mathematical ground truth is established before any AI touches the data.
+          I wanted to actually use my own Garmin data — not just look at summaries.
+          So I built a pipeline that computes physiological metrics from scratch:
+          Garth data ingestion &rarr; PostgreSQL &rarr; FastAPI &rarr; GitHub Pages dashboard &rarr; multi-agent interpretation layer.
         </p>
 
         <div class="card-extra" id="garmin-extra">
-          <strong style="color:#94a3b8;">Multi-Agent System:</strong> A squad of 5 specialized AI agents (CrewAI)
-          interprets pre-validated results in parallel. From sleep architecture to training load optimization,
-          they synthesize insights grounded in your own physiological data.
+          The agents are set up so that all the math — HRV baselines, sleep scoring, training load — is computed
+          and validated before any LLM sees it. The agents reason over verified numbers, not raw data.
+          That's the whole idea: keep the math honest.
         </div>
 
         <button class="read-more-btn" id="garmin-btn" onclick="toggleCard('garmin')">Read more</button>
 
         <div class="card-tags">
           <span class="tag">Python</span>
-          <span class="tag">GenAI Agents</span>
-          <span class="tag">Heroku DB</span>
+          <span class="tag">CrewAI</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">GitHub Pages</span>
         </div>
 
         <div class="card-actions">
@@ -750,67 +761,70 @@
         </div>
       </div>
 
+      <!-- Trading System -->
       <div class="project-card">
         <div class="card-top">
           <div class="card-icon icon-cyan" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%);">
             <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
           </div>
-          <span class="card-badge badge-green">Live Trading Bot</span>
+          <span class="card-badge badge-amber">Active Project</span>
         </div>
 
-        <h3 class="card-title">AlgoTrading: Mean-Reversion &amp; Momentum Bot (currently under reserve duty management)</h3>
+        <h3 class="card-title">Quantitative Trading System</h3>
         <p class="card-desc">
-          A fully automated trading system that scans the NASDAQ-100 daily for mean-reversion and momentum signals,
-          executes bracket orders through Interactive Brokers, and persists every trade, portfolio snapshot,
-          and performance metric to a Postgres database.
+          A trading system built end to end — the idea, the architecture, the data model, all of it.
+          The Python layer handles IB execution via <code style="font-size:12px;color:#94a3b8;">ib_insync</code>,
+          PostgreSQL persistence, and an async strategy orchestration cycle with per-strategy position isolation
+          and conflict resolution.
         </p>
 
         <div class="card-extra" id="algo-extra">
-          <strong style="color:#94a3b8;">Architecture:</strong> Daily batch pipeline — Yahoo Finance data → technical indicators
-          (Bollinger, RSI, MACD, ATR) → signal generation → IB Gateway bracket orders (stop-loss + take-profit).
-          <br><br>
-          <strong style="color:#94a3b8;">Stack:</strong> Python · FastAPI · Heroku Postgres · GitHub Actions CI/CD · Chart.js dashboard.
+          The computation-heavy part — scanning for cointegrated pairs using OLS regression and
+          Augmented Dickey-Fuller tests — is a C++ engine compiled and called from Python via pybind11.
+          Strategies: mean reversion and statistical arbitrage on cointegrated pairs.
+          A dry-run mode validates signals without placing orders.
         </div>
 
         <button class="read-more-btn" id="algo-btn" onclick="toggleCard('algo')">Read more</button>
 
         <div class="card-tags">
+          <span class="tag">C++</span>
           <span class="tag">Python</span>
-          <span class="tag">FastAPI</span>
+          <span class="tag">pybind11</span>
           <span class="tag">IB Gateway</span>
-          <span class="tag">Heroku DB</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">asyncio</span>
         </div>
 
         <div class="card-actions">
-          <a href="/algotrading" class="btn btn-indigo">
-            Dashboard <i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i>
-          </a>
-          <a href="https://github.com/Liranatt/meanreversion_momentum_bot" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          <a href="https://github.com/Liranatt/my_traders" target="_blank" rel="noopener noreferrer" class="btn btn-indigo">
             GitHub Repo <i data-lucide="github" style="width:13px;height:13px;"></i>
           </a>
         </div>
       </div>
 
+      <!-- GPS -->
       <div class="project-card">
         <div class="card-top">
           <div class="card-icon icon-cyan">
             <i data-lucide="map-pin" style="width:20px;height:20px;"></i>
           </div>
-          <span class="card-badge badge-blue">Deep Learning Research</span>
+          <span class="card-badge badge-blue">Course Project &middot; Deep Learning</span>
         </div>
 
-        <h3 class="card-title">Visual Localization: Direct Coordinate Regression via Deep Ensembles</h3>
+        <h3 class="card-title">Visual Geo-Localization</h3>
         <p class="card-desc">
-          A deep learning system that treats visual localization as a continuous regression problem
-          rather than a discrete retrieval task - no GPS signal, just a photo and a prediction.
-          Tested on BGU campus with 3,646 images captured in 360 degree rotations for viewpoint invariance.
+          Built as the final project for the Deep Learning course at BGU.
+          Given a photo taken somewhere on campus, predict the GPS coordinates —
+          no signal, just the image. Trained an ensemble on a custom 3,646-image dataset
+          with 360&deg; rotational coverage per location.
         </p>
 
         <div class="card-extra" id="gps-extra">
           <strong style="color:#94a3b8;">Architecture:</strong> Ensemble of EfficientNet-B0, ResNet18, and ConvNeXt
-          with transfer learning, extracting spatial features robust to lighting and viewpoint changes.
+          with transfer learning, treating localization as coordinate regression rather than retrieval.
           <br><br>
-          <strong style="color:#94a3b8;">Result:</strong> 5.24m mean error in a GPS-denied environment.
+          <strong style="color:#94a3b8;">Result:</strong> 5.24m mean coordinate error in a GPS-denied environment.
         </div>
 
         <button class="read-more-btn" id="gps-btn" onclick="toggleCard('gps')">Read more</button>
@@ -818,7 +832,9 @@
         <div class="card-tags">
           <span class="tag">PyTorch</span>
           <span class="tag">EfficientNet</span>
-          <span class="tag">Interactive Map</span>
+          <span class="tag">ResNet</span>
+          <span class="tag">ConvNeXt</span>
+          <span class="tag">Transfer Learning</span>
         </div>
 
         <div class="card-actions">
