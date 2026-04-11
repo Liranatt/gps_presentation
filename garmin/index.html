@@ -1,2754 +1,2392 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Garmin Health Intelligence | Liran Attar</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    :root {
-      --bg: #0a0a0f;
-      --bg-soft: #0d1117;
-      --surface: rgba(255, 255, 255, 0.03);
-      --surface-2: rgba(255, 255, 255, 0.04);
-      --text: #ffffff;
-      --text-dim: rgba(255, 255, 255, 0.45);
-      --line: rgba(255, 255, 255, 0.08);
-      --brand: #00f5a0;
-      --brand-dark: #00d9f5;
-      --brand-soft: rgba(0, 245, 160, 0.14);
-      --warn-soft: rgba(245, 197, 66, 0.18);
-      --warn-text: #f5c542;
-      --bad-soft: rgba(245, 87, 108, 0.18);
-      --bad-text: #f5576c;
-      --radius-lg: 22px;
-      --radius-md: 14px;
-      --shadow-lg: 0 22px 60px -28px rgba(0, 0, 0, 0.65);
-      --shadow-md: 0 12px 28px -20px rgba(0, 0, 0, 0.55);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: "Inter", sans-serif;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(0, 245, 160, 0.16) 0%, transparent 40%),
-        radial-gradient(circle at 85% 0%, rgba(102, 126, 234, 0.18) 0%, transparent 34%),
-        var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    .page {
-      width: min(1200px, calc(100% - 32px));
-      margin: 18px auto 36px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-      padding: 10px 0;
-    }
-
-    .topbar-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .chip-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(255, 255, 255, 0.72);
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      transition: all 0.2s ease;
-    }
-
-    .chip-link:hover {
-      border-color: rgba(255, 255, 255, 0.22);
-      background: rgba(255, 255, 255, 0.09);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
-    .hero {
-      background: linear-gradient(140deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 52%, rgba(255,255,255,0.04) 100%);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      padding: 24px;
-      margin-bottom: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      top: -80px;
-      right: -80px;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 245, 160, 0.28) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .hero h1 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(28px, 4.8vw, 44px);
-      line-height: 1.05;
-      letter-spacing: -1px;
-      margin-bottom: 10px;
-      color: #fff;
-    }
-
-    .hero p {
-      color: rgba(255, 255, 255, 0.68);
-      font-size: 15px;
-      line-height: 1.6;
-      max-width: 64ch;
-    }
-
-    .hero-kpis {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .hero-kpi {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 12px;
-      min-height: 86px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .hero-kpi .label {
-      font-size: 11px;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.45);
-      margin-bottom: 5px;
-      font-weight: 700;
-    }
-
-    .hero-kpi .value {
-      font-size: 23px;
-      font-weight: 800;
-      line-height: 1;
-      color: #fff;
-    }
-
-    .mode-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .mode-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(255, 255, 255, 0.75);
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: all 0.2s ease;
-    }
-
-    .mode-pill:hover {
-      border-color: rgba(0, 245, 160, 0.38);
-      color: #ffffff;
-      background: rgba(0, 245, 160, 0.08);
-      transform: translateY(-1px);
-    }
-
-    .mode-pill.is-active {
-      border-color: rgba(0, 245, 160, 0.42);
-      color: #fff;
-      background: rgba(0, 245, 160, 0.14);
-      box-shadow: inset 0 0 0 1px rgba(0, 245, 160, 0.2);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
-      gap: 16px;
-    }
-
-    .stack {
-      display: grid;
-      gap: 16px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
-      backdrop-filter: blur(12px);
-      overflow: hidden;
-    }
-
-    .card-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--line);
-      background: var(--surface-2);
-    }
-
-    .card-title {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.2px;
-      color: #fff;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      min-width: 120px;
-      text-align: center;
-      border: 1px solid transparent;
-    }
-
-    .status.loading {
-      background: rgba(255, 255, 255, 0.06);
-      color: rgba(255, 255, 255, 0.68);
-      border-color: rgba(255, 255, 255, 0.14);
-    }
-
-    .status.ok {
-      background: var(--brand-soft);
-      color: var(--brand-dark);
-      border-color: rgba(0, 245, 160, 0.35);
-    }
-
-    .status.warm {
-      background: var(--warn-soft);
-      color: var(--warn-text);
-      border-color: rgba(245, 197, 66, 0.35);
-    }
-
-    .status.fail {
-      background: var(--bad-soft);
-      color: var(--bad-text);
-      border-color: rgba(245, 87, 108, 0.35);
-    }
-
-    .card-body {
-      padding: 16px;
-    }
-
-    .settings-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-    }
-
-    .field label {
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.55);
-      letter-spacing: 0.3px;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text);
-      font-size: 14px;
-      outline: none;
-    }
-
-    .field input:focus {
-      border-color: rgba(0, 245, 160, 0.45);
-      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.13);
-    }
-
-    .button {
-      border: none;
-      border-radius: 10px;
-      padding: 11px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      text-align: center;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .button.primary {
-      background: var(--brand);
-      color: #fff;
-    }
-
-    .button.primary:hover {
-      background: var(--brand-dark);
-      transform: translateY(-1px);
-    }
-
-    .button.ghost {
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.82);
-      border: 1px solid rgba(255, 255, 255, 0.13);
-    }
-
-    .button.ghost:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .help {
-      margin-top: 8px;
-      color: rgba(236, 248, 255, 0.88);
-      font-size: 13px;
-      line-height: 1.6;
-      border: 1px solid rgba(0, 245, 160, 0.22);
-      border-radius: 12px;
-      background: linear-gradient(140deg, rgba(0, 245, 160, 0.1) 0%, rgba(102, 126, 234, 0.08) 100%);
-      padding: 10px 12px;
-    }
-
-    .metrics-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .metric {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 13px;
-      background: rgba(255, 255, 255, 0.04);
-      min-height: 104px;
-      display: grid;
-      align-content: center;
-      justify-items: center;
-      text-align: center;
-    }
-
-    .metric-label {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.5);
-      letter-spacing: 0.3px;
-      margin-bottom: 6px;
-      font-weight: 700;
-    }
-
-    .metric-value {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 30px;
-      line-height: 1;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .metric-meta {
-      margin-top: 5px;
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.45);
-    }
-
-    .trend-status {
-      margin-bottom: 10px;
-    }
-
-    .trend-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .analytics-toolbar {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .analytics-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .analytics-tab {
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(255, 255, 255, 0.72);
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      padding: 8px 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .analytics-tab:hover {
-      border-color: rgba(0, 245, 160, 0.35);
-      color: #fff;
-      background: rgba(0, 245, 160, 0.08);
-    }
-
-    .analytics-tab.is-active {
-      border-color: rgba(0, 245, 160, 0.45);
-      color: #fff;
-      background: rgba(0, 245, 160, 0.14);
-      box-shadow: inset 0 0 0 1px rgba(0, 245, 160, 0.2);
-    }
-
-    .analytics-side {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      justify-self: end;
-      flex-wrap: wrap;
-    }
-
-    .filter-group {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .analytics-side label {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.56);
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-    }
-
-    .analytics-side select {
-      appearance: none;
-      background: #131b26;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 10px;
-      color: #f3fbff;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 8px 30px 8px 10px;
-      min-width: 120px;
-      outline: none;
-    }
-
-    .analytics-side select:focus {
-      border-color: rgba(0, 245, 160, 0.4);
-      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.12);
-    }
-
-    .analytics-side select option {
-      background: #131b26;
-      color: #f3fbff;
-    }
-
-    .analytics-panel[hidden] {
-      display: none !important;
-    }
-
-    .trend-card {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 10px;
-      display: grid;
-      gap: 7px;
-    }
-
-    .trend-top {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .trend-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.6);
-      letter-spacing: 0.3px;
-    }
-
-    .trend-value {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .spark {
-      width: 100%;
-      height: 68px;
-      border-radius: 9px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .spark path {
-      fill: none;
-      stroke: var(--brand);
-      stroke-width: 2.2;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-    }
-
-    .spark circle {
-      fill: #fff;
-      stroke: var(--brand);
-      stroke-width: 1.7;
-    }
-
-    .trend-delta {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-    }
-
-    .trend-delta.up {
-      color: #4ade80;
-    }
-
-    .trend-delta.down {
-      color: #fb7185;
-    }
-
-    .trend-delta.flat {
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .trend-note {
-      font-size: 12px;
-      line-height: 1.45;
-      color: rgba(220, 238, 246, 0.76);
-      border-top: 1px dashed rgba(255, 255, 255, 0.14);
-      padding-top: 6px;
-    }
-
-    .insights {
-      display: grid;
-      gap: 10px;
-    }
-
-    .insight-main {
-      border: 1px solid rgba(0, 245, 160, 0.28);
-      border-radius: 14px;
-      padding: 14px;
-      background: linear-gradient(135deg, rgba(0, 245, 160, 0.12) 0%, rgba(102, 126, 234, 0.08) 100%);
-      margin-bottom: 10px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .insight-main h3 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 16px;
-      color: #fff;
-      letter-spacing: -0.2px;
-    }
-
-    .insight-main p {
-      font-size: 14px;
-      line-height: 1.65;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .insight-points {
-      display: grid;
-      gap: 8px;
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    .insight-points li {
-      font-size: 13px;
-      line-height: 1.55;
-      color: rgba(245, 252, 255, 0.92);
-    }
-
-    .insight-main .meta {
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.62);
-    }
-
-    .insight {
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      border-radius: 12px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      display: grid;
-      gap: 6px;
-    }
-
-    .insight-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .insight-agent {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: var(--brand);
-      background: var(--brand-soft);
-      border: 1px solid rgba(0, 245, 160, 0.22);
-      padding: 4px 8px;
-      border-radius: 999px;
-    }
-
-    .insight-time {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.48);
-      font-weight: 700;
-    }
-
-    .insight p {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.82);
-      line-height: 1.6;
-    }
-
-    .insight-detail {
-      border-top: 1px dashed rgba(255, 255, 255, 0.14);
-      padding-top: 8px;
-    }
-
-    .insight-detail summary {
-      cursor: pointer;
-      color: rgba(255, 255, 255, 0.65);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      list-style: none;
-    }
-
-    .insight-detail summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .insight-detail pre {
-      margin-top: 8px;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.02);
-      color: rgba(255, 255, 255, 0.88);
-      font-size: 13px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      font-family: "Inter", sans-serif;
-      max-height: 220px;
-      overflow: auto;
-    }
-
-    .empty {
-      color: rgba(255, 255, 255, 0.52);
-      font-size: 13px;
-      text-align: center;
-      padding: 8px;
-      border: 1px dashed rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .chat-wrap {
-      display: grid;
-      gap: 10px;
-      min-height: 0;
-      grid-template-rows: auto auto auto;
-    }
-
-    #chat {
-      align-self: start;
-      position: sticky;
-      top: 16px;
-      height: fit-content;
-    }
-
-    .chat-log {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 12px;
-      overflow: auto;
-      display: grid;
-      gap: 10px;
-      min-height: 170px;
-      max-height: min(42vh, 340px);
-    }
-
-    .msg {
-      max-width: 92%;
-      padding: 10px 11px;
-      border-radius: 12px;
-      font-size: 14px;
-      line-height: 1.6;
-      word-break: break-word;
-      border: 1px solid transparent;
-    }
-
-    .msg.user {
-      justify-self: end;
-      background: rgba(102, 126, 234, 0.16);
-      border-color: rgba(102, 126, 234, 0.34);
-      color: #fff;
-      border-bottom-right-radius: 5px;
-    }
-
-    .msg.bot {
-      justify-self: start;
-      background: rgba(0, 245, 160, 0.1);
-      border-color: rgba(0, 245, 160, 0.25);
-      color: rgba(255, 255, 255, 0.9);
-      border-bottom-left-radius: 5px;
-    }
-
-    .msg.system {
-      justify-self: center;
-      background: rgba(245, 197, 66, 0.12);
-      border-color: rgba(245, 197, 66, 0.3);
-      color: #f5c542;
-      text-align: center;
-      max-width: 100%;
-      font-size: 12px;
-      padding: 8px 10px;
-    }
-
-    .chat-form {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-    }
-
-    .chat-form textarea {
-      min-height: 44px;
-      max-height: 92px;
-      resize: vertical;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      padding: 12px;
-      font-family: inherit;
-      font-size: 14px;
-      line-height: 1.45;
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.04);
-      outline: none;
-    }
-
-    .chat-form textarea:focus {
-      border-color: rgba(0, 245, 160, 0.45);
-      box-shadow: 0 0 0 3px rgba(0, 245, 160, 0.13);
-    }
-
-    .chat-actions {
-      display: grid;
-      gap: 8px;
-      align-content: stretch;
-      min-width: 120px;
-    }
-
-    .footer-note {
-      margin-top: 12px;
-      color: rgba(255, 255, 255, 0.48);
-      font-size: 12px;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    .loading-row {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .table-wrap {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      overflow: auto;
-      max-height: 380px;
-    }
-
-    table {
-      width: 100%;
-      min-width: 760px;
-      border-collapse: collapse;
-    }
-
-    thead th {
-      position: sticky;
-      top: 0;
-      background: rgba(13, 17, 23, 0.95);
-      backdrop-filter: blur(6px);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: rgba(255, 255, 255, 0.55);
-      font-weight: 700;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    th,
-    td {
-      padding: 9px 11px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      vertical-align: top;
-    }
-
-    tbody td {
-      color: rgba(255, 255, 255, 0.82);
-    }
-
-    tbody tr:hover {
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .corr-cell {
-      text-align: center;
-      font-weight: 700;
-    }
-
-    .spin {
-      animation: spin 0.9s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 1000px) {
-      .hero-inner,
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      #chat {
-        position: static;
-        top: auto;
-      }
-
-      .chat-wrap {
-        min-height: 0;
-      }
-
-      .chat-log {
-        max-height: 420px;
-      }
-
-      .analytics-toolbar {
-        grid-template-columns: 1fr;
-      }
-
-      .analytics-side {
-        justify-self: stretch;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .page {
-        width: calc(100% - 16px);
-        margin-top: 10px;
-      }
-
-      .hero,
-      .card-body {
-        padding: 14px;
-      }
-
-      .card-head {
-        padding: 11px 14px;
-      }
-
-      .hero-kpis,
-      .metrics-grid,
-      .trend-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .settings-grid,
-      .chat-form {
-        grid-template-columns: 1fr;
-      }
-
-      .chat-actions {
-        min-width: 0;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .button {
-        width: 100%;
-      }
-
-      .chat-log {
-        min-height: 220px;
-        max-height: 360px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="page">
-    <header class="topbar">
-      <div class="topbar-links">
-        <a class="chip-link" href="/">
-          <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
-          Portfolio
-        </a>
-        <a class="chip-link" href="https://github.com/Liranatt/garmin-project" target="_blank" rel="noopener noreferrer">
-          <i data-lucide="github" style="width:14px;height:14px;"></i>
-          Project Repo
-        </a>
-      </div>
-      <span id="statusBadge" class="status loading">
-        <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
-        Connecting
-      </span>
-    </header>
-    
-    <div id="shelvedBanner" style="
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      background: var(--warn-soft);
-      border: 1px solid rgba(245, 197, 66, 0.35);
-      border-radius: var(--radius-md);
-      color: var(--warn-text);
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.5;
-    ">
-      <span>⚠️ Live sync is currently paused — Garmin's unofficial API was shut down. Data shown is from February 2026.</span>
-      <button
-        aria-label="Dismiss banner"
-        onclick="document.getElementById('shelvedBanner').style.display='none'"
-        style="
-          flex-shrink: 0;
-          background: none;
-          border: none;
-          color: var(--warn-text);
-          cursor: pointer;
-          font-size: 16px;
-          line-height: 1;
-          padding: 0 0 0 8px;
-          opacity: 0.75;
-        "
-      >✕</button>
-    </div>
-    <section class="hero">
-      <div class="hero-inner">
-        <div>
-          <h1>Garmin Health Intelligence Dashboard v3</h1>
-          <p>
-            Daily health intelligence from your Garmin data: snapshot, trends, cross-metric effects, workout progress,
-            and actionable guidance from specialized agents.
-          </p>
-        </div>
-        <div class="hero-kpis">
-          <article class="hero-kpi">
-            <span class="label">Resting HR</span>
-            <strong class="value" id="heroRestHr">--</strong>
-          </article>
-          <article class="hero-kpi">
-            <span class="label">HRV</span>
-            <strong class="value" id="heroHrv">--</strong>
-          </article>
-          <article class="hero-kpi">
-            <span class="label">Sleep Score</span>
-            <strong class="value" id="heroSleep">--</strong>
-          </article>
-          <article class="hero-kpi">
-            <span class="label">Body Battery</span>
-            <strong class="value" id="heroBattery">--</strong>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <nav class="mode-nav" aria-label="Dashboard sections">
-      <a class="mode-pill" href="#snapshot">Overview</a>
-      <a class="mode-pill" href="#insights">Insights</a>
-      <a class="mode-pill" href="#chat">Agent Chat</a>
-      <a class="mode-pill" href="#analytics" data-analytics-view="trends">Trends</a>
-      <a class="mode-pill" href="#analytics" data-analytics-view="correlations">Correlations</a>
-      <a class="mode-pill" href="#analytics" data-analytics-view="workouts">Workout Progress</a>
-    </nav>
-
-    <main class="layout">
-      <section class="stack">
-
-        <article id="snapshot" class="card">
-          <header class="card-head">
-            <h2 class="card-title">
-              <i data-lucide="heart-pulse" style="width:17px;height:17px;"></i>
-              Latest Snapshot
-            </h2>
-          </header>
-          <div class="card-body">
-            <div id="snapshotStatus" class="loading-row">
-              <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
-              Loading snapshot metrics...
-            </div>
-            <div id="snapshotSummary" class="help" hidden></div>
-            <div class="metrics-grid" id="metricsGrid" hidden>
-              <article class="metric">
-                <div class="metric-label">Resting Heart Rate</div>
-                <div class="metric-value" id="mRestHr">--</div>
-                <div class="metric-meta">bpm</div>
-              </article>
-              <article class="metric">
-                <div class="metric-label">HRV</div>
-                <div class="metric-value" id="mHrv">--</div>
-                <div class="metric-meta">ms</div>
-              </article>
-              <article class="metric">
-                <div class="metric-label">Sleep Score</div>
-                <div class="metric-value" id="mSleep">--</div>
-                <div class="metric-meta">0-100</div>
-              </article>
-              <article class="metric">
-                <div class="metric-label">Body Battery</div>
-                <div class="metric-value" id="mBattery">--</div>
-                <div class="metric-meta">0-100</div>
-              </article>
-              <article class="metric">
-                <div class="metric-label">Stress</div>
-                <div class="metric-value" id="mStress">--</div>
-                <div class="metric-meta">daily index</div>
-              </article>
-              <article class="metric">
-                <div class="metric-label" id="mLoadLabel">Training Load</div>
-                <div class="metric-value" id="mLoad">--</div>
-                <div class="metric-meta" id="mLoadMeta">7-day</div>
-              </article>
-            </div>
-          </div>
-        </article>
-
-        <article id="analytics" class="card">
-          <header class="card-head">
-            <h2 class="card-title">
-              <i data-lucide="line-chart" style="width:17px;height:17px;"></i>
-              Analytics Workspace
-            </h2>
-          </header>
-          <div class="card-body">
-            <div class="analytics-toolbar">
-              <div id="analyticsTabs" class="analytics-tabs" role="tablist" aria-label="Analytics views">
-                <button class="analytics-tab is-active" type="button" data-analytics-view="trends">Trends</button>
-                <button class="analytics-tab" type="button" data-analytics-view="correlations">Correlations</button>
-                <button class="analytics-tab" type="button" data-analytics-view="workouts">Workout Progress</button>
-              </div>
-              <div class="analytics-side">
-                <div class="filter-group">
-                  <label for="rangeSelect">Window</label>
-                  <select id="rangeSelect" aria-label="Analytics timeframe"></select>
-                </div>
-                <div class="filter-group">
-                  <label for="sportSelect">Sport</label>
-                  <select id="sportSelect" aria-label="Workout sport filter"></select>
-                </div>
-              </div>
-            </div>
-            <div id="historyStatus" class="loading-row trend-status">
-              <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
-              Loading analytics...
-            </div>
-
-            <section id="analyticsTrends" class="analytics-panel">
-              <div id="trendsSummary" class="help" hidden></div>
-              <div class="trend-grid" id="trendGrid" hidden></div>
-            </section>
-
-            <section id="analyticsCorrelations" class="analytics-panel" hidden>
-              <div id="correlationSummary" class="help"></div>
-              <div class="table-wrap" id="correlationTableWrap"></div>
-            </section>
-
-            <section id="analyticsWorkouts" class="analytics-panel" hidden>
-              <div id="workoutSummary" class="help"></div>
-              <div class="trend-grid" id="workoutTrendGrid"></div>
-              <div class="table-wrap" id="workoutTableWrap"></div>
-            </section>
-          </div>
-        </article>
-
-        <article id="insights" class="card">
-          <header class="card-head">
-            <h2 class="card-title">
-              <i data-lucide="sparkles" style="width:17px;height:17px;"></i>
-              Agent Insights
-            </h2>
-          </header>
-          <div class="card-body">
-            <div id="insightMain" class="insight-main" hidden></div>
-            <div id="insightsList" class="insights">
-              <div class="loading-row">
-                <i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>
-                Loading latest insights...
-              </div>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section id="chat" class="card">
-        <header class="card-head">
-          <h2 class="card-title">
-            <i data-lucide="messages-square" style="width:17px;height:17px;"></i>
-            Interactive Agent Chat
-          </h2>
-        </header>
-        <div class="card-body chat-wrap">
-          <div id="chatLog" class="chat-log">
-            <div class="msg system">Ask the agent about sleep patterns, training load, correlations, or recovery trends.</div>
-          </div>
-
-          <form id="chatForm" class="chat-form">
-            <textarea id="chatInput" placeholder="Example: Why did my recovery score drop this week?"></textarea>
-            <div class="chat-actions">
-              <button class="button primary" type="submit" id="sendBtn">
-                <i data-lucide="send" style="width:14px;height:14px;"></i>
-                Send
-              </button>
-              <button class="button ghost" type="button" id="clearChatBtn">
-                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-                Clear
-              </button>
-            </div>
-          </form>
-
-          <p class="footer-note">
-            Insights are computed daily from your 06:00 UTC sync and translated to practical actions for recovery and training.
-          </p>
-        </div>
-      </section>
-    </main>
-
-  </div>
-
-  <script>
-    const DEFAULT_API_BASE = "https://garmin-health-liran-f16faec73fc5.herokuapp.com";
-    const HISTORY_START_DATE = "2026-02-01";
-    const HISTORY_END_DATE = "2026-03-20";
-
-    const ANALYTICS_VIEWS = ["trends", "correlations", "workouts"];
-    const RANGE_OPTIONS = [
-      { days: 7, label: "1 week" },
-      { days: 14, label: "2 weeks" },
-      { days: 21, label: "3 weeks" },
-      { days: 28, label: "4 weeks" }
-    ];
-    const SPORT_OPTIONS = [
-      { key: "all", label: "All" },
-      { key: "running", label: "Running" },
-      { key: "cycling", label: "Cycling" },
-      { key: "swimming", label: "Swimming" },
-      { key: "skiing", label: "Skiing" },
-      { key: "gym", label: "Gym" }
-    ];
-
-    const state = {
-      apiBase: DEFAULT_API_BASE,
-      selectedRangeDays: 28,
-      selectedSport: "all",
-      analyticsView: "trends",
-      snapshot: null,
-      insights: { main: null, agents: [] },
-      history: [],
-      workouts: [],
-      workoutSummary: null,
-      crossEffects: null,
-      historyError: "",
-      workoutError: "",
-      crossEffectsError: ""
-    };
-
-    const el = {
-      statusBadge: document.getElementById("statusBadge"),
-      rangeSelect: document.getElementById("rangeSelect"),
-      sportSelect: document.getElementById("sportSelect"),
-      snapshotStatus: document.getElementById("snapshotStatus"),
-      snapshotSummary: document.getElementById("snapshotSummary"),
-      metricsGrid: document.getElementById("metricsGrid"),
-      historyStatus: document.getElementById("historyStatus"),
-      trendsSummary: document.getElementById("trendsSummary"),
-      trendGrid: document.getElementById("trendGrid"),
-      analyticsTrends: document.getElementById("analyticsTrends"),
-      analyticsCorrelations: document.getElementById("analyticsCorrelations"),
-      analyticsWorkouts: document.getElementById("analyticsWorkouts"),
-      correlationSummary: document.getElementById("correlationSummary"),
-      correlationTableWrap: document.getElementById("correlationTableWrap"),
-      workoutSummary: document.getElementById("workoutSummary"),
-      workoutTrendGrid: document.getElementById("workoutTrendGrid"),
-      workoutTableWrap: document.getElementById("workoutTableWrap"),
-      insightMain: document.getElementById("insightMain"),
-      insightsList: document.getElementById("insightsList"),
-      chatForm: document.getElementById("chatForm"),
-      chatInput: document.getElementById("chatInput"),
-      chatLog: document.getElementById("chatLog"),
-      sendBtn: document.getElementById("sendBtn"),
-      clearChatBtn: document.getElementById("clearChatBtn"),
-      heroRestHr: document.getElementById("heroRestHr"),
-      heroHrv: document.getElementById("heroHrv"),
-      heroSleep: document.getElementById("heroSleep"),
-      heroBattery: document.getElementById("heroBattery"),
-      mRestHr: document.getElementById("mRestHr"),
-      mHrv: document.getElementById("mHrv"),
-      mSleep: document.getElementById("mSleep"),
-      mBattery: document.getElementById("mBattery"),
-      mStress: document.getElementById("mStress"),
-      mLoad: document.getElementById("mLoad"),
-      mLoadLabel: document.getElementById("mLoadLabel"),
-      mLoadMeta: document.getElementById("mLoadMeta")
-    };
-
-
-
-    function endpoint(path) {
-      return `${state.apiBase}${path}`;
-    }
-
-    function fmt(value, fallback = "--") {
-      if (value === null || value === undefined || value === "") {
-        return fallback;
-      }
-      if (typeof value === "number" && Number.isFinite(value)) {
-        return Number.isInteger(value) ? String(value) : value.toFixed(1);
-      }
-      return String(value);
-    }
-
-    function setStatus(kind, text, icon = "activity") {
-      el.statusBadge.className = `status ${kind}`;
-      el.statusBadge.innerHTML = `<i data-lucide="${icon}" style="width:14px;height:14px;"></i>${text}`;
-      lucide.createIcons();
-    }
-
-    function rangeLabel(days) {
-      const option = RANGE_OPTIONS.find((item) => item.days === days);
-      return option ? option.label : `${days} days`;
-    }
-
-    function formatDate(value) {
-      if (!value) {
-        return "";
-      }
-      const ts = Date.parse(String(value));
-      if (!Number.isFinite(ts)) {
-        return String(value);
-      }
-      return new Date(ts).toISOString().slice(0, 10);
-    }
-
-    function messageFromError(error) {
-      if (error instanceof Error && error.message) {
-        return error.message;
-      }
-      return String(error || "Unknown error");
-    }
-
-    function findFirst(source, keys) {
-      for (const key of keys) {
-        const value = source?.[key];
-        if (value !== undefined && value !== null && value !== "") {
-          return value;
-        }
-      }
-      return null;
-    }
-
-    function normalizeSnapshot(data) {
-      const source = data?.snapshot || data?.data || data || {};
-      return {
-        restingHr: findFirst(source, ["resting_hr", "restingHeartRate", "rhr", "resting_hr_avg"]),
-        hrv: findFirst(source, ["hrv", "hrv_ms", "rmssd"]),
-        sleep: findFirst(source, ["sleep_score", "sleepScore", "sleep"]),
-        battery: findFirst(source, ["body_battery", "bodyBattery", "battery"]),
-        stress: findFirst(source, ["stress", "stress_score", "avg_stress"]),
-        readiness: findFirst(source, ["training_readiness", "readiness", "readiness_score"]),
-        load: findFirst(source, ["training_load", "load", "acute_load", "seven_day_load"]),
-        timestamp: findFirst(source, ["timestamp", "created_at", "date", "as_of"])
-      };
-    }
-
-    function numberOrNull(value) {
-      const n = Number(value);
-      return Number.isFinite(n) ? n : null;
-    }
-
-    function average(values) {
-      if (!values.length) {
-        return null;
-      }
-      return values.reduce((acc, value) => acc + value, 0) / values.length;
-    }
-
-    function normalizeHistory(payload) {
-      const rows = Array.isArray(payload)
-        ? payload
-        : Array.isArray(payload?.data)
-          ? payload.data
-          : Array.isArray(payload?.history)
-            ? payload.history
-            : [];
-
-      const normalized = rows.map((row) => ({
-        date: formatDate(findFirst(row, ["date", "timestamp", "as_of"])),
-        restingHr: numberOrNull(findFirst(row, ["resting_hr", "restingHr", "rhr"])),
-        hrv: numberOrNull(findFirst(row, ["hrv", "hrv_last_night", "hrv_ms", "rmssd"])),
-        sleep: numberOrNull(findFirst(row, ["sleep_score", "sleepScore", "sleep"])),
-        stress: numberOrNull(findFirst(row, ["stress", "stress_level", "stress_score", "avg_stress"])),
-        battery: numberOrNull(findFirst(row, ["battery", "body_battery", "bb_peak"])),
-        readiness: numberOrNull(findFirst(row, ["training_readiness", "readiness", "readiness_score"])),
-        load: numberOrNull(findFirst(row, ["training_load", "daily_load_acute", "load", "acute_load"]))
-      }));
-
-      const startTs = Date.parse(HISTORY_START_DATE);
-      return normalized
-        .filter((row) => row.date)
-       .filter((row) => {
-          const rowTs = Date.parse(String(row.date));
-          const endTs = Date.parse(HISTORY_END_DATE);
-          if (Number.isFinite(startTs) && Number.isFinite(rowTs) && rowTs < startTs) {
-            return false;
-          }
-          if (Number.isFinite(endTs) && Number.isFinite(rowTs) && rowTs > endTs) {
-            return false;
-          }
-          return [row.restingHr, row.hrv, row.sleep, row.stress, row.battery, row.readiness, row.load]
-            .some((value) => value !== null && value !== undefined);
-        })
-        .sort((a, b) => String(a.date).localeCompare(String(b.date)));
-    }
-
-    function loadMetricDescriptor(metrics) {
-      const readiness = numberOrNull(metrics?.readiness);
-      if (readiness !== null) {
-        return { label: "Training Readiness", meta: "0-100", value: readiness };
-      }
-      return {
-        label: "Training Load",
-        meta: "7-day",
-        value: numberOrNull(metrics?.load)
-      };
-    }
-
-    function summarizeSnapshot(metrics) {
-      const notes = [];
-      const readiness = numberOrNull(metrics?.readiness);
-      const sleep = numberOrNull(metrics?.sleep);
-      const stress = numberOrNull(metrics?.stress);
-      const battery = numberOrNull(metrics?.battery);
-      const hrv = numberOrNull(metrics?.hrv);
-      const rhr = numberOrNull(metrics?.restingHr);
-
-      if (sleep !== null) {
-        notes.push(sleep >= 78 ? "Sleep quality is solid right now." : "Sleep quality is below your ideal target.");
-      }
-      if (stress !== null) {
-        notes.push(stress <= 25 ? "Stress is under control." : "Stress is elevated and needs active recovery.");
-      }
-      if (battery !== null) {
-        notes.push(battery >= 70 ? "Body battery is supportive for training." : "Body battery is lower than ideal for a hard session.");
-      }
-      if (hrv !== null && rhr !== null) {
-        notes.push(`Recovery context: HRV ${fmt(hrv)} and resting HR ${fmt(rhr)}.`);
-      }
-
-      let action = "Recommendation: keep training moderate today and prioritize sleep consistency tonight.";
-      if (readiness !== null) {
-        if (readiness >= 70 && (stress === null || stress < 35) && (battery === null || battery >= 65)) {
-          action = "Recommendation: green light for a moderate session today, cap intensity around HR 150-160.";
-        } else if (readiness >= 50) {
-          action = "Recommendation: go easy to moderate today, cap intensity around HR 145-150.";
-        } else {
-          action = "Recommendation: recovery day preferred; if you train, keep it light and below HR 140.";
-        }
-      }
-
-      return `${notes.slice(0, 3).join(" ")} ${action}`.trim();
-    }
-
-    function summarizeTrends(rows, loadMetricKey) {
-      if (!rows.length) {
-        return "";
-      }
-      const deltas = {
-        sleep: trendDelta(rows.map((r) => r.sleep).filter((v) => v !== null && v !== undefined)),
-        stress: trendDelta(rows.map((r) => r.stress).filter((v) => v !== null && v !== undefined)),
-        battery: trendDelta(rows.map((r) => r.battery).filter((v) => v !== null && v !== undefined)),
-        load: trendDelta(rows.map((r) => r[loadMetricKey]).filter((v) => v !== null && v !== undefined))
-      };
-
-      const parts = [];
-      if (deltas.sleep !== null) {
-        parts.push(deltas.sleep >= 0 ? "Sleep trend is improving." : "Sleep trend is declining.");
-      }
-      if (deltas.stress !== null) {
-        parts.push(deltas.stress <= 0 ? "Stress trend is improving." : "Stress trend is getting worse.");
-      }
-      if (deltas.battery !== null) {
-        parts.push(deltas.battery >= 0 ? "Body battery trend is stable-to-up." : "Body battery trend shows recent depletion.");
-      }
-      if (deltas.load !== null) {
-        parts.push(
-          deltas.load > 20
-            ? "Training demand rose quickly this window; watch recovery closely."
-            : deltas.load < -20
-              ? "Training demand dropped sharply in this window."
-              : "Training demand is relatively stable."
-        );
-      }
-      return parts.join(" ");
-    }
-
-    function sparklineModel(values, width = 320, height = 68, pad = 7) {
-      const points = values.filter((value) => value !== null && value !== undefined);
-      if (points.length === 0) {
-        return { path: "", lastX: 0, lastY: 0 };
-      }
-
-      const min = Math.min(...points);
-      const max = Math.max(...points);
-      const range = max - min || 1;
-      const step = points.length > 1 ? (width - (pad * 2)) / (points.length - 1) : 0;
-
-      const mapped = points.map((value, index) => {
-        const x = pad + (index * step);
-        const y = height - pad - (((value - min) / range) * (height - (pad * 2)));
-        return { x, y };
-      });
-
-      const path = mapped.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(" ");
-      const last = mapped[mapped.length - 1];
-      return { path, lastX: last.x, lastY: last.y };
-    }
-
-    function trendDelta(values) {
-      const clean = values.filter((value) => value !== null && value !== undefined);
-      if (clean.length < 6) {
-        return null;
-      }
-      const chunk = Math.max(3, Math.floor(clean.length / 3));
-      const recent = average(clean.slice(-chunk));
-      const previous = average(clean.slice(0, chunk));
-      if (recent === null || previous === null || previous === 0) {
-        return null;
-      }
-      return ((recent - previous) / Math.abs(previous)) * 100;
-    }
-
-    function trendClass(delta, higherIsBetter) {
-      if (delta === null || Math.abs(delta) < 0.5) {
-        return "flat";
-      }
-      if (higherIsBetter) {
-        return delta >= 0 ? "up" : "down";
-      }
-      return delta >= 0 ? "down" : "up";
-    }
-
-    function renderHistory(rows) {
-      state.history = rows;
-      if (!rows.length) {
-        el.trendGrid.hidden = true;
-        el.trendsSummary.hidden = true;
-        el.historyStatus.innerHTML = '<span class="empty">No daily history rows returned yet.</span>';
-        return;
-      }
-
-      const readinessCount = rows.filter((row) => row.readiness !== null && row.readiness !== undefined).length;
-      const useReadiness = readinessCount >= Math.max(4, Math.floor(rows.length * 0.35));
-      const loadMetric = useReadiness
-        ? { key: "readiness", label: "Training Readiness", unit: "", higherIsBetter: true }
-        : { key: "load", label: "Training Load", unit: "", higherIsBetter: true };
-
-      const metrics = [
-        { key: "restingHr", label: "Resting HR", unit: "bpm", higherIsBetter: false },
-        { key: "hrv", label: "HRV", unit: "ms", higherIsBetter: true },
-        { key: "sleep", label: "Sleep Score", unit: "", higherIsBetter: true },
-        { key: "stress", label: "Stress", unit: "", higherIsBetter: false },
-        { key: "battery", label: "Body Battery", unit: "", higherIsBetter: true },
-        loadMetric
-      ];
-
-      const cards = metrics.map((metric) => {
-        const values = rows.map((row) => row[metric.key]).filter((value) => value !== null && value !== undefined);
-        if (!values.length) {
-          return `
-            <article class="trend-card">
-              <div class="trend-top">
-                <span class="trend-label">${metric.label}</span>
-                <strong class="trend-value">--</strong>
-              </div>
-              <div class="trend-delta flat">No data</div>
-              <div class="trend-note">No interpretation available yet for this metric in the selected window.</div>
-            </article>
-          `;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Garmin Health Archive — Liran Attar | Feb–Mar 2026</title>
+    <meta name="description"
+        content="Archived Garmin health data analysis for February–March 2026. Interactive charts, statistical deep-dives, and workout insights." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════
+           DESIGN TOKENS
+           ═══════════════════════════════════════════════ */
+        :root {
+            /* Dashboard register */
+            --bg: #0b0d11;
+            --bg-subtle: #0f1218;
+            --surface: #14171e;
+            --surface-hover: #1a1e27;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-focus: rgba(91, 154, 139, 0.45);
+            --accent: #5b9a8b;
+            --accent-soft: rgba(91, 154, 139, 0.14);
+            --accent-dim: #4a7d70;
+            --text: #e8eaed;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-dim: rgba(255, 255, 255, 0.35);
+            --positive: #6ec89b;
+            --negative: #e07474;
+            --warn: #d4a957;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.55);
+
+            /* Academic register */
+            --paper-bg: #f4efe5;
+            --paper-bg-alt: #ebe6db;
+            --paper-border: #d1cbc0;
+            --paper-text: #2c2a26;
+            --paper-text-dim: #6b6560;
+            --paper-accent: #5b7a6f;
+            --paper-rule: #c4beb2;
         }
 
-        const latest = values[values.length - 1];
-        const spark = sparklineModel(values);
-        const delta = trendDelta(values);
-        const klass = trendClass(delta, metric.higherIsBetter);
-        const deltaText = delta === null
-          ? "Need at least 6 days"
-          : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% across this window`;
-        const directionText = delta === null
-          ? "Trend is not stable yet."
-          : metric.higherIsBetter
-            ? (delta >= 0 ? "This trend is moving in a favorable direction." : "This trend is moving in an unfavorable direction.")
-            : (delta <= 0 ? "This trend is moving in a favorable direction." : "This trend is moving in an unfavorable direction.");
-
-        return `
-          <article class="trend-card">
-            <div class="trend-top">
-              <span class="trend-label">${metric.label}</span>
-              <strong class="trend-value">${fmt(latest)}${metric.unit ? ` ${metric.unit}` : ""}</strong>
-            </div>
-            <svg class="spark" viewBox="0 0 320 68" preserveAspectRatio="none">
-              <path d="${spark.path}"></path>
-              <circle cx="${spark.lastX.toFixed(2)}" cy="${spark.lastY.toFixed(2)}" r="3"></circle>
-            </svg>
-            <div class="trend-delta ${klass}">${escapeHtml(deltaText)}</div>
-            <div class="trend-note">${escapeHtml(directionText)}</div>
-          </article>
-        `;
-      }).join("");
-
-      const firstDate = rows[0].date;
-      const lastDate = rows[rows.length - 1].date;
-      el.historyStatus.textContent = `Loaded ${rows.length} daily rows from ${firstDate} to ${lastDate}`;
-      const trendSummary = summarizeTrends(rows, loadMetric.key);
-      if (trendSummary) {
-        el.trendsSummary.hidden = false;
-        el.trendsSummary.textContent = trendSummary;
-      } else {
-        el.trendsSummary.hidden = true;
-      }
-      el.trendGrid.innerHTML = cards;
-      el.trendGrid.hidden = false;
-    }
-
-    function renderHistoryError(message) {
-      el.trendsSummary.hidden = true;
-      el.trendGrid.hidden = true;
-      el.historyStatus.innerHTML = `<span class="empty">${escapeHtml(message)}</span>`;
-    }
-
-    function normalizeWorkouts(payload) {
-      const rows = Array.isArray(payload?.data)
-        ? payload.data
-        : Array.isArray(payload)
-          ? payload
-          : [];
-
-      const startTs = Date.parse(HISTORY_START_DATE);
-      return rows
-        .map((row) => {
-          const durationMin = numberOrNull(findFirst(row, ["duration_min", "durationMin"])) ??
-            (() => {
-              const seconds = numberOrNull(findFirst(row, ["duration_sec", "durationSec"]));
-              return seconds ? seconds / 60 : null;
-            })();
-          const distanceKm = numberOrNull(findFirst(row, ["distance_km", "distanceKm"])) ??
-            (() => {
-              const meters = numberOrNull(findFirst(row, ["distance_m", "distanceM"]));
-              return meters ? meters / 1000 : null;
-            })();
-
-          return {
-            date: formatDate(findFirst(row, ["date", "timestamp"])),
-            activityName: findFirst(row, ["activity_name", "activityName"]) || "Workout",
-            activityType: findFirst(row, ["activity_type", "activityType", "sport_type", "sportType"]) || "unknown",
-            durationMin,
-            distanceKm,
-            avgHr: numberOrNull(findFirst(row, ["average_hr", "avg_hr", "avgHr"])),
-            speedKph: numberOrNull(findFirst(row, ["speed_kph", "speedKph"])),
-            cadence: numberOrNull(findFirst(row, ["avg_cadence", "avgCadence", "cadence"])),
-            trainingLoad: numberOrNull(findFirst(row, ["training_load", "trainingLoad"]))
-          };
-        })
-        .filter((row) => row.date)
-        .filter((row) => {
-          const rowTs = Date.parse(row.date);
-          const endTs = Date.parse(HISTORY_END_DATE);
-          if (!Number.isFinite(rowTs)) return false;
-          if (Number.isFinite(startTs) && rowTs < startTs) return false;
-          if (Number.isFinite(endTs) && rowTs > endTs) return false;
-          return true;
-        })
-        .sort((a, b) => a.date.localeCompare(b.date));
-    }
-
-    function setAnalyticsView(view) {
-      if (!ANALYTICS_VIEWS.includes(view)) {
-        return;
-      }
-      state.analyticsView = view;
-
-      const panelMap = {
-        trends: el.analyticsTrends,
-        correlations: el.analyticsCorrelations,
-        workouts: el.analyticsWorkouts
-      };
-      Object.entries(panelMap).forEach(([name, node]) => {
-        if (node) {
-          node.hidden = name !== state.analyticsView;
-        }
-      });
-
-      document.querySelectorAll("[data-analytics-view]").forEach((node) => {
-        node.classList.toggle("is-active", node.dataset.analyticsView === state.analyticsView);
-      });
-
-      renderAnalyticsView();
-    }
-
-    function renderAnalyticsStatus() {
-      const parts = [`Window: ${rangeLabel(state.selectedRangeDays)}`];
-      const sportLabel = SPORT_OPTIONS.find((item) => item.key === state.selectedSport)?.label || "All";
-      parts.push(`Sport: ${sportLabel}`);
-      if (state.historyError) {
-        parts.push("Trends unavailable");
-      } else {
-        parts.push(`${state.history.length} daily rows`);
-      }
-      if (state.workoutError) {
-        parts.push("Workouts unavailable");
-      } else {
-        parts.push(`${state.workouts.length} workouts`);
-      }
-      if (state.crossEffectsError) {
-        parts.push("Cross-effects unavailable");
-      }
-      el.historyStatus.textContent = parts.join(" | ");
-    }
-    function pearson(valuesA, valuesB) {
-      const pairs = [];
-      for (let i = 0; i < valuesA.length; i += 1) {
-        const a = valuesA[i];
-        const b = valuesB[i];
-        if (a === null || b === null || a === undefined || b === undefined) {
-          continue;
-        }
-        pairs.push([a, b]);
-      }
-      if (pairs.length < 5) {
-        return null;
-      }
-
-      const xs = pairs.map((item) => item[0]);
-      const ys = pairs.map((item) => item[1]);
-      const meanX = average(xs);
-      const meanY = average(ys);
-      if (meanX === null || meanY === null) {
-        return null;
-      }
-
-      let numerator = 0;
-      let denX = 0;
-      let denY = 0;
-      for (let i = 0; i < xs.length; i += 1) {
-        const dx = xs[i] - meanX;
-        const dy = ys[i] - meanY;
-        numerator += dx * dy;
-        denX += dx * dx;
-        denY += dy * dy;
-      }
-      if (denX === 0 || denY === 0) {
-        return null;
-      }
-      return numerator / Math.sqrt(denX * denY);
-    }
-
-    function corrCellStyle(value, diagonal = false) {
-      if (diagonal) {
-        return "background: rgba(255,255,255,0.08);";
-      }
-      if (value === null) {
-        return "background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.4);";
-      }
-      const alpha = Math.min(0.46, 0.12 + (Math.abs(value) * 0.34));
-      if (value >= 0) {
-        return `background: rgba(74,222,128,${alpha.toFixed(3)});`;
-      }
-      return `background: rgba(251,113,133,${alpha.toFixed(3)});`;
-    }
-
-    function corrStrength(absValue) {
-      if (absValue >= 0.7) {
-        return "strong";
-      }
-      if (absValue >= 0.4) {
-        return "moderate";
-      }
-      return "weak";
-    }
-
-    function corrExplanation(leftLabel, rightLabel, value) {
-      const abs = Math.abs(value);
-      const strength = corrStrength(abs);
-      const direction = value >= 0 ? "move together" : "move opposite";
-      return `${leftLabel} and ${rightLabel} ${direction} (${strength}, r=${value.toFixed(2)}).`;
-    }
-
-    function renderCorrelationMatrix(rows) {
-      if (state.historyError) {
-        el.correlationSummary.innerHTML = `<span class="empty">${escapeHtml(state.historyError)}</span>`;
-        el.correlationTableWrap.innerHTML = "";
-        return;
-      }
-      const readinessCount = rows.filter((row) => row.readiness !== null && row.readiness !== undefined).length;
-      const useReadiness = readinessCount >= Math.max(4, Math.floor(rows.length * 0.35));
-      const metrics = [
-        { key: "restingHr", label: "Resting HR" },
-        { key: "hrv", label: "HRV" },
-        { key: "sleep", label: "Sleep Score" },
-        { key: "stress", label: "Stress" },
-        { key: "battery", label: "Body Battery" },
-        useReadiness
-          ? { key: "readiness", label: "Training Readiness" }
-          : { key: "load", label: "Training Load" }
-      ];
-
-      if (rows.length < 5) {
-        el.correlationSummary.innerHTML = '<span class="empty">Need at least 5 daily rows for correlation analysis.</span>';
-        el.correlationTableWrap.innerHTML = "";
-        return;
-      }
-
-      const matrix = metrics.map((left) => metrics.map((right) => (
-        left.key === right.key ? 1 : pearson(rows.map((row) => row[left.key]), rows.map((row) => row[right.key]))
-      )));
-
-      let strongest = null;
-      for (let i = 0; i < metrics.length; i += 1) {
-        for (let j = i + 1; j < metrics.length; j += 1) {
-          const value = matrix[i][j];
-          if (value === null) {
-            continue;
-          }
-          if (!strongest || Math.abs(value) > Math.abs(strongest.value)) {
-            strongest = { left: metrics[i].label, right: metrics[j].label, value };
-          }
-        }
-      }
-
-      const notable = [];
-      for (let i = 0; i < metrics.length; i += 1) {
-        for (let j = i + 1; j < metrics.length; j += 1) {
-          const value = matrix[i][j];
-          if (value === null) {
-            continue;
-          }
-          notable.push({ left: metrics[i].label, right: metrics[j].label, value });
-        }
-      }
-      notable.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
-
-      if (strongest) {
-        const topLines = notable
-          .slice(0, 3)
-          .map((pair) => `- ${corrExplanation(pair.left, pair.right, pair.value)}`)
-          .join("<br>");
-        const effectRows = Array.isArray(state.crossEffects?.pearson_effects)
-          ? state.crossEffects.pearson_effects.slice(0, 3)
-          : [];
-        const effectLines = effectRows.length
-          ? "<br><br>" + effectRows
-            .map((item) => {
-              const sign = item.r >= 0 ? "+" : "";
-              return `- ${escapeHtml(String(item.sport || "sport"))} -> ${escapeHtml(String(item.outcome_label || item.outcome || "metric"))} (${sign}${Number(item.r).toFixed(2)})`;
-            })
-            .join("<br>")
-          : "";
-        el.correlationSummary.innerHTML = topLines + effectLines;
-      } else {
-        el.correlationSummary.textContent = "No clear correlation pattern in this window.";
-      }
-
-      const header = metrics.map((metric) => `<th>${escapeHtml(metric.label)}</th>`).join("");
-      const body = metrics.map((metric, rowIndex) => {
-        const cells = metrics.map((_, colIndex) => {
-          const value = matrix[rowIndex][colIndex];
-          const text = value === null ? "--" : value.toFixed(2);
-          const title = value === null || rowIndex === colIndex
-            ? ""
-            : corrExplanation(metrics[rowIndex].label, metrics[colIndex].label, value);
-          return `<td class="corr-cell" style="${corrCellStyle(value, rowIndex === colIndex)}" title="${escapeHtml(title)}">${text}</td>`;
-        }).join("");
-        return `<tr><th>${escapeHtml(metric.label)}</th>${cells}</tr>`;
-      }).join("");
-
-      el.correlationTableWrap.innerHTML = `
-        <table>
-          <thead>
-            <tr><th>Metric</th>${header}</tr>
-          </thead>
-          <tbody>${body}</tbody>
-        </table>
-      `;
-    }
-
-    function renderWorkoutProgress(rows) {
-      const sportLabel = SPORT_OPTIONS.find((item) => item.key === state.selectedSport)?.label || "All";
-      if (state.workoutError) {
-        el.workoutSummary.innerHTML = `<span class="empty">${escapeHtml(state.workoutError)}</span>`;
-        el.workoutTrendGrid.innerHTML = "";
-        el.workoutTableWrap.innerHTML = "";
-        return;
-      }
-
-      if (!rows.length) {
-        el.workoutSummary.innerHTML = `<span class="empty">No ${escapeHtml(sportLabel)} workouts found in this period.</span>`;
-        el.workoutTrendGrid.innerHTML = "";
-        el.workoutTableWrap.innerHTML = "";
-        return;
-      }
-
-      const summary = state.workoutSummary || {};
-      const types = Array.isArray(summary.activity_types) ? summary.activity_types : [];
-      el.workoutSummary.innerHTML = `
-        <strong style="color:#fff;">${rows.length} ${escapeHtml(sportLabel)} workouts in ${escapeHtml(rangeLabel(state.selectedRangeDays))}.</strong>
-        <br>${escapeHtml(types.length ? `Types: ${types.slice(0, 5).join(", ")}` : "Types: mixed")}
-        <br><span style="color:rgba(255,255,255,0.58);font-size:12px;">${escapeHtml(summary?.strength_proxy_trend?.note || "Strength progression currently uses workout load/duration proxies.")}</span>
-      `;
-
-      const metrics = [
-        { key: "avgHr", label: "Workout Avg HR", unit: "bpm", higherIsBetter: false },
-        { key: "speedKph", label: "Speed", unit: "km/h", higherIsBetter: true },
-        { key: "cadence", label: "Cadence", unit: "spm", higherIsBetter: true },
-        { key: "trainingLoad", label: "Training Load", unit: "", higherIsBetter: true }
-      ];
-
-      el.workoutTrendGrid.innerHTML = metrics.map((metric) => {
-        const values = rows.map((row) => row[metric.key]).filter((value) => value !== null && value !== undefined);
-        if (!values.length) {
-          return `
-            <article class="trend-card">
-              <div class="trend-top">
-                <span class="trend-label">${metric.label}</span>
-                <strong class="trend-value">--</strong>
-              </div>
-              <div class="trend-delta flat">No data</div>
-              <div class="trend-note">No interpretation available yet for this workout metric.</div>
-            </article>
-          `;
+        /* ═══════════════════════════════════════════════
+           BASE RESET
+           ═══════════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        const latest = values[values.length - 1];
-        const spark = sparklineModel(values);
-        const delta = trendDelta(values);
-        const klass = trendClass(delta, metric.higherIsBetter);
-        const deltaText = delta === null ? "Need at least 6 sessions" : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}% in this window`;
-        const directionText = delta === null
-          ? "Trend is not stable yet."
-          : metric.higherIsBetter
-            ? (delta >= 0 ? "Progress is moving in a positive direction." : "Progress is trending down in this window.")
-            : (delta <= 0 ? "This metric is improving in this window." : "This metric is worsening in this window.");
-
-        return `
-          <article class="trend-card">
-            <div class="trend-top">
-              <span class="trend-label">${metric.label}</span>
-              <strong class="trend-value">${fmt(latest)}${metric.unit ? ` ${metric.unit}` : ""}</strong>
-            </div>
-            <svg class="spark" viewBox="0 0 320 68" preserveAspectRatio="none">
-              <path d="${spark.path}"></path>
-              <circle cx="${spark.lastX.toFixed(2)}" cy="${spark.lastY.toFixed(2)}" r="3"></circle>
-            </svg>
-            <div class="trend-delta ${klass}">${escapeHtml(deltaText)}</div>
-            <div class="trend-note">${escapeHtml(directionText)}</div>
-          </article>
-        `;
-      }).join("");
-
-      const recent = rows.slice(-50).reverse();
-      const tableRows = recent.map((row) => `
-        <tr>
-          <td>${escapeHtml(row.date)}</td>
-          <td>${escapeHtml(row.activityName)}</td>
-          <td>${escapeHtml(String(row.activityType).replace(/_/g, " "))}</td>
-          <td>${fmt(row.durationMin)}</td>
-          <td>${fmt(row.distanceKm)}</td>
-          <td>${fmt(row.avgHr)}</td>
-          <td>${fmt(row.speedKph)}</td>
-          <td>${fmt(row.cadence)}</td>
-          <td>${fmt(row.trainingLoad)}</td>
-        </tr>
-      `).join("");
-
-      el.workoutTableWrap.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th><th>Workout</th><th>Type</th><th>Min</th><th>Km</th>
-              <th>Avg HR</th><th>Speed</th><th>Cadence</th><th>Load</th>
-            </tr>
-          </thead>
-          <tbody>${tableRows}</tbody>
-        </table>
-      `;
-    }
-
-    function renderAnalyticsView() {
-      renderAnalyticsStatus();
-      if (state.analyticsView === "trends") {
-        if (state.historyError) {
-          renderHistoryError(state.historyError);
-          return;
-        }
-        renderHistory(state.history);
-        return;
-      }
-      if (state.analyticsView === "correlations") {
-        renderCorrelationMatrix(state.history);
-        return;
-      }
-      renderWorkoutProgress(state.workouts);
-    }
-
-    function renderSnapshot(metrics) {
-      state.snapshot = metrics;
-      const loadDescriptor = loadMetricDescriptor(metrics);
-
-      el.mRestHr.textContent = fmt(metrics.restingHr);
-      el.mHrv.textContent = fmt(metrics.hrv);
-      el.mSleep.textContent = fmt(metrics.sleep);
-      el.mBattery.textContent = fmt(metrics.battery);
-      el.mStress.textContent = fmt(metrics.stress);
-      el.mLoad.textContent = fmt(loadDescriptor.value);
-      el.mLoadLabel.textContent = loadDescriptor.label;
-      el.mLoadMeta.textContent = loadDescriptor.meta;
-
-      el.heroRestHr.textContent = fmt(metrics.restingHr);
-      el.heroHrv.textContent = fmt(metrics.hrv);
-      el.heroSleep.textContent = fmt(metrics.sleep);
-      el.heroBattery.textContent = fmt(metrics.battery);
-
-      el.snapshotStatus.innerHTML = metrics.timestamp
-        ? `As of ${fmt(metrics.timestamp)}`
-        : "Latest available snapshot";
-      el.snapshotSummary.hidden = false;
-      el.snapshotSummary.textContent = summarizeSnapshot(metrics);
-      el.metricsGrid.hidden = false;
-    }
-
-    function renderSnapshotError(message) {
-      el.snapshotSummary.hidden = true;
-      el.metricsGrid.hidden = true;
-      el.snapshotStatus.innerHTML = `<span class="empty">${message}</span>`;
-    }
-
-    function normalizeInsights(payload) {
-      const raw = Array.isArray(payload)
-        ? payload
-        : Array.isArray(payload?.insights)
-          ? payload.insights
-          : Array.isArray(payload?.data)
-            ? payload.data
-            : (payload?.insight || payload?.message || payload?.text)
-              ? [payload]
-              : [];
-
-      return expandCompositeInsights(raw);
-    }
-
-    function rawInsightText(item) {
-      if (typeof item === "string") {
-        return item;
-      }
-      return findFirst(item, ["insight", "message", "text", "summary", "content"]) || "";
-    }
-
-    function rawInsightAgent(item) {
-      if (typeof item === "string") {
-        return "agent";
-      }
-      return findFirst(item, ["agent", "agent_name", "source", "role"]) || "agent";
-    }
-
-    function rawInsightTime(item) {
-      if (typeof item === "string") {
-        return "";
-      }
-      return findFirst(item, ["timestamp", "created_at", "date", "time"]) || "";
-    }
-
-    function cleanAgentText(text) {
-      return String(text || "")
-        .replace(/\r/g, "")
-        .replace(/```[\s\S]*?```/g, "\n")
-        .replace(/^\s*\|.*\|\s*$/gm, "")
-        .replace(/^\s*[-=]{3,}\s*$/gm, "")
-        .replace(/^\s*(SELECT|FROM|WHERE|JOIN|ORDER BY|GROUP BY|LIMIT|INSERT|UPDATE|DELETE)\b.*$/gim, "")
-        .replace(/\n{3,}/g, "\n\n")
-        .trim();
-    }
-
-    function looksLikeNoise(line) {
-      const text = String(line || "").trim();
-      if (!text) {
-        return true;
-      }
-
-      const lower = text.toLowerCase();
-      if (/^[\d\s.,:%()+\-]+$/.test(text)) {
-        return true;
-      }
-      if (/\b(select|from|where|join|order by|group by|limit|insert|update|delete)\b/.test(lower)) {
-        return true;
-      }
-      if (/^\s*[\[{].*[\]}]\s*$/.test(text)) {
-        return true;
-      }
-
-      const digits = (text.match(/\d/g) || []).length;
-      const punctuation = (text.match(/[,;:|]/g) || []).length;
-      const digitDensity = digits / Math.max(text.length, 1);
-      if (digitDensity > 0.22 && !/(sleep|hrv|stress|recover|training|workout|recommend|action|improve|decrease|increase|load|battery)/i.test(text)) {
-        return true;
-      }
-      if (digits >= 8 && punctuation >= 5) {
-        return true;
-      }
-
-      return false;
-    }
-
-    function splitInsightCandidates(text) {
-      return cleanAgentText(text)
-        .split(/\n+/)
-        .flatMap((line) => line.split(/[.!?]\s+/))
-        .map((line) => line.replace(/^[\-*]\s*/, "").trim())
-        .filter((line) => line.length >= 25);
-    }
-
-    function scoreInsightCandidate(line) {
-      const text = String(line || "").trim();
-      const lower = text.toLowerCase();
-      let score = 0;
-
-      if (/(recommend|should|focus|prioritize|aim|try|keep|reduce|increase|avoid|improve|sleep|recover|training|stress|hrv|battery|load)/.test(lower)) {
-        score += 3;
-      }
-      if (/(because|indicates|suggests|linked|correlat|therefore|which means|driven by)/.test(lower)) {
-        score += 2;
-      }
-      if (text.length >= 45 && text.length <= 190) {
-        score += 1;
-      }
-      if (looksLikeNoise(text)) {
-        score -= 4;
-      }
-
-      const digits = (text.match(/\d/g) || []).length;
-      if (digits > 6) {
-        score -= 1;
-      }
-
-      return score;
-    }
-
-    function distillInsightText(text, maxItems = 3) {
-      const ranked = splitInsightCandidates(text)
-        .map((line) => ({ line, score: scoreInsightCandidate(line) }))
-        .filter((item) => item.score > -1)
-        .sort((a, b) => b.score - a.score);
-
-      const selected = [];
-      for (const item of ranked) {
-        const normalized = item.line.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
-        if (!normalized) {
-          continue;
+        html {
+            scroll-behavior: smooth;
         }
 
-        const tooSimilar = selected.some((existing) => {
-          const base = existing.normalized.slice(0, 28);
-          return normalized.includes(base) || existing.normalized.includes(normalized.slice(0, 28));
-        });
-        if (tooSimilar) {
-          continue;
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        selected.push({ line: item.line, normalized });
-        if (selected.length >= maxItems) {
-          break;
-        }
-      }
-
-      if (!selected.length) {
-        return "";
-      }
-
-      return selected.map((item) => `- ${item.line}`).join("\n");
-    }
-
-    function formatChatReply(text) {
-      const clean = cleanAgentText(text);
-      if (!clean) {
-        return "No response from agent.";
-      }
-
-      const lower = clean.toLowerCase();
-      const isBackendFallback =
-        lower.includes("ai chat model is unavailable") ||
-        lower.includes("your question was:");
-
-      // Preserve backend fallback and concise answers as-is.
-      if (isBackendFallback || clean.length <= 420) {
-        return clean;
-      }
-
-      const distilled = distillInsightText(clean, 3);
-      if (distilled) {
-        return `Key takeaways:\n${distilled}`;
-      }
-
-      return summarizeInsightText(clean, 320);
-    }
-
-    function summarizeInsightText(text, maxLen = 320) {
-      const cleaned = cleanAgentText(text);
-      const blocks = cleaned.split(/\n\s*\n/).map((part) => part.trim()).filter(Boolean);
-      let best = blocks.find((part) => !looksLikeNoise(part) && part.length >= 30) || blocks.find((part) => part.length >= 20) || "";
-      best = best.replace(/\s+/g, " ").trim();
-      if (best.length <= maxLen) {
-        return best;
-      }
-      return `${best.slice(0, maxLen - 3)}...`;
-    }
-
-    function insightPoints(text, maxItems = 3) {
-      const distilled = distillInsightText(text, maxItems);
-      if (distilled) {
-        return distilled
-          .split(/\n+/)
-          .map((line) => line.replace(/^[\-*]\s*/, "").trim())
-          .filter(Boolean);
-      }
-      const fallback = summarizeInsightText(text, 260);
-      return fallback ? [fallback] : [];
-    }
-
-    function insightPointsHtml(points) {
-      if (!points.length) {
-        return '<p>No actionable insight extracted for this block.</p>';
-      }
-      const items = points.map((point) => `<li>${escapeHtml(point)}</li>`).join("");
-      return `<ul class="insight-points">${items}</ul>`;
-    }
-
-    function formatSectionTitle(title) {
-      return title
-        .replace(/_/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function splitReportSections(text) {
-      const lines = text.split(/\r?\n/);
-      const sections = [];
-      let title = "";
-      let buffer = [];
-
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        const next = (lines[i + 1] || "").trim();
-        const next2 = (lines[i + 2] || "").trim();
-
-        if (/^={8,}$/.test(line) && next && /^={8,}$/.test(next2)) {
-          const content = buffer.join("\n").trim();
-          if (content) {
-            sections.push({
-              title: title || "Daily Report",
-              content
-            });
-          }
-          title = formatSectionTitle(next);
-          buffer = [];
-          i += 2;
-          continue;
+        /* ═══════════════════════════════════════════════
+           PAGE CONTAINER
+           ═══════════════════════════════════════════════ */
+        .page {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 32px 0 64px;
         }
 
-        buffer.push(lines[i]);
-      }
-
-      const tail = buffer.join("\n").trim();
-      if (tail) {
-        sections.push({
-          title: title || "Daily Report",
-          content: tail
-        });
-      }
-
-      if (!sections.length && text.trim()) {
-        return [{ title: "Daily Report", content: text.trim() }];
-      }
-      return sections;
-    }
-
-    function extractQuickWins(text, timestamp) {
-      const lines = text.split(/\r?\n/);
-      const wins = [];
-
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        const match = line.match(/^RECOMMENDATION\s*\d*\s*:\s*(.+)$/i);
-        if (!match) {
-          continue;
+        /* ═══════════════════════════════════════════════
+           TOPBAR
+           ═══════════════════════════════════════════════ */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding: 0;
         }
 
-        const block = [line];
-        let target = "";
-        let direction = "";
-
-        for (let j = i + 1; j < lines.length; j++) {
-          const look = lines[j].trim();
-          if (/^RECOMMENDATION\s*\d*\s*:/i.test(look)) {
-            break;
-          }
-          block.push(lines[j]);
-          const targetMatch = look.match(/^TARGET_METRIC\s*:\s*(.+)$/i);
-          if (targetMatch) {
-            target = targetMatch[1].trim();
-          }
-          const directionMatch = look.match(/^EXPECTED_DIRECTION\s*:\s*(.+)$/i);
-          if (directionMatch) {
-            direction = directionMatch[1].trim();
-          }
+        .topbar-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        const summaryParts = [match[1].trim()];
-        if (target) {
-          summaryParts.push(`Target: ${target}`);
-        }
-        if (direction) {
-          summaryParts.push(`Expected: ${direction}`);
-        }
-
-        wins.push({
-          agent: "Quick Win",
-          summary: summaryParts.join(" | "),
-          detail: block.join("\n").trim(),
-          timestamp
-        });
-
-        if (wins.length >= 3) {
-          break;
-        }
-      }
-
-      return wins;
-    }
-
-    function expandCompositeInsights(items) {
-      const expanded = [];
-
-      for (const item of items) {
-        const text = rawInsightText(item);
-        const agent = rawInsightAgent(item);
-        const timestamp = rawInsightTime(item);
-
-        if (!text) {
-          continue;
+        .chip-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            transition: all 0.25s ease;
         }
 
-        const sections = splitReportSections(text);
-        const isComposite = sections.length > 1 || text.length > 1000;
-
-        if (!isComposite) {
-          expanded.push(item);
-          continue;
+        .chip-link:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            transform: translateY(-1px);
         }
 
-        const wins = extractQuickWins(text, timestamp);
-        if (wins.length) {
-          expanded.push(...wins);
+        .archive-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(91, 154, 139, 0.25);
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        for (const section of sections) {
-          const detail = section.content.trim();
-          if (!detail) {
-            continue;
-          }
-          if (/^please provide the pre-computed correlation analysis/i.test(detail)) {
-            continue;
-          }
-          expanded.push({
-            agent: section.title || agent,
-            summary: summarizeInsightText(detail),
-            detail,
-            timestamp
-          });
+        /* ═══════════════════════════════════════════════
+           SECTION SPACING
+           ═══════════════════════════════════════════════ */
+        .section {
+            margin-bottom: 56px;
         }
-      }
 
-      return expanded.slice(0, 12);
-    }
-
-    function insightText(item) {
-      if (typeof item === "string") {
-        return item;
-      }
-      return findFirst(item, ["summary", "insight", "message", "text", "content"]) || "No text";
-    }
-
-    function insightAgent(item) {
-      if (typeof item === "string") {
-        return "agent";
-      }
-      return findFirst(item, ["agent", "agent_name", "source", "role"]) || "agent";
-    }
-
-    function insightTime(item) {
-      if (typeof item === "string") {
-        return "";
-      }
-      return findFirst(item, ["timestamp", "created_at", "date", "time"]) || "";
-    }
-
-    function insightDetail(item) {
-      if (typeof item === "string") {
-        return "";
-      }
-      return findFirst(item, ["detail", "text", "content", "raw"]) || "";
-    }
-
-    function renderInsights(items) {
-      const normalized = Array.isArray(items) ? items : [];
-      const mainInsight = normalized[0] || null;
-      const agentInsights = mainInsight ? normalized.slice(1, 10) : [];
-      state.insights = { main: mainInsight, agents: agentInsights };
-
-      if (!mainInsight) {
-        el.insightMain.hidden = true;
-        el.insightMain.innerHTML = "";
-        el.insightsList.innerHTML = '<div class="empty">No insights returned yet. Insights are generated in the daily sync run.</div>';
-        return;
-      }
-
-      const mainSummaryText = insightText(mainInsight);
-      const mainSummary = insightPointsHtml(insightPoints(mainSummaryText, 3));
-      const mainAgent = escapeHtml(String(insightAgent(mainInsight)).replace(/_/g, " "));
-      const mainTime = escapeHtml(insightTime(mainInsight));
-      el.insightMain.hidden = false;
-      el.insightMain.innerHTML = `
-        <h3>${mainAgent}</h3>
-        ${mainSummary}
-        <div class="meta">${mainTime ? `Updated: ${mainTime}` : "Latest synthesized insight"}</div>
-      `;
-
-      if (!agentInsights.length) {
-        el.insightsList.innerHTML = '<div class="empty">No additional agent sections for this cycle.</div>';
-        return;
-      }
-
-      const html = agentInsights.map((item) => {
-        const summaryText = insightText(item);
-        const summary = insightPointsHtml(insightPoints(summaryText, 2));
-        const agent = escapeHtml(String(insightAgent(item)).replace(/_/g, " "));
-        const time = escapeHtml(insightTime(item));
-        const detailRaw = insightDetail(item);
-        const detail = escapeHtml(summarizeInsightText(detailRaw, 420));
-        const hasDetail = detailRaw && detailRaw.trim();
-
-        return `
-          <article class="insight">
-            <div class="insight-top">
-              <span class="insight-agent">${agent}</span>
-              ${time ? `<span class="insight-time">${time}</span>` : ""}
-            </div>
-            ${summary}
-            ${hasDetail ? `
-              <details class="insight-detail">
-                <summary>View full section</summary>
-                <pre>${detail}</pre>
-              </details>
-            ` : ""}
-          </article>
-        `;
-      }).join("");
-
-      el.insightsList.innerHTML = html;
-    }
-    function renderInsightsError(message) {
-      state.insights = { main: null, agents: [] };
-      el.insightMain.hidden = true;
-      el.insightMain.innerHTML = "";
-      el.insightsList.innerHTML = `<div class="empty">${escapeHtml(message)}</div>`;
-    }
-    function appendMessage(role, text) {
-      const node = document.createElement("div");
-      node.className = `msg ${role}`;
-      node.textContent = text;
-      el.chatLog.appendChild(node);
-      el.chatLog.scrollTop = el.chatLog.scrollHeight;
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-    }
-
-    async function getJson(path) {
-      const response = await fetch(endpoint(path), {
-        method: "GET",
-        headers: { "Accept": "application/json" },
-        mode: "cors"
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const text = await response.text();
-      if (!text) {
-        return {};
-      }
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        return { raw: text };
-      }
-    }
-
-    async function postJson(path, body) {
-      const response = await fetch(endpoint(path), {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body),
-        mode: "cors"
-      });
-
-      if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(errText || `HTTP ${response.status}`);
-      }
-
-      const text = await response.text();
-      if (!text) {
-        return {};
-      }
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        return { raw: text };
-      }
-    }
-
-    async function loadHealth() {
-      try {
-        const result = await getJson("/health-check");
-        const statusText =
-          findFirst(result, ["status", "message"]) ||
-          (Object.keys(result).length ? "Healthy" : "Online");
-
-        if (/wake|boot|starting/i.test(statusText)) {
-          setStatus("warm", "Waking up", "clock-3");
-        } else {
-          setStatus("ok", "Online", "check-circle-2");
+        .section-header {
+            margin-bottom: 24px;
         }
-      } catch {
-        setStatus("fail", "Offline", "x-circle");
-      }
-    }
 
-    async function loadSnapshot() {
-      el.snapshotStatus.innerHTML = '<span class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading snapshot metrics...</span>';
-      lucide.createIcons();
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
 
-      try {
-        const data = await getJson("/api/v1/snapshot/latest");
-        const metrics = normalizeSnapshot(data);
-        renderSnapshot(metrics);
-      } catch (error) {
-        renderSnapshotError(`Could not load snapshot (${error.message}).`);
-      }
-    }
+        .section-title {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            line-height: 1.2;
+        }
 
-    async function loadHistory() {
-      el.historyStatus.innerHTML = '<span class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading analytics...</span>';
-      lucide.createIcons();
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            max-width: 60ch;
+            line-height: 1.6;
+        }
 
-      state.historyError = "";
-      state.workoutError = "";
-      state.crossEffectsError = "";
+        /* ═══════════════════════════════════════════════
+           HERO
+           ═══════════════════════════════════════════════ */
+        .hero {
+            background:
+                radial-gradient(ellipse at 20% -20%, rgba(91, 154, 139, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% -10%, rgba(91, 120, 154, 0.08) 0%, transparent 45%),
+                linear-gradient(170deg, var(--surface) 0%, rgba(20, 23, 30, 0.6) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px 36px;
+            margin-bottom: 56px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
 
-      const days = Number(state.selectedRangeDays);
-      const [historyResult, workoutResult, effectsResult] = await Promise.allSettled([
-        getJson(`/api/v1/metrics/history?days=${encodeURIComponent(days)}`),
-        getJson(`/api/v1/workouts/progress?days=${encodeURIComponent(days)}&sport=${encodeURIComponent(state.selectedSport)}`),
-        getJson(`/api/v1/analytics/cross-effects?days=${encodeURIComponent(days)}`)
-      ]);
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(91, 154, 139, 0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
 
-      if (historyResult.status === "fulfilled") {
-        state.history = normalizeHistory(historyResult.value);
-      } else {
-        state.history = [];
-        state.historyError = `Could not load trend history (${messageFromError(historyResult.reason)}).`;
-      }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
 
-      if (workoutResult.status === "fulfilled") {
-        state.workouts = normalizeWorkouts(workoutResult.value);
-        state.workoutSummary = workoutResult.value?.summary && typeof workoutResult.value.summary === "object"
-          ? workoutResult.value.summary
-          : null;
-      } else {
-        state.workouts = [];
-        state.workoutSummary = null;
-        state.workoutError = `Could not load workout progress (${messageFromError(workoutResult.reason)}).`;
-      }
+        .hero-top {
+            margin-bottom: 32px;
+        }
 
-      if (effectsResult.status === "fulfilled") {
-        state.crossEffects = effectsResult.value;
-      } else {
-        state.crossEffects = null;
-        state.crossEffectsError = `Could not load cross-effects (${messageFromError(effectsResult.reason)}).`;
-      }
+        .hero h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(30px, 5vw, 46px);
+            line-height: 1.08;
+            letter-spacing: -1.5px;
+            color: #fff;
+            margin-bottom: 12px;
+        }
 
-      renderAnalyticsView();
-    }
-    async function loadInsights() {
-      el.insightsList.innerHTML = '<div class="loading-row"><i data-lucide="loader-2" class="spin" style="width:14px;height:14px;"></i>Loading latest insights...</div>';
-      el.insightMain.hidden = true;
-      el.insightMain.innerHTML = "";
-      lucide.createIcons();
+        .hero h1 span {
+            color: var(--accent);
+        }
 
-      try {
-        const data = await getJson("/api/v1/insights/latest");
-        const items = normalizeInsights(data);
-        renderInsights(items);
-      } catch (error) {
-        renderInsightsError(`Could not load insights (${error.message}).`);
-      }
-    }
-    async function sendChat(message) {
-      appendMessage("user", message);
-      appendMessage("bot", "Analyzing data in 3 layers (this may take up to a minute)...");
-      const pendingNode = el.chatLog.lastElementChild;
+        .hero-period {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.3px;
+            margin-bottom: 10px;
+        }
 
-      try {
-        const result = await postJson("/api/v1/chat", { message });
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            max-width: 58ch;
+        }
 
-        if (result.job_id && result.status === "processing") {
-          pendingNode.textContent = "Agent is working...";
-          const maxAttempts = 90;
-          const interval = 2000;
-          for (let i = 0; i < maxAttempts; i++) {
-            await new Promise(r => setTimeout(r, interval));
-            try {
-              const status = await getJson(`/api/v1/chat/status/${result.job_id}`);
-              if (status.status === "completed") {
-                const reply = findFirst(status, ["answer", "response", "message", "text", "output"]) || "No response field returned by API.";
-                pendingNode.innerHTML = formatChatReply(String(reply));
-                return;
-              }
-              if (status.status === "failed" || status.error) {
-                pendingNode.textContent = `Analysis failed: ${status.error || "Unknown error"}`;
-                return;
-              }
-              const dots = ".".repeat((i % 3) + 1);
-              pendingNode.textContent = `Agent is working${dots}`;
-            } catch {
-              // transient network blip — keep polling
+        .hero-kpis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 18px 16px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .kpi-unit {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* ═══════════════════════════════════════════════
+           CARDS (Dashboard register)
+           ═══════════════════════════════════════════════ */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .card-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: #fff;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Metric toggles */
+        .toggle-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text);
+        }
+
+        .toggle-btn.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .toggle-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Chart container */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 340px;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ═══════════════════════════════════════════════
+           WORKOUT SECTION
+           ═══════════════════════════════════════════════ */
+        .workout-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        .chart-container-sm {
+            position: relative;
+            height: 260px;
+        }
+
+        .workout-table-wrap {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.02);
+            overflow: auto;
+            max-height: 400px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background: rgba(14, 17, 23, 0.96);
+            backdrop-filter: blur(6px);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th,
+        td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        tbody td {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .sport-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: capitalize;
+        }
+
+        /* ═══════════════════════════════════════════════
+           ACADEMIC / PAPER REGISTER
+           ═══════════════════════════════════════════════ */
+        .paper-section {
+            margin-bottom: 56px;
+        }
+
+        .paper-card {
+            background: var(--paper-bg);
+            border: 1px solid var(--paper-border);
+            border-radius: var(--radius-lg);
+            padding: 36px 32px;
+            color: var(--paper-text);
+            position: relative;
+            box-shadow: 0 2px 16px -6px rgba(0, 0, 0, 0.12);
+        }
+
+        .paper-card+.paper-card {
+            margin-top: 24px;
+        }
+
+        .paper-card::before {
+            content: "";
+            position: absolute;
+            left: 32px;
+            right: 32px;
+            top: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--paper-accent), transparent);
+            border-radius: 0 0 4px 4px;
+            opacity: 0.4;
+        }
+
+        .paper-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: "Inter", sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--paper-accent);
+            margin-bottom: 10px;
+        }
+
+        .paper-title {
+            font-family: "Crimson Pro", Georgia, serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--paper-text);
+            line-height: 1.3;
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .paper-body {
+            font-family: "Crimson Pro", Georgia, serif;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--paper-text);
+        }
+
+        .paper-body p {
+            margin-bottom: 14px;
+        }
+
+        .paper-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .paper-body strong {
+            color: #1a1a1a;
+        }
+
+        .paper-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--paper-rule);
+            margin: 24px 0;
+        }
+
+        .paper-formula {
+            background: var(--paper-bg-alt);
+            border: 1px solid var(--paper-rule);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin: 20px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .paper-finding {
+            background: rgba(91, 122, 111, 0.08);
+            border-left: 3px solid var(--paper-accent);
+            padding: 14px 18px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 20px 0;
+            font-family: "Crimson Pro", Georgia, serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--paper-text);
+        }
+
+        .paper-finding strong {
+            color: var(--paper-accent);
+        }
+
+        /* Heatmap within paper */
+        .heatmap-wrap {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .heatmap-table {
+            border-collapse: collapse;
+            min-width: auto;
+            width: auto;
+            margin: 0 auto;
+        }
+
+        .heatmap-table th {
+            background: var(--paper-bg-alt);
+            color: var(--paper-text-dim);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            padding: 8px 10px;
+            border: 1px solid var(--paper-rule);
+            position: static;
+        }
+
+        .heatmap-table td {
+            text-align: center;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 12px;
+            border: 1px solid var(--paper-rule);
+            min-width: 72px;
+            transition: transform 0.15s ease;
+        }
+
+        .heatmap-table td:hover {
+            transform: scale(1.05);
+        }
+
+        /* AR(1) coefficient cards */
+        .ar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .ar-card {
+            background: var(--paper-bg-alt);
+            border: 1px solid var(--paper-rule);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .ar-metric {
+            font-family: "Inter", sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--paper-text-dim);
+            margin-bottom: 6px;
+        }
+
+        .ar-value {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .ar-interp {
+            font-family: "Crimson Pro", Georgia, serif;
+            font-size: 13px;
+            color: var(--paper-text-dim);
+            margin-top: 6px;
+        }
+
+        /* Markov matrix */
+        .markov-table {
+            border-collapse: collapse;
+            width: auto;
+            margin: 16px auto;
+            min-width: auto;
+        }
+
+        .markov-table th,
+        .markov-table td {
+            padding: 10px 14px;
+            border: 1px solid var(--paper-rule);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .markov-table th {
+            background: var(--paper-bg-alt);
+            color: var(--paper-text-dim);
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+            position: static;
+        }
+
+        .markov-table td {
+            font-weight: 600;
+        }
+
+        /* Chart within paper card */
+        .paper-chart-container {
+            position: relative;
+            height: 280px;
+            margin: 20px 0;
+            background: #fff;
+            border: 1px solid var(--paper-rule);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+        }
+
+        /* ═══════════════════════════════════════════════
+           INSIGHTS ARCHIVE
+           ═══════════════════════════════════════════════ */
+        .insights-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .insight-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            transition: border-color 0.2s ease;
+        }
+
+        .insight-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .insight-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .insight-agent-tag {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border: 1px solid rgba(91, 154, 139, 0.2);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .insight-time-tag {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.65;
+        }
+
+        .insight-text ul {
+            margin: 6px 0 0 18px;
+        }
+
+        .insight-text li {
+            margin-bottom: 4px;
+        }
+
+        .insight-detail {
+            margin-top: 10px;
+            border-top: 1px dashed var(--border);
+            padding-top: 10px;
+        }
+
+        .insight-detail summary {
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            list-style: none;
+        }
+
+        .insight-detail summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .insight-detail pre {
+            margin-top: 8px;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-family: "Inter", sans-serif;
+            max-height: 240px;
+            overflow: auto;
+        }
+
+        /* ═══════════════════════════════════════════════
+           CHAT
+           ═══════════════════════════════════════════════ */
+        .chat-log {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 14px;
+            overflow-y: auto;
+            display: grid;
+            gap: 10px;
+            min-height: 180px;
+            max-height: 380px;
+            margin-bottom: 14px;
+        }
+
+        .msg {
+            max-width: 88%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            line-height: 1.6;
+            word-break: break-word;
+            border: 1px solid transparent;
+            white-space: pre-wrap;
+        }
+
+        .msg.user {
+            justify-self: end;
+            background: rgba(91, 120, 154, 0.16);
+            border-color: rgba(91, 120, 154, 0.3);
+            color: #fff;
+            border-bottom-right-radius: 6px;
+        }
+
+        .msg.bot {
+            justify-self: start;
+            background: var(--accent-soft);
+            border-color: rgba(91, 154, 139, 0.22);
+            color: rgba(255, 255, 255, 0.9);
+            border-bottom-left-radius: 6px;
+        }
+
+        .msg.system {
+            justify-self: center;
+            background: rgba(91, 154, 139, 0.08);
+            border-color: rgba(91, 154, 139, 0.18);
+            color: var(--accent);
+            text-align: center;
+            max-width: 100%;
+            font-size: 13px;
+            padding: 10px 14px;
+        }
+
+        .chat-form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+        }
+
+        .chat-form textarea {
+            min-height: 44px;
+            max-height: 88px;
+            resize: vertical;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.45;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .chat-form textarea:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(91, 154, 139, 0.1);
+        }
+
+        .chat-actions {
+            display: grid;
+            gap: 8px;
+            align-content: stretch;
+        }
+
+        .btn {
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dim);
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+        }
+
+        /* ═══════════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════════ */
+        .page-footer {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 12px;
+            padding: 32px 0 0;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ═══════════════════════════════════════════════
+           LOADING STATE
+           ═══════════════════════════════════════════════ */
+        .loading-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 0.9s linear infinite;
+        }
+
+        .empty-state {
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-align: center;
+            padding: 24px;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* ═══════════════════════════════════════════════
+           STAT SECTION HEADER (on dark bg, before paper)
+           ═══════════════════════════════════════════════ */
+        .stat-section-header {
+            margin-bottom: 28px;
+        }
+
+        .stat-section-header .section-subtitle {
+            font-family: "Crimson Pro", Georgia, serif;
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════════ */
+        @media (max-width: 860px) {
+            .workout-grid {
+                grid-template-columns: 1fr;
             }
-          }
-          pendingNode.textContent = "Agent timed out. Please try again.";
-        } else {
-          const reply = findFirst(result, ["answer", "response", "message", "text", "output"]) || "No response field returned by API.";
-          pendingNode.innerHTML = formatChatReply(String(reply));
+
+            .hero {
+                padding: 28px 22px;
+            }
+
+            .hero-kpis {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .paper-card {
+                padding: 26px 22px;
+            }
+
+            .ar-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
-      } catch (error) {
-        pendingNode.textContent = `Request failed: ${error.message}`;
-      }
-    }
 
-    function initRangeOptions() {
-      const options = RANGE_OPTIONS.map((item) => (
-        `<option value="${item.days}">${item.label}</option>`
-      )).join("");
-      el.rangeSelect.innerHTML = options;
+        @media (max-width: 600px) {
+            .page {
+                width: calc(100% - 20px);
+                padding-top: 18px;
+            }
 
-      if (!RANGE_OPTIONS.some((item) => item.days === state.selectedRangeDays)) {
-        state.selectedRangeDays = RANGE_OPTIONS[0].days;
-      }
-      el.rangeSelect.value = String(state.selectedRangeDays);
-    }
+            .hero-kpis {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
-    function initSportOptions() {
-      const options = SPORT_OPTIONS.map((item) => (
-        `<option value="${item.key}">${item.label}</option>`
-      )).join("");
-      el.sportSelect.innerHTML = options;
-      if (!SPORT_OPTIONS.some((item) => item.key === state.selectedSport)) {
-        state.selectedSport = SPORT_OPTIONS[0].key;
-      }
-      el.sportSelect.value = state.selectedSport;
-    }
+            .hero h1 {
+                font-size: 26px;
+            }
 
-    function initEvents() {
-      initRangeOptions();
-      initSportOptions();
+            .chart-container {
+                height: 260px;
+            }
 
-      el.rangeSelect.addEventListener("change", () => {
-        const nextDays = Number(el.rangeSelect.value);
-        if (!Number.isFinite(nextDays) || nextDays <= 0) {
-          return;
+            .paper-chart-container {
+                height: 220px;
+            }
+
+            .ar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chat-form {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
-        state.selectedRangeDays = nextDays;
-        loadHistory();
-      });
+    </style>
+</head>
 
-      el.sportSelect.addEventListener("change", () => {
-        state.selectedSport = el.sportSelect.value || "all";
-        loadHistory();
-      });
+<body>
+    <div class="page">
+        <!-- ─── TOPBAR ──────────────────────────────── -->
+        <header class="topbar">
+            <div class="topbar-links">
+                <a class="chip-link" href="/">
+                    <i data-lucide="arrow-left" style="width:13px;height:13px;"></i>
+                    Portfolio
+                </a>
+                <a class="chip-link" href="https://github.com/Liranatt/garmin-project" target="_blank"
+                    rel="noopener noreferrer">
+                    <i data-lucide="github" style="width:13px;height:13px;"></i>
+                    Source
+                </a>
+            </div>
+            <span class="archive-badge">
+                <i data-lucide="archive" style="width:12px;height:12px;"></i>
+                Historical Archive
+            </span>
+        </header>
 
-      document.querySelectorAll("[data-analytics-view]").forEach((node) => {
-        node.addEventListener("click", (event) => {
-          const view = node.dataset.analyticsView;
-          if (!view) {
-            return;
-          }
-          if (node.tagName === "A") {
-            event.preventDefault();
-            history.replaceState(null, "", "#analytics");
-          }
-          setAnalyticsView(view);
+        <!-- ─── HERO ────────────────────────────────── -->
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <div class="hero-top">
+                    <div class="hero-period">February 1 — March 20, 2026</div>
+                    <h1>Garmin Health <span>Archive</span></h1>
+                    <p class="hero-desc">
+                        A comprehensive analysis of 48 days of Garmin health data. This page
+                        explores daily recovery metrics, workout patterns, and the statistical
+                        relationships that emerge across sleep, stress, and training load.
+                    </p>
+                </div>
+                <div class="hero-kpis" id="heroKpis">
+                    <div class="kpi-card"><div class="kpi-label">Avg Resting HR</div><div class="kpi-value" id="kpiHr">—</div><div class="kpi-unit">bpm</div></div>
+                    <div class="kpi-card"><div class="kpi-label">Avg HRV</div><div class="kpi-value" id="kpiHrv">—</div><div class="kpi-unit">ms</div></div>
+                    <div class="kpi-card"><div class="kpi-label">Avg Sleep Score</div><div class="kpi-value" id="kpiSleep">—</div><div class="kpi-unit">0–100</div></div>
+                    <div class="kpi-card"><div class="kpi-label">Avg Body Battery</div><div class="kpi-value" id="kpiBattery">—</div><div class="kpi-unit">peak</div></div>
+                    <div class="kpi-card"><div class="kpi-label">Workouts</div><div class="kpi-value" id="kpiWorkouts">—</div><div class="kpi-unit">sessions</div></div>
+                    <div class="kpi-card"><div class="kpi-label">Total Distance</div><div class="kpi-value" id="kpiDistance">—</div><div class="kpi-unit">km</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── HEALTH TIMELINE ─────────────────────── -->
+        <section class="section" id="timelineSection">
+            <div class="section-header">
+                <div class="section-label">
+                    <i data-lucide="activity" style="width:13px;height:13px;"></i>
+                    Health Timeline
+                </div>
+                <h2 class="section-title">Daily Recovery Metrics</h2>
+                <p class="section-subtitle">Track how resting heart rate, HRV, sleep, and other recovery signals evolved across the archive period. Toggle metrics on and off to compare.</p>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="toggle-row" id="metricToggles"></div>
+                    <div class="chart-container">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── WORKOUT ARCHIVE ─────────────────────── -->
+        <section class="section" id="workoutSection">
+            <div class="section-header">
+                <div class="section-label">
+                    <i data-lucide="dumbbell" style="width:13px;height:13px;"></i>
+                    Workout Archive
+                </div>
+                <h2 class="section-title">Training Activity</h2>
+                <p class="section-subtitle">Overview of workout types, durations, and performance across the 48-day period.</p>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="workout-grid">
+                        <div>
+                            <div class="chart-container-sm">
+                                <canvas id="activityChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="chart-container-sm">
+                                <canvas id="scatterChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="workout-table-wrap" id="workoutTableWrap"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── STATISTICAL DEEP DIVE ───────────────── -->
+        <section class="section paper-section" id="statsSection">
+            <div class="stat-section-header">
+                <div class="section-label">
+                    <i data-lucide="flask-conical" style="width:13px;height:13px;"></i>
+                    Statistical Analysis
+                </div>
+                <h2 class="section-title">Patterns in the Data</h2>
+                <p class="section-subtitle" style="font-family:'Crimson Pro',Georgia,serif; font-size:16px;">
+                    Beyond the daily numbers, what relationships and patterns emerge from 48 days of continuous health monitoring?
+                    The following sections use established statistical methods to uncover meaningful structure in the data.
+                </p>
+            </div>
+
+            <!-- Pearson Correlation -->
+            <div class="paper-card" id="pearsonCard">
+                <div class="paper-label">
+                    <i data-lucide="scan-search" style="width:11px;height:11px;"></i>
+                    Correlation Analysis
+                </div>
+                <h3 class="paper-title">How Do Health Metrics Move Together?</h3>
+                <div class="paper-body">
+                    <p>
+                        <strong>Pearson correlation</strong> measures whether two health metrics tend to move in the same direction
+                        (positive correlation), opposite directions (negative correlation), or have no consistent relationship.
+                        A value of <strong>+1</strong> means they always move together; <strong>−1</strong> means they always move
+                        in opposite directions; <strong>0</strong> means no linear relationship.
+                    </p>
+                </div>
+                <div class="paper-formula" id="pearsonFormula"></div>
+                <div id="pearsonHeatmap" class="heatmap-wrap"></div>
+                <div id="pearsonFindings"></div>
+            </div>
+
+            <!-- AR(1) Persistence -->
+            <div class="paper-card" id="arCard">
+                <div class="paper-label">
+                    <i data-lucide="repeat-2" style="width:11px;height:11px;"></i>
+                    Persistence Analysis
+                </div>
+                <h3 class="paper-title">How Sticky Is Each Metric Day-to-Day?</h3>
+                <div class="paper-body">
+                    <p>
+                        Some health signals are <strong>persistent</strong>: if your stress is high today, it tends to stay
+                        high tomorrow. Others bounce around more freely. An <strong>AR(1) coefficient</strong> quantifies this
+                        "stickiness" — how much of today's value carries over into tomorrow's. A value near <strong>1.0</strong>
+                        means the metric barely changes day-to-day; near <strong>0</strong> means each day is essentially independent.
+                    </p>
+                </div>
+                <div class="paper-formula" id="arFormula"></div>
+                <div id="arCoefficients" class="ar-grid"></div>
+                <div class="paper-chart-container">
+                    <canvas id="arScatterChart"></canvas>
+                </div>
+                <div id="arFindings"></div>
+            </div>
+
+            <!-- Markov Transitions -->
+            <div class="paper-card" id="markovCard">
+                <div class="paper-label">
+                    <i data-lucide="git-branch" style="width:11px;height:11px;"></i>
+                    State Transitions
+                </div>
+                <h3 class="paper-title">How Does Recovery State Change Day-to-Day?</h3>
+                <div class="paper-body">
+                    <p>
+                        A <strong>Markov transition matrix</strong> captures the probability of moving from one "state" to another.
+                        Here, we categorize each day's body battery into four states — <strong>Low</strong>, <strong>Moderate</strong>,
+                        <strong>Good</strong>, and <strong>High</strong> — and count how often each transition occurs. This reveals
+                        whether recovery tends to be stable, or whether it swings unpredictably.
+                    </p>
+                    <p>
+                        Each row in the matrix shows: given that today is in state X, what fraction of the time does tomorrow
+                        land in each state? High diagonal values mean the system is stable. Off-diagonal values show common transitions.
+                    </p>
+                </div>
+                <div class="paper-formula" id="markovFormula"></div>
+                <div id="markovMatrix" class="heatmap-wrap"></div>
+                <div id="markovFindings"></div>
+            </div>
+
+            <!-- Distribution Analysis -->
+            <div class="paper-card" id="distributionCard">
+                <div class="paper-label">
+                    <i data-lucide="bar-chart-3" style="width:11px;height:11px;"></i>
+                    Distribution & Volatility
+                </div>
+                <h3 class="paper-title">How Spread Out Are the Daily Values?</h3>
+                <div class="paper-body">
+                    <p>
+                        Averages can hide a lot. Two metrics might have the same mean but very different <strong>variability</strong>.
+                        The table below shows the range and spread of each metric across the archive — from minimum through the
+                        median to maximum — along with the coefficient of variation (CV), which measures relative volatility.
+                        A higher CV means the metric swings more relative to its average.
+                    </p>
+                </div>
+                <div id="distributionTable" class="heatmap-wrap"></div>
+                <div id="distributionFindings"></div>
+            </div>
+
+            <!-- Workout Recovery Effects -->
+            <div class="paper-card" id="effectsCard">
+                <div class="paper-label">
+                    <i data-lucide="zap" style="width:11px;height:11px;"></i>
+                    Workout Effects
+                </div>
+                <h3 class="paper-title">How Does Training Affect Next-Day Recovery?</h3>
+                <div class="paper-body">
+                    <p>
+                        One of the most useful questions in health tracking: does today's workout help or hinder
+                        tomorrow's recovery? By comparing next-day health metrics on <strong>workout days</strong> versus
+                        <strong>rest days</strong>, we can estimate the short-term recovery cost (or benefit) of training.
+                    </p>
+                </div>
+                <div id="effectsContent"></div>
+                <div id="effectsFindings"></div>
+            </div>
+        </section>
+
+        <!-- ─── INSIGHTS ARCHIVE ────────────────────── -->
+        <section class="section" id="insightsSection">
+            <div class="section-header">
+                <div class="section-label">
+                    <i data-lucide="sparkles" style="width:13px;height:13px;"></i>
+                    Archived Observations
+                </div>
+                <h2 class="section-title">Agent-Generated Insights</h2>
+                <p class="section-subtitle">Synthesized observations from the analysis pipeline, computed from the archived data during the collection period.</p>
+            </div>
+            <div id="insightsList" class="insights-grid">
+                <div class="loading-placeholder">
+                    <i data-lucide="loader-2" class="spin" style="width:16px;height:16px;"></i>
+                    Loading archived insights…
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── CHAT ────────────────────────────────── -->
+        <section class="section" id="chatSection">
+            <div class="section-header">
+                <div class="section-label">
+                    <i data-lucide="message-circle-question" style="width:13px;height:13px;"></i>
+                    Archive Explorer
+                </div>
+                <h2 class="section-title">Ask About This Dataset</h2>
+                <p class="section-subtitle">Query the archived health data to explore trends, correlations, workout effects, and recovery patterns from February–March 2026.</p>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="chatLog" class="chat-log">
+                        <div class="msg system">
+                            Ask about sleep patterns, training effects, correlations, or recovery trends in the Feb–Mar 2026 archive.
+                        </div>
+                    </div>
+                    <form id="chatForm" class="chat-form">
+                        <textarea id="chatInput" placeholder="e.g. How did running affect my next-day HRV?"></textarea>
+                        <div class="chat-actions">
+                            <button class="btn btn-primary" type="submit" id="sendBtn">
+                                <i data-lucide="send" style="width:14px;height:14px;"></i>
+                                Send
+                            </button>
+                            <button class="btn btn-ghost" type="button" id="clearChatBtn">
+                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FOOTER ──────────────────────────────── -->
+        <footer class="page-footer">
+            Garmin Health Archive · Liran Attar · Data period: Feb 1 – Mar 20, 2026 · Built with Chart.js and KaTeX
+        </footer>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         JAVASCRIPT
+         ═══════════════════════════════════════════════════ -->
+    <script>
+    (function () {
+        "use strict";
+
+        /* ─── CONSTANTS ────────────────────────────── */
+        const API_BASE = "https://garmin-health-liran-f16faec73fc5.herokuapp.com";
+        const START_DATE = "2026-02-01";
+        const END_DATE = "2026-03-20";
+        const START_TS = Date.parse(START_DATE);
+        const END_TS = Date.parse(END_DATE);
+
+        const METRIC_DEFS = [
+            { key: "restingHr", label: "Resting HR", unit: "bpm", color: "#e07474", higherBetter: false },
+            { key: "hrv",       label: "HRV",        unit: "ms",  color: "#6ec89b", higherBetter: true  },
+            { key: "sleep",     label: "Sleep Score", unit: "",    color: "#7baaf7", higherBetter: true  },
+            { key: "stress",    label: "Stress",      unit: "",    color: "#d4a957", higherBetter: false },
+            { key: "battery",   label: "Body Battery",unit: "",    color: "#a78bdb", higherBetter: true  },
+            { key: "readiness", label: "Readiness",   unit: "",    color: "#5b9a8b", higherBetter: true  },
+        ];
+
+        const SPORT_COLORS = {
+            running:  "#6ec89b",
+            cycling:  "#7baaf7",
+            swimming: "#5bc0de",
+            skiing:   "#a78bdb",
+            gym:      "#d4a957",
+            other:    "#888",
+        };
+
+        /* ─── STATE ────────────────────────────────── */
+        const state = {
+            history: [],
+            workouts: [],
+            crossEffects: null,
+            insights: [],
+            activeMetrics: new Set(["restingHr", "hrv", "sleep", "battery"]),
+        };
+
+        let timelineChart = null;
+
+        /* ─── UTILITY HELPERS ──────────────────────── */
+        function endpoint(path) { return `${API_BASE}${path}`; }
+
+        function fmt(v, fb = "—") {
+            if (v === null || v === undefined || v === "") return fb;
+            if (typeof v === "number" && Number.isFinite(v))
+                return Number.isInteger(v) ? String(v) : v.toFixed(1);
+            return String(v);
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+                .replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+        }
+
+        function findFirst(src, keys) {
+            for (const k of keys) {
+                const v = src?.[k];
+                if (v !== undefined && v !== null && v !== "") return v;
+            }
+            return null;
+        }
+
+        function numOrNull(v) {
+            const n = Number(v);
+            return Number.isFinite(n) ? n : null;
+        }
+
+        function average(arr) {
+            const c = arr.filter(v => v !== null && v !== undefined);
+            if (!c.length) return null;
+            return c.reduce((a, b) => a + b, 0) / c.length;
+        }
+
+        function median(arr) {
+            const s = arr.filter(v => v != null).sort((a, b) => a - b);
+            if (!s.length) return null;
+            const m = Math.floor(s.length / 2);
+            return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+        }
+
+        function stddev(arr) {
+            const c = arr.filter(v => v != null);
+            if (c.length < 2) return null;
+            const m = average(c);
+            const variance = c.reduce((s, v) => s + (v - m) ** 2, 0) / (c.length - 1);
+            return Math.sqrt(variance);
+        }
+
+        function percentile(arr, p) {
+            const s = arr.filter(v => v != null).sort((a, b) => a - b);
+            if (!s.length) return null;
+            const i = (p / 100) * (s.length - 1);
+            const lo = Math.floor(i);
+            const hi = Math.ceil(i);
+            if (lo === hi) return s[lo];
+            return s[lo] + (s[hi] - s[lo]) * (i - lo);
+        }
+
+        function formatDate(v) {
+            if (!v) return "";
+            const ts = Date.parse(String(v));
+            if (!Number.isFinite(ts)) return String(v);
+            return new Date(ts).toISOString().slice(0, 10);
+        }
+
+        function shortDate(d) {
+            const dt = new Date(d);
+            return dt.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+        }
+
+        function rollingAvg(values, window = 7) {
+            return values.map((_, i) => {
+                const start = Math.max(0, i - window + 1);
+                const slice = values.slice(start, i + 1).filter(v => v != null);
+                return slice.length ? slice.reduce((a, b) => a + b, 0) / slice.length : null;
+            });
+        }
+
+        /* ─── PEARSON CORRELATION ──────────────────── */
+        function pearson(a, b) {
+            const pairs = [];
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] != null && b[i] != null) pairs.push([a[i], b[i]]);
+            }
+            if (pairs.length < 5) return null;
+            const xs = pairs.map(p => p[0]), ys = pairs.map(p => p[1]);
+            const mx = average(xs), my = average(ys);
+            if (mx === null || my === null) return null;
+            let num = 0, dx2 = 0, dy2 = 0;
+            for (let i = 0; i < xs.length; i++) {
+                const dx = xs[i] - mx, dy = ys[i] - my;
+                num += dx * dy; dx2 += dx * dx; dy2 += dy * dy;
+            }
+            if (dx2 === 0 || dy2 === 0) return null;
+            return num / Math.sqrt(dx2 * dy2);
+        }
+
+        /* ─── DATA NORMALIZATION ───────────────────── */
+        function normalizeHistory(payload) {
+            const rows = Array.isArray(payload) ? payload
+                : Array.isArray(payload?.data) ? payload.data
+                : Array.isArray(payload?.history) ? payload.history : [];
+
+            return rows.map(r => ({
+                date:      formatDate(findFirst(r, ["date","timestamp","as_of"])),
+                restingHr: numOrNull(findFirst(r, ["resting_hr","restingHr","rhr"])),
+                hrv:       numOrNull(findFirst(r, ["hrv","hrv_last_night","hrv_ms","rmssd"])),
+                sleep:     numOrNull(findFirst(r, ["sleep_score","sleepScore","sleep"])),
+                stress:    numOrNull(findFirst(r, ["stress","stress_level","stress_score","avg_stress"])),
+                battery:   numOrNull(findFirst(r, ["battery","body_battery","bb_peak"])),
+                readiness: numOrNull(findFirst(r, ["training_readiness","readiness","readiness_score"])),
+                load:      numOrNull(findFirst(r, ["training_load","daily_load_acute","load","acute_load"])),
+            }))
+            .filter(r => r.date)
+            .filter(r => {
+                const ts = Date.parse(r.date);
+                if (!Number.isFinite(ts)) return false;
+                return ts >= START_TS && ts <= END_TS;
+            })
+            .filter(r => [r.restingHr, r.hrv, r.sleep, r.stress, r.battery, r.readiness, r.load]
+                .some(v => v !== null))
+            .sort((a, b) => a.date.localeCompare(b.date));
+        }
+
+        function normalizeWorkouts(payload) {
+            const rows = Array.isArray(payload?.data) ? payload.data
+                : Array.isArray(payload) ? payload : [];
+
+            return rows.map(r => {
+                const durMin = numOrNull(findFirst(r, ["duration_min","durationMin"]))
+                    ?? (() => { const s = numOrNull(findFirst(r, ["duration_sec","durationSec"])); return s ? s / 60 : null; })();
+                const distKm = numOrNull(findFirst(r, ["distance_km","distanceKm"]))
+                    ?? (() => { const m = numOrNull(findFirst(r, ["distance_m","distanceM"])); return m ? m / 1000 : null; })();
+                return {
+                    date: formatDate(findFirst(r, ["date","timestamp"])),
+                    name: findFirst(r, ["activity_name","activityName"]) || "Workout",
+                    type: (findFirst(r, ["activity_type","activityType","sport_type","sportType"]) || "other").toLowerCase().replace(/_/g," "),
+                    durMin, distKm,
+                    avgHr:  numOrNull(findFirst(r, ["average_hr","avg_hr","avgHr"])),
+                    speed:  numOrNull(findFirst(r, ["speed_kph","speedKph"])),
+                    load:   numOrNull(findFirst(r, ["training_load","trainingLoad"])),
+                };
+            })
+            .filter(r => r.date)
+            .filter(r => {
+                const ts = Date.parse(r.date);
+                return Number.isFinite(ts) && ts >= START_TS && ts <= END_TS;
+            })
+            .sort((a, b) => a.date.localeCompare(b.date));
+        }
+
+        /* ─── INSIGHT NORMALIZATION ────────────────── */
+        function rawInsightText(item) {
+            if (typeof item === "string") return item;
+            return findFirst(item, ["insight","message","text","summary","content"]) || "";
+        }
+        function rawInsightAgent(item) {
+            if (typeof item === "string") return "agent";
+            return findFirst(item, ["agent","agent_name","source","role"]) || "agent";
+        }
+        function rawInsightTime(item) {
+            if (typeof item === "string") return "";
+            return findFirst(item, ["timestamp","created_at","date","time"]) || "";
+        }
+        function cleanAgentText(text) {
+            return String(text||"").replace(/\r/g,"").replace(/```[\s\S]*?```/g,"\n")
+                .replace(/^\s*\|.*\|\s*$/gm,"").replace(/^\s*[-=]{3,}\s*$/gm,"")
+                .replace(/^\s*(SELECT|FROM|WHERE|JOIN|ORDER BY|GROUP BY|LIMIT|INSERT|UPDATE|DELETE)\b.*$/gim,"")
+                .replace(/\n{3,}/g,"\n\n").trim();
+        }
+        function summarizeInsightText(text, maxLen = 320) {
+            const cleaned = cleanAgentText(text);
+            const blocks = cleaned.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+            let best = blocks.find(p => p.length >= 30) || blocks[0] || "";
+            best = best.replace(/\s+/g," ").trim();
+            return best.length <= maxLen ? best : best.slice(0, maxLen - 3) + "...";
+        }
+        function normalizeInsights(payload) {
+            const raw = Array.isArray(payload) ? payload
+                : Array.isArray(payload?.insights) ? payload.insights
+                : Array.isArray(payload?.data) ? payload.data
+                : (payload?.insight || payload?.message || payload?.text) ? [payload] : [];
+            return raw.slice(0, 12);
+        }
+
+        /* ─── FETCH HELPERS ────────────────────────── */
+        async function getJson(path) {
+            const res = await fetch(endpoint(path), { method: "GET", headers: { Accept: "application/json" }, mode: "cors" });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const text = await res.text();
+            if (!text) return {};
+            try { return JSON.parse(text); } catch { return { raw: text }; }
+        }
+
+        async function postJson(path, body) {
+            const res = await fetch(endpoint(path), {
+                method: "POST",
+                headers: { Accept: "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(body), mode: "cors"
+            });
+            if (!res.ok) { const t = await res.text(); throw new Error(t || `HTTP ${res.status}`); }
+            const text = await res.text();
+            if (!text) return {};
+            try { return JSON.parse(text); } catch { return { raw: text }; }
+        }
+
+        /* ─── CLIENT-SIDE COMPUTATIONS ─────────────── */
+        function computeKPIs() {
+            const h = state.history;
+            const w = state.workouts;
+            const avg = (key) => {
+                const vals = h.map(r => r[key]).filter(v => v != null);
+                return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length) : null;
+            };
+            document.getElementById("kpiHr").textContent = fmt(avg("restingHr"), "—");
+            document.getElementById("kpiHrv").textContent = fmt(avg("hrv"), "—");
+            document.getElementById("kpiSleep").textContent = fmt(avg("sleep"), "—");
+            document.getElementById("kpiBattery").textContent = fmt(avg("battery"), "—");
+            document.getElementById("kpiWorkouts").textContent = w.length || "—";
+            const totalDist = w.reduce((s, r) => s + (r.distKm || 0), 0);
+            document.getElementById("kpiDistance").textContent = totalDist > 0 ? totalDist.toFixed(1) : "—";
+        }
+
+        function computeCorrelationMatrix() {
+            const h = state.history;
+            const keys = METRIC_DEFS.filter(m => {
+                return h.some(r => r[m.key] != null);
+            });
+            const matrix = keys.map(a =>
+                keys.map(b => a.key === b.key ? 1 : pearson(h.map(r=>r[a.key]), h.map(r=>r[b.key])))
+            );
+            return { keys, matrix };
+        }
+
+        function computeAR1() {
+            const h = state.history;
+            const results = [];
+            for (const m of METRIC_DEFS) {
+                const vals = h.map(r => r[m.key]);
+                const today = [], tomorrow = [];
+                for (let i = 0; i < vals.length - 1; i++) {
+                    if (vals[i] != null && vals[i+1] != null) {
+                        today.push(vals[i]);
+                        tomorrow.push(vals[i+1]);
+                    }
+                }
+                const r = pearson(today, tomorrow);
+                if (r !== null) {
+                    results.push({ ...m, ar1: r, today, tomorrow });
+                }
+            }
+            return results.sort((a, b) => Math.abs(b.ar1) - Math.abs(a.ar1));
+        }
+
+        function computeMarkov() {
+            const h = state.history;
+            const vals = h.map(r => r.battery).filter(v => v != null);
+            if (vals.length < 5) return null;
+
+            const states = ["Low", "Moderate", "Good", "High"];
+            function classify(v) {
+                if (v < 30) return 0;
+                if (v < 55) return 1;
+                if (v < 75) return 2;
+                return 3;
+            }
+
+            const classified = h.filter(r => r.battery != null).map(r => classify(r.battery));
+            const counts = states.map(() => states.map(() => 0));
+            for (let i = 0; i < classified.length - 1; i++) {
+                counts[classified[i]][classified[i+1]]++;
+            }
+
+            const probs = counts.map(row => {
+                const total = row.reduce((a, b) => a + b, 0);
+                return total > 0 ? row.map(v => v / total) : row.map(() => 0);
+            });
+
+            return { states, counts, probs };
+        }
+
+        function computeDistributions() {
+            const h = state.history;
+            return METRIC_DEFS.map(m => {
+                const vals = h.map(r => r[m.key]).filter(v => v != null);
+                if (!vals.length) return null;
+                const mn = Math.min(...vals), mx = Math.max(...vals);
+                const med = median(vals), avg_ = average(vals), sd = stddev(vals);
+                const cv = (avg_ && sd) ? (sd / Math.abs(avg_)) * 100 : null;
+                const q25 = percentile(vals, 25), q75 = percentile(vals, 75);
+                return { ...m, min: mn, max: mx, median: med, avg: avg_, stddev: sd, cv, q25, q75, n: vals.length };
+            }).filter(Boolean);
+        }
+
+        function computeWorkoutEffects() {
+            const h = state.history;
+            const w = state.workouts;
+            const workoutDates = new Set(w.map(r => r.date));
+            const results = [];
+
+            for (const m of METRIC_DEFS) {
+                const afterWorkout = [], afterRest = [];
+                for (let i = 0; i < h.length - 1; i++) {
+                    const nextVal = h[i+1][m.key];
+                    if (nextVal == null) continue;
+                    if (workoutDates.has(h[i].date)) {
+                        afterWorkout.push(nextVal);
+                    } else {
+                        afterRest.push(nextVal);
+                    }
+                }
+                if (afterWorkout.length >= 3 && afterRest.length >= 3) {
+                    results.push({
+                        ...m,
+                        afterWorkout: average(afterWorkout),
+                        afterRest: average(afterRest),
+                        diff: average(afterWorkout) - average(afterRest),
+                        nWorkout: afterWorkout.length,
+                        nRest: afterRest.length,
+                    });
+                }
+            }
+            return results;
+        }
+
+        /* ─── RENDER: KATEX FORMULAS ───────────────── */
+        function renderFormulas() {
+            try {
+                katex.render(
+                    "r = \\frac{\\sum_{i=1}^{n}(x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum_{i=1}^{n}(x_i - \\bar{x})^2 \\cdot \\sum_{i=1}^{n}(y_i - \\bar{y})^2}}",
+                    document.getElementById("pearsonFormula"),
+                    { displayMode: true, throwOnError: false }
+                );
+                katex.render(
+                    "X_t = \\varphi \\cdot X_{t-1} + \\varepsilon_t \\quad \\text{where } \\varphi = \\text{AR(1) coefficient}",
+                    document.getElementById("arFormula"),
+                    { displayMode: true, throwOnError: false }
+                );
+                katex.render(
+                    "P(S_{t+1} = j \\mid S_t = i) = \\frac{n_{ij}}{\\sum_k n_{ik}}",
+                    document.getElementById("markovFormula"),
+                    { displayMode: true, throwOnError: false }
+                );
+            } catch (e) {
+                console.warn("KaTeX rendering error:", e);
+            }
+        }
+
+        /* ─── RENDER: HERO KPIs ────────────────────── */
+        // (done in computeKPIs above)
+
+        /* ─── RENDER: HEALTH TIMELINE ──────────────── */
+        function renderTimelineToggles() {
+            const container = document.getElementById("metricToggles");
+            container.innerHTML = METRIC_DEFS.map(m => `
+                <button class="toggle-btn ${state.activeMetrics.has(m.key) ? 'active' : ''}"
+                        data-metric="${m.key}">
+                    <span class="toggle-dot" style="background:${m.color}"></span>
+                    ${m.label}
+                </button>
+            `).join("");
+
+            container.querySelectorAll(".toggle-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const key = btn.dataset.metric;
+                    if (state.activeMetrics.has(key)) {
+                        if (state.activeMetrics.size > 1) state.activeMetrics.delete(key);
+                    } else {
+                        state.activeMetrics.add(key);
+                    }
+                    btn.classList.toggle("active", state.activeMetrics.has(key));
+                    updateTimelineChart();
+                });
+            });
+        }
+
+        function renderTimelineChart() {
+            const ctx = document.getElementById("timelineChart").getContext("2d");
+            const labels = state.history.map(r => r.date);
+
+            const datasets = [];
+            for (const m of METRIC_DEFS) {
+                const values = state.history.map(r => r[m.key]);
+                const hasData = values.some(v => v != null);
+                if (!hasData) continue;
+
+                datasets.push({
+                    label: m.label,
+                    data: values,
+                    borderColor: m.color,
+                    backgroundColor: m.color + "18",
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    pointHoverRadius: 5,
+                    tension: 0.3,
+                    hidden: !state.activeMetrics.has(m.key),
+                    _metricKey: m.key,
+                });
+
+                // Rolling average overlay
+                const ra = rollingAvg(values);
+                datasets.push({
+                    label: `${m.label} (7d avg)`,
+                    data: ra,
+                    borderColor: m.color + "80",
+                    borderWidth: 1.5,
+                    borderDash: [6, 3],
+                    pointRadius: 0,
+                    tension: 0.4,
+                    hidden: !state.activeMetrics.has(m.key),
+                    _metricKey: m.key,
+                    _isRolling: true,
+                });
+            }
+
+            timelineChart = new Chart(ctx, {
+                type: "line",
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: "index", intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: "rgba(11,13,17,0.92)",
+                            borderColor: "rgba(255,255,255,0.1)",
+                            borderWidth: 1,
+                            titleFont: { family: "Inter", size: 12, weight: "600" },
+                            bodyFont: { family: "Inter", size: 12 },
+                            padding: 10,
+                            cornerRadius: 8,
+                            callbacks: {
+                                title: (items) => shortDate(items[0].label),
+                                label: (item) => {
+                                    if (item.dataset._isRolling) return null;
+                                    return ` ${item.dataset.label}: ${fmt(item.raw)}`;
+                                },
+                            },
+                            filter: (item) => !item.dataset._isRolling,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "rgba(255,255,255,0.35)",
+                                font: { size: 10 },
+                                maxTicksLimit: 12,
+                                callback: (_, i) => shortDate(labels[i]),
+                            },
+                            grid: { color: "rgba(255,255,255,0.04)" },
+                        },
+                        y: {
+                            ticks: { color: "rgba(255,255,255,0.35)", font: { size: 10 } },
+                            grid: { color: "rgba(255,255,255,0.05)" },
+                        },
+                    },
+                },
+            });
+        }
+
+        function updateTimelineChart() {
+            if (!timelineChart) return;
+            timelineChart.data.datasets.forEach(ds => {
+                ds.hidden = !state.activeMetrics.has(ds._metricKey);
+            });
+            timelineChart.update();
+        }
+
+        /* ─── RENDER: WORKOUT ARCHIVE ──────────────── */
+        function renderWorkoutCharts() {
+            const w = state.workouts;
+
+            // Activity type distribution (doughnut)
+            const typeCounts = {};
+            w.forEach(r => { typeCounts[r.type] = (typeCounts[r.type] || 0) + 1; });
+            const types = Object.entries(typeCounts).sort((a,b) => b[1]-a[1]);
+
+            new Chart(document.getElementById("activityChart").getContext("2d"), {
+                type: "doughnut",
+                data: {
+                    labels: types.map(t => t[0]),
+                    datasets: [{
+                        data: types.map(t => t[1]),
+                        backgroundColor: types.map(t => SPORT_COLORS[t[0]] || SPORT_COLORS.other),
+                        borderWidth: 0,
+                        hoverOffset: 6,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: "60%",
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { color: "rgba(255,255,255,0.65)", font: { size: 11, family: "Inter" }, padding: 12, boxWidth: 12, boxHeight: 12 },
+                        },
+                        title: {
+                            display: true, text: "Activity Distribution", color: "rgba(255,255,255,0.5)",
+                            font: { size: 11, weight: "600", family: "Inter" }, padding: { bottom: 8 },
+                        },
+                    },
+                },
+            });
+
+            // Scatter: duration vs distance
+            const scatterData = w.filter(r => r.durMin != null && r.distKm != null).map(r => ({
+                x: r.durMin, y: r.distKm,
+                backgroundColor: SPORT_COLORS[r.type] || SPORT_COLORS.other,
+                label: r.name,
+                date: r.date,
+                type: r.type,
+            }));
+
+            new Chart(document.getElementById("scatterChart").getContext("2d"), {
+                type: "scatter",
+                data: {
+                    datasets: [{
+                        data: scatterData,
+                        backgroundColor: scatterData.map(d => d.backgroundColor),
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true, text: "Duration vs Distance", color: "rgba(255,255,255,0.5)",
+                            font: { size: 11, weight: "600", family: "Inter" }, padding: { bottom: 8 },
+                        },
+                        tooltip: {
+                            backgroundColor: "rgba(11,13,17,0.92)",
+                            borderColor: "rgba(255,255,255,0.1)",
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (ctx) => {
+                                    const d = ctx.raw;
+                                    return [`${d.label} (${d.type})`, `${d.date}`, `${fmt(d.x)} min · ${fmt(d.y)} km`];
+                                },
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: "Duration (min)", color: "rgba(255,255,255,0.4)", font: { size: 10, family: "Inter" } },
+                            ticks: { color: "rgba(255,255,255,0.35)", font: { size: 10 } },
+                            grid: { color: "rgba(255,255,255,0.04)" },
+                        },
+                        y: {
+                            title: { display: true, text: "Distance (km)", color: "rgba(255,255,255,0.4)", font: { size: 10, family: "Inter" } },
+                            ticks: { color: "rgba(255,255,255,0.35)", font: { size: 10 } },
+                            grid: { color: "rgba(255,255,255,0.05)" },
+                        },
+                    },
+                },
+            });
+        }
+
+        function renderWorkoutTable() {
+            const w = [...state.workouts].reverse();
+            if (!w.length) {
+                document.getElementById("workoutTableWrap").innerHTML = '<div class="empty-state">No workouts found in the archive period.</div>';
+                return;
+            }
+
+            const typeColor = (t) => SPORT_COLORS[t] || SPORT_COLORS.other;
+            const rows = w.map(r => `
+                <tr>
+                    <td>${escapeHtml(r.date)}</td>
+                    <td>${escapeHtml(r.name)}</td>
+                    <td><span class="sport-tag" style="background:${typeColor(r.type)}22;color:${typeColor(r.type)}">${escapeHtml(r.type)}</span></td>
+                    <td>${fmt(r.durMin)}</td>
+                    <td>${fmt(r.distKm)}</td>
+                    <td>${fmt(r.avgHr)}</td>
+                    <td>${fmt(r.load)}</td>
+                </tr>
+            `).join("");
+
+            document.getElementById("workoutTableWrap").innerHTML = `
+                <table>
+                    <thead><tr>
+                        <th>Date</th><th>Activity</th><th>Type</th><th>Min</th><th>Km</th><th>Avg HR</th><th>Load</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        }
+
+        /* ─── RENDER: PEARSON HEATMAP ──────────────── */
+        function corrColor(v, diagonal = false) {
+            if (diagonal) return "background:#e8e3d8;";
+            if (v === null) return "background:#ede8de;color:#b0a898;";
+            const abs = Math.abs(v);
+            if (v >= 0) {
+                const r = Math.round(110 - abs * 60), g = Math.round(200 - abs * 20), b = Math.round(155 - abs * 60);
+                return `background:rgb(${r},${g},${b});color:${abs>0.5?'#fff':'#2c2a26'};`;
+            }
+            const r = Math.round(224 - abs * 40), g = Math.round(140 - abs * 50), b = Math.round(140 - abs * 40);
+            return `background:rgb(${r},${g},${b});color:${abs>0.5?'#fff':'#2c2a26'};`;
+        }
+
+        function corrStrength(v) {
+            const abs = Math.abs(v);
+            if (abs >= 0.7) return "strong";
+            if (abs >= 0.4) return "moderate";
+            return "weak";
+        }
+
+        function renderPearsonHeatmap() {
+            const { keys, matrix } = computeCorrelationMatrix();
+            if (!keys.length) {
+                document.getElementById("pearsonHeatmap").innerHTML = '<div class="paper-finding">Insufficient data for correlation analysis.</div>';
+                return;
+            }
+
+            const header = keys.map(m => `<th>${escapeHtml(m.label)}</th>`).join("");
+            const body = keys.map((m, ri) => {
+                const cells = keys.map((_, ci) => {
+                    const v = matrix[ri][ci];
+                    const text = v === null ? "—" : v.toFixed(2);
+                    return `<td style="${corrColor(v, ri===ci)}">${text}</td>`;
+                }).join("");
+                return `<tr><th>${escapeHtml(m.label)}</th>${cells}</tr>`;
+            }).join("");
+
+            document.getElementById("pearsonHeatmap").innerHTML = `
+                <table class="heatmap-table"><thead><tr><th></th>${header}</tr></thead><tbody>${body}</tbody></table>
+            `;
+
+            // Findings
+            const notable = [];
+            for (let i = 0; i < keys.length; i++) {
+                for (let j = i+1; j < keys.length; j++) {
+                    const v = matrix[i][j];
+                    if (v !== null) notable.push({ a: keys[i].label, b: keys[j].label, r: v });
+                }
+            }
+            notable.sort((a, b) => Math.abs(b.r) - Math.abs(a.r));
+
+            const findings = notable.slice(0, 3).map(n => {
+                const dir = n.r >= 0 ? "move together" : "move in opposite directions";
+                return `<strong>${n.a}</strong> and <strong>${n.b}</strong> ${dir} (${corrStrength(n.r)}, r=${n.r.toFixed(2)}).`;
+            });
+
+            if (findings.length) {
+                document.getElementById("pearsonFindings").innerHTML = `
+                    <div class="paper-divider"></div>
+                    <div class="paper-body"><p><strong>Key findings:</strong></p>
+                    ${findings.map(f => `<div class="paper-finding">${f}</div>`).join("")}</div>
+                `;
+            }
+        }
+
+        /* ─── RENDER: AR(1) ────────────────────────── */
+        function renderAR1() {
+            const results = computeAR1();
+            if (!results.length) {
+                document.getElementById("arCoefficients").innerHTML = '<div class="paper-finding">Insufficient data for persistence analysis.</div>';
+                return;
+            }
+
+            // Coefficient cards
+            document.getElementById("arCoefficients").innerHTML = results.map(r => {
+                const interp = Math.abs(r.ar1) >= 0.7 ? "High persistence"
+                    : Math.abs(r.ar1) >= 0.4 ? "Moderate persistence" : "Low persistence";
+                const color = Math.abs(r.ar1) >= 0.7 ? "var(--paper-accent)" : Math.abs(r.ar1) >= 0.4 ? "#886" : "#a99";
+                return `
+                    <div class="ar-card">
+                        <div class="ar-metric">${escapeHtml(r.label)}</div>
+                        <div class="ar-value" style="color:${color}">${r.ar1.toFixed(2)}</div>
+                        <div class="ar-interp">${interp}</div>
+                    </div>
+                `;
+            }).join("");
+
+            // Scatter plot for top 2 most persistent metrics
+            const top2 = results.slice(0, 2);
+            const ctx = document.getElementById("arScatterChart").getContext("2d");
+
+            const datasets = top2.map(m => ({
+                label: `${m.label} (φ=${m.ar1.toFixed(2)})`,
+                data: m.today.map((t, i) => ({ x: t, y: m.tomorrow[i] })),
+                backgroundColor: m.color + "60",
+                borderColor: m.color,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+            }));
+
+            new Chart(ctx, {
+                type: "scatter",
+                data: { datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: "#6b6560", font: { size: 11, family: "Inter" } },
+                        },
+                        tooltip: {
+                            backgroundColor: "rgba(44,42,38,0.92)",
+                            callbacks: {
+                                label: (ctx) => `Today: ${fmt(ctx.raw.x)} → Tomorrow: ${fmt(ctx.raw.y)}`,
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: "Today's value", color: "#6b6560", font: { size: 10, family: "Inter" } },
+                            ticks: { color: "#6b6560", font: { size: 10 } },
+                            grid: { color: "rgba(0,0,0,0.08)" },
+                        },
+                        y: {
+                            title: { display: true, text: "Next day's value", color: "#6b6560", font: { size: 10, family: "Inter" } },
+                            ticks: { color: "#6b6560", font: { size: 10 } },
+                            grid: { color: "rgba(0,0,0,0.08)" },
+                        },
+                    },
+                },
+            });
+
+            // Findings
+            const most = results[0];
+            const least = results[results.length - 1];
+            document.getElementById("arFindings").innerHTML = `
+                <div class="paper-divider"></div>
+                <div class="paper-body">
+                    <div class="paper-finding">
+                        <strong>${most.label}</strong> is the most persistent metric (φ = ${most.ar1.toFixed(2)}) — it changes slowly day-to-day.
+                        <strong>${least.label}</strong> is the least persistent (φ = ${least.ar1.toFixed(2)}) — it can shift substantially overnight.
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ─── RENDER: MARKOV ───────────────────────── */
+        function renderMarkov() {
+            const markov = computeMarkov();
+            if (!markov) {
+                document.getElementById("markovMatrix").innerHTML = '<div class="paper-finding">Insufficient body battery data for transition analysis.</div>';
+                return;
+            }
+
+            const { states, probs, counts } = markov;
+
+            function cellColor(p) {
+                const alpha = 0.15 + p * 0.6;
+                return `background:rgba(91,122,111,${alpha.toFixed(2)});color:${p>0.5?'#fff':'#2c2a26'};`;
+            }
+
+            const header = states.map(s => `<th>→ ${s}</th>`).join("");
+            const body = states.map((s, i) => {
+                const rowTotal = counts[i].reduce((a,b)=>a+b, 0);
+                const cells = probs[i].map((p, j) => {
+                    const text = rowTotal > 0 ? (p * 100).toFixed(0) + "%" : "—";
+                    return `<td style="${cellColor(p)}" title="${counts[i][j]} of ${rowTotal} transitions">${text}</td>`;
+                }).join("");
+                return `<tr><th>${s}</th>${cells}</tr>`;
+            }).join("");
+
+            document.getElementById("markovMatrix").innerHTML = `
+                <table class="markov-table"><thead><tr><th>From \\ To</th>${header}</tr></thead><tbody>${body}</tbody></table>
+            `;
+
+            // Find dominant diagonal
+            const diags = states.map((s, i) => ({ state: s, prob: probs[i][i] }))
+                .filter(d => d.prob > 0.3)
+                .sort((a, b) => b.prob - a.prob);
+
+            if (diags.length) {
+                const stableStates = diags.map(d => `<strong>${d.state}</strong> (${(d.prob*100).toFixed(0)}% self-transition)`);
+                document.getElementById("markovFindings").innerHTML = `
+                    <div class="paper-divider"></div>
+                    <div class="paper-body">
+                        <div class="paper-finding">
+                            The most stable recovery states are ${stableStates.join(" and ")} — once the body reaches these levels, it tends to stay there.
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        /* ─── RENDER: DISTRIBUTIONS ────────────────── */
+        function renderDistributions() {
+            const dists = computeDistributions();
+            if (!dists.length) {
+                document.getElementById("distributionTable").innerHTML = '<div class="paper-finding">Insufficient data for distribution analysis.</div>';
+                return;
+            }
+
+            const rows = dists.map(d => `
+                <tr>
+                    <th>${escapeHtml(d.label)}</th>
+                    <td>${fmt(d.min)}</td>
+                    <td>${fmt(d.q25)}</td>
+                    <td style="font-weight:700;">${fmt(d.median)}</td>
+                    <td>${fmt(d.q75)}</td>
+                    <td>${fmt(d.max)}</td>
+                    <td>${fmt(d.avg)}</td>
+                    <td>${d.stddev ? d.stddev.toFixed(1) : "—"}</td>
+                    <td style="font-weight:700;color:${d.cv && d.cv > 20 ? '#8b5e3c' : 'var(--paper-text)'}">${d.cv ? d.cv.toFixed(1) + "%" : "—"}</td>
+                    <td>${d.n}</td>
+                </tr>
+            `).join("");
+
+            document.getElementById("distributionTable").innerHTML = `
+                <table class="heatmap-table">
+                    <thead><tr>
+                        <th>Metric</th><th>Min</th><th>Q1</th><th>Median</th><th>Q3</th><th>Max</th><th>Mean</th><th>SD</th><th>CV</th><th>N</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+
+            const mostVolatile = [...dists].filter(d => d.cv != null).sort((a,b) => b.cv - a.cv)[0];
+            const leastVolatile = [...dists].filter(d => d.cv != null).sort((a,b) => a.cv - b.cv)[0];
+
+            if (mostVolatile && leastVolatile && mostVolatile.key !== leastVolatile.key) {
+                document.getElementById("distributionFindings").innerHTML = `
+                    <div class="paper-divider"></div>
+                    <div class="paper-body">
+                        <div class="paper-finding">
+                            <strong>${mostVolatile.label}</strong> is the most volatile metric (CV = ${mostVolatile.cv.toFixed(1)}%), while
+                            <strong>${leastVolatile.label}</strong> is the most stable (CV = ${leastVolatile.cv.toFixed(1)}%).
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        /* ─── RENDER: WORKOUT EFFECTS ──────────────── */
+        function renderWorkoutEffects() {
+            const effects = computeWorkoutEffects();
+            if (!effects.length) {
+                document.getElementById("effectsContent").innerHTML = '<div class="paper-finding">Insufficient paired data to estimate workout effects.</div>';
+                return;
+            }
+
+            const rows = effects.map(e => {
+                const diffSign = e.diff >= 0 ? "+" : "";
+                const diffColor = (e.higherBetter && e.diff > 0) || (!e.higherBetter && e.diff < 0)
+                    ? "color:var(--paper-accent)" : e.diff !== 0 ? "color:#8b5e3c" : "";
+                return `
+                    <tr>
+                        <th>${escapeHtml(e.label)}</th>
+                        <td>${fmt(e.afterWorkout)}</td>
+                        <td>${fmt(e.afterRest)}</td>
+                        <td style="font-weight:700;${diffColor}">${diffSign}${e.diff.toFixed(1)}</td>
+                        <td style="color:var(--paper-text-dim)">${e.nWorkout} / ${e.nRest}</td>
+                    </tr>
+                `;
+            }).join("");
+
+            document.getElementById("effectsContent").innerHTML = `
+                <div class="heatmap-wrap">
+                    <table class="heatmap-table">
+                        <thead><tr>
+                            <th>Metric</th><th>After Workout</th><th>After Rest</th><th>Difference</th><th>N (workout/rest)</th>
+                        </tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            `;
+
+            const beneficial = effects.filter(e =>
+                (e.higherBetter && e.diff > 1) || (!e.higherBetter && e.diff < -1)
+            );
+            const costly = effects.filter(e =>
+                (e.higherBetter && e.diff < -1) || (!e.higherBetter && e.diff > 1)
+            );
+
+            const parts = [];
+            if (costly.length) {
+                parts.push(`Training days show a next-day cost in <strong>${costly.map(e=>e.label).join(", ")}</strong>.`);
+            }
+            if (beneficial.length) {
+                parts.push(`However, <strong>${beneficial.map(e=>e.label).join(", ")}</strong> ${beneficial.length>1?"tend":"tends"} to improve after workout days.`);
+            }
+            if (!parts.length) {
+                parts.push("Workout days and rest days show similar next-day recovery profiles in this archive.");
+            }
+
+            document.getElementById("effectsFindings").innerHTML = `
+                <div class="paper-divider"></div>
+                <div class="paper-body">
+                    <div class="paper-finding">${parts.join(" ")}</div>
+                </div>
+            `;
+        }
+
+        /* ─── RENDER: INSIGHTS ─────────────────────── */
+        function renderInsights(items) {
+            const normalized = Array.isArray(items) ? items : [];
+            if (!normalized.length) {
+                document.getElementById("insightsList").innerHTML = '<div class="empty-state">No archived insights available for this period.</div>';
+                return;
+            }
+
+            document.getElementById("insightsList").innerHTML = normalized.map(item => {
+                const text = summarizeInsightText(rawInsightText(item));
+                const agent = escapeHtml(String(rawInsightAgent(item)).replace(/_/g, " "));
+                const time = escapeHtml(rawInsightTime(item));
+
+                return `
+                    <article class="insight-card">
+                        <div class="insight-card-top">
+                            <span class="insight-agent-tag">${agent}</span>
+                            ${time ? `<span class="insight-time-tag">${time}</span>` : ""}
+                        </div>
+                        <div class="insight-text">${escapeHtml(text)}</div>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        /* ─── CHAT ─────────────────────────────────── */
+        function appendMessage(role, text) {
+            const node = document.createElement("div");
+            node.className = `msg ${role}`;
+            node.textContent = text;
+            document.getElementById("chatLog").appendChild(node);
+            document.getElementById("chatLog").scrollTop = document.getElementById("chatLog").scrollHeight;
+        }
+
+        function formatChatReply(text) {
+            const clean = cleanAgentText(text);
+            return clean || "No response from agent.";
+        }
+
+        async function sendChat(message) {
+            const chatLog = document.getElementById("chatLog");
+            appendMessage("user", message);
+            appendMessage("bot", "Analyzing the archive (this may take up to a minute)…");
+            const pendingNode = chatLog.lastElementChild;
+
+            try {
+                const result = await postJson("/api/v1/chat", { message });
+
+                if (result.job_id && result.status === "processing") {
+                    pendingNode.textContent = "Working…";
+                    for (let i = 0; i < 90; i++) {
+                        await new Promise(r => setTimeout(r, 2000));
+                        try {
+                            const status = await getJson(`/api/v1/chat/status/${result.job_id}`);
+                            if (status.status === "completed") {
+                                const reply = findFirst(status, ["answer","response","message","text","output"]) || "No response.";
+                                pendingNode.textContent = formatChatReply(String(reply));
+                                return;
+                            }
+                            if (status.status === "failed" || status.error) {
+                                pendingNode.textContent = `Analysis failed: ${status.error || "Unknown error"}`;
+                                return;
+                            }
+                            pendingNode.textContent = "Working" + ".".repeat((i % 3) + 1);
+                        } catch { /* transient */ }
+                    }
+                    pendingNode.textContent = "Agent timed out. Please try again.";
+                } else {
+                    const reply = findFirst(result, ["answer","response","message","text","output"]) || "No response.";
+                    pendingNode.textContent = formatChatReply(String(reply));
+                }
+            } catch (error) {
+                pendingNode.textContent = `Request failed: ${error.message}`;
+            }
+        }
+
+        /* ─── INIT & BOOT ──────────────────────────── */
+        function initChat() {
+            const form = document.getElementById("chatForm");
+            const input = document.getElementById("chatInput");
+            const sendBtn = document.getElementById("sendBtn");
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const msg = input.value.trim();
+                if (!msg) return;
+                input.value = "";
+                sendBtn.disabled = true;
+                await sendChat(msg);
+                sendBtn.disabled = false;
+                input.focus();
+            });
+
+            document.getElementById("clearChatBtn").addEventListener("click", () => {
+                document.getElementById("chatLog").innerHTML = '<div class="msg system">Chat cleared. Ask a new question about the Feb–Mar 2026 archive.</div>';
+            });
+
+            input.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    form.requestSubmit();
+                }
+            });
+        }
+
+        async function boot() {
+            // Render formulas immediately
+            renderFormulas();
+
+            // Fetch all data in parallel
+            const [historyResult, workoutResult, effectsResult, insightsResult] = await Promise.allSettled([
+                getJson("/api/v1/metrics/history?days=48"),
+                getJson("/api/v1/workouts/progress?days=48&sport=all"),
+                getJson("/api/v1/analytics/cross-effects?days=48"),
+                getJson("/api/v1/insights/latest"),
+            ]);
+
+            // Process history
+            if (historyResult.status === "fulfilled") {
+                state.history = normalizeHistory(historyResult.value);
+            }
+
+            // Process workouts
+            if (workoutResult.status === "fulfilled") {
+                state.workouts = normalizeWorkouts(workoutResult.value);
+            }
+
+            // Process cross-effects
+            if (effectsResult.status === "fulfilled") {
+                state.crossEffects = effectsResult.value;
+            }
+
+            // Process insights
+            if (insightsResult.status === "fulfilled") {
+                state.insights = normalizeInsights(insightsResult.value);
+            }
+
+            // Render everything
+            computeKPIs();
+            renderTimelineToggles();
+            renderTimelineChart();
+            renderWorkoutCharts();
+            renderWorkoutTable();
+            renderPearsonHeatmap();
+            renderAR1();
+            renderMarkov();
+            renderDistributions();
+            renderWorkoutEffects();
+            renderInsights(state.insights);
+        }
+
+        // Initialize
+        lucide.createIcons();
+        initChat();
+        boot().then(() => {
+            lucide.createIcons();
         });
-      });
-
-      el.chatForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const message = el.chatInput.value.trim();
-        if (!message) {
-          return;
-        }
-
-        el.chatInput.value = "";
-        el.sendBtn.disabled = true;
-
-        await sendChat(message);
-
-        el.sendBtn.disabled = false;
-        el.chatInput.focus();
-      });
-
-      el.clearChatBtn.addEventListener("click", () => {
-        el.chatLog.innerHTML = '<div class="msg system">Chat cleared.</div>';
-      });
-
-      el.chatInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          el.chatForm.requestSubmit();
-        }
-      });
-
-      setAnalyticsView(state.analyticsView);
-    }
-    async function boot() {
-      await loadHealth();
-      await Promise.all([loadSnapshot(), loadHistory(), loadInsights()]);
-    }
-
-    lucide.createIcons();
-    initEvents();
-    boot();
-  </script>
+    })();
+    </script>
 </body>
+
 </html>
