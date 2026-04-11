@@ -30,10 +30,10 @@
            DESIGN TOKENS
            ═══════════════════════════════════════════════ */
         :root {
-            /* Dashboard register */
             --bg: #0b0d11;
             --bg-subtle: #0f1218;
             --surface: #14171e;
+            --surface-alt: #191d26;
             --surface-hover: #1a1e27;
             --border: rgba(255, 255, 255, 0.07);
             --border-focus: rgba(91, 154, 139, 0.45);
@@ -50,31 +50,13 @@
             --radius-md: 14px;
             --radius-sm: 10px;
             --shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.55);
-
-            /* Academic register */
-            --paper-bg: #f4efe5;
-            --paper-bg-alt: #ebe6db;
-            --paper-border: #d1cbc0;
-            --paper-text: #2c2a26;
-            --paper-text-dim: #6b6560;
-            --paper-accent: #5b7a6f;
-            --paper-rule: #c4beb2;
         }
 
         /* ═══════════════════════════════════════════════
            BASE RESET
            ═══════════════════════════════════════════════ */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -85,939 +67,183 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ═══════════════════════════════════════════════
-           PAGE CONTAINER
-           ═══════════════════════════════════════════════ */
-        .page {
-            width: min(1180px, calc(100% - 40px));
-            margin: 0 auto;
-            padding: 32px 0 64px;
-        }
+        .page { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 32px 0 64px; }
 
         /* ═══════════════════════════════════════════════
            TOPBAR
            ═══════════════════════════════════════════════ */
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 40px;
-            padding: 0;
-        }
-
-        .topbar-links {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+        .topbar-links { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
         .chip-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            transition: all 0.25s ease;
+            display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+            border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+            color: var(--text-secondary); text-decoration: none; font-size: 12px; font-weight: 600;
+            letter-spacing: 0.2px; transition: all 0.25s ease;
         }
-
-        .chip-link:hover {
-            border-color: rgba(255, 255, 255, 0.18);
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--text);
-            transform: translateY(-1px);
-        }
+        .chip-link:hover { border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); color: var(--text); transform: translateY(-1px); }
 
         .archive-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 999px;
-            background: var(--accent-soft);
-            border: 1px solid rgba(91, 154, 139, 0.25);
-            color: var(--accent);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+            border-radius: 999px; background: var(--accent-soft); border: 1px solid rgba(91,154,139,0.25);
+            color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
         }
 
         /* ═══════════════════════════════════════════════
-           SECTION SPACING
+           SECTION STRUCTURE
            ═══════════════════════════════════════════════ */
-        .section {
-            margin-bottom: 56px;
-        }
-
-        .section-header {
-            margin-bottom: 24px;
-        }
-
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
-
-        .section-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--text);
-            line-height: 1.2;
-        }
-
-        .section-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 6px;
-            max-width: 60ch;
-            line-height: 1.6;
-        }
+        .section { margin-bottom: 56px; }
+        .section-label { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+        .section-title { font-family: "Space Grotesk", sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; color: var(--text); line-height: 1.2; }
+        .section-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 6px; max-width: 64ch; line-height: 1.6; }
 
         /* ═══════════════════════════════════════════════
            HERO
            ═══════════════════════════════════════════════ */
         .hero {
-            background:
-                radial-gradient(ellipse at 20% -20%, rgba(91, 154, 139, 0.12) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% -10%, rgba(91, 120, 154, 0.08) 0%, transparent 45%),
-                linear-gradient(170deg, var(--surface) 0%, rgba(20, 23, 30, 0.6) 100%);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 40px 36px;
-            margin-bottom: 56px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
+            background: radial-gradient(ellipse at 20% -20%, rgba(91,154,139,0.12) 0%, transparent 55%),
+                        radial-gradient(ellipse at 85% -10%, rgba(91,120,154,0.08) 0%, transparent 45%),
+                        linear-gradient(170deg, var(--surface) 0%, rgba(20,23,30,0.6) 100%);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 40px 36px; margin-bottom: 56px; position: relative; overflow: hidden; box-shadow: var(--shadow);
         }
+        .hero::after { content: ""; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(91,154,139,0.18) 0%, transparent 70%); pointer-events: none; }
+        .hero-content { position: relative; z-index: 1; }
+        .hero-top { margin-bottom: 32px; }
+        .hero-period { font-family: "Space Grotesk",sans-serif; font-size: 15px; font-weight: 600; color: var(--accent); letter-spacing: 0.3px; margin-bottom: 10px; }
+        .hero h1 { font-family: "Space Grotesk",sans-serif; font-size: clamp(30px,5vw,46px); line-height: 1.08; letter-spacing: -1.5px; color: #fff; margin-bottom: 14px; }
+        .hero h1 span { color: var(--accent); }
+        .hero-desc { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; max-width: 62ch; margin-bottom: 10px; }
+        .hero-context { font-size: 13px; color: var(--text-dim); line-height: 1.65; max-width: 62ch; padding: 12px 16px; border-left: 2px solid rgba(91,154,139,0.3); background: rgba(91,154,139,0.06); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 8px; }
+        .hero-context strong { color: var(--text-secondary); }
 
-        .hero::after {
-            content: "";
-            position: absolute;
-            top: -60px;
-            right: -60px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(91, 154, 139, 0.18) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-top {
-            margin-bottom: 32px;
-        }
-
-        .hero h1 {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(30px, 5vw, 46px);
-            line-height: 1.08;
-            letter-spacing: -1.5px;
-            color: #fff;
-            margin-bottom: 12px;
-        }
-
-        .hero h1 span {
-            color: var(--accent);
-        }
-
-        .hero-period {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--accent);
-            letter-spacing: 0.3px;
-            margin-bottom: 10px;
-        }
-
-        .hero-desc {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.65;
-            max-width: 58ch;
-        }
-
-        .hero-kpis {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-        }
-
-        .kpi-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: var(--radius-md);
-            padding: 18px 16px;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-
-        .kpi-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.12);
-            transform: translateY(-2px);
-        }
-
-        .kpi-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            margin-bottom: 8px;
-        }
-
-        .kpi-value {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1;
-        }
-
-        .kpi-unit {
-            font-size: 13px;
-            color: var(--text-dim);
-            margin-top: 4px;
-        }
+        .hero-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+        .kpi-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: 18px 16px; text-align: center; transition: all 0.2s ease; }
+        .kpi-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
+        .kpi-label { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+        .kpi-value { font-family: "Space Grotesk",sans-serif; font-size: 28px; font-weight: 700; color: #fff; line-height: 1; }
+        .kpi-unit { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
 
         /* ═══════════════════════════════════════════════
-           CARDS (Dashboard register)
+           CARDS (unified dark)
            ═══════════════════════════════════════════════ */
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; }
+        .card-body { padding: 20px; }
 
-        .card-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.02);
+        /* Stat cards — same dark register but with accent left border */
+        .stat-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-left: 3px solid var(--accent); border-radius: var(--radius-lg);
+            padding: 32px; box-shadow: var(--shadow); margin-bottom: 24px;
         }
+        .stat-card-label { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+        .stat-card-title { font-family: "Space Grotesk",sans-serif; font-size: 22px; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.3px; }
+        .stat-card-body { font-family: "Crimson Pro", Georgia, serif; font-size: 16px; line-height: 1.7; color: var(--text-secondary); }
+        .stat-card-body p { margin-bottom: 12px; }
+        .stat-card-body strong { color: var(--text); }
 
-        .card-title {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: -0.2px;
-            color: #fff;
-        }
+        .stat-formula { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 20px; margin: 18px 0; text-align: center; overflow-x: auto; }
+        .stat-finding { background: rgba(91,154,139,0.08); border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 14px 0; font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+        .stat-finding strong { color: var(--accent); }
+        .stat-divider { width: 50px; height: 1px; background: var(--border); margin: 20px 0; }
 
-        .card-body {
-            padding: 20px;
-        }
+        /* Toggle row */
+        .toggle-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .toggle-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .toggle-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+        .toggle-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+        .toggle-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-        /* Metric toggles */
-        .toggle-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
+        .chart-container { position: relative; width: 100%; height: 340px; }
+        .chart-container canvas { width: 100% !important; height: 100% !important; }
+        .chart-container-sm { position: relative; height: 280px; }
 
-        .toggle-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .toggle-btn:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--text);
-        }
-
-        .toggle-btn.active {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
-
-        .toggle-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        /* Chart container */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            height: 340px;
-        }
-
-        .chart-container canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
+        /* Context annotation */
+        .timeline-annotation { font-size: 12px; color: var(--text-dim); background: rgba(224,116,116,0.1); border: 1px solid rgba(224,116,116,0.2); border-radius: var(--radius-sm); padding: 8px 14px; margin-top: 12px; display: flex; align-items: flex-start; gap: 8px; }
+        .timeline-annotation i { flex-shrink: 0; color: var(--negative); margin-top: 1px; }
 
         /* ═══════════════════════════════════════════════
            WORKOUT SECTION
            ═══════════════════════════════════════════════ */
-        .workout-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 20px;
-        }
-
-        .chart-container-sm {
-            position: relative;
-            height: 260px;
-        }
-
-        .workout-table-wrap {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.02);
-            overflow: auto;
-            max-height: 400px;
-            margin-top: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
-        }
-
-        thead th {
-            position: sticky;
-            top: 0;
-            background: rgba(14, 17, 23, 0.96);
-            backdrop-filter: blur(6px);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-secondary);
-            font-weight: 700;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th,
-        td {
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            vertical-align: middle;
-        }
-
-        tbody td {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.78);
-        }
-
-        tbody tr:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .sport-tag {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            text-transform: capitalize;
-        }
+        .workout-grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+        .workout-table-wrap { border: 1px solid var(--border); border-radius: var(--radius-md); background: rgba(255,255,255,0.02); overflow: auto; max-height: 400px; margin-top: 20px; }
 
         /* ═══════════════════════════════════════════════
-           ACADEMIC / PAPER REGISTER
+           ALL TABLES (dark theme)
            ═══════════════════════════════════════════════ */
-        .paper-section {
-            margin-bottom: 56px;
-        }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        thead th { position: sticky; top: 0; background: rgba(14,17,23,0.96); backdrop-filter: blur(6px); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); font-weight: 700; border-bottom: 1px solid var(--border); }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+        tbody td { font-size: 13px; color: rgba(255,255,255,0.82); }
+        tbody tr:hover { background: rgba(255,255,255,0.03); }
 
-        .paper-card {
-            background: var(--paper-bg);
-            border: 1px solid var(--paper-border);
-            border-radius: var(--radius-lg);
-            padding: 36px 32px;
-            color: var(--paper-text);
-            position: relative;
-            box-shadow: 0 2px 16px -6px rgba(0, 0, 0, 0.12);
-        }
+        .sport-tag { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: capitalize; }
 
-        .paper-card+.paper-card {
-            margin-top: 24px;
-        }
+        /* Heatmap tables (dark) */
+        .heatmap-wrap { overflow-x: auto; margin: 18px 0; }
+        .heatmap-table { border-collapse: collapse; min-width: auto; width: auto; margin: 0 auto; }
+        .heatmap-table th { background: var(--surface-alt); color: var(--text-secondary); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; padding: 10px 12px; border: 1px solid var(--border); position: static; }
+        .heatmap-table td { text-align: center; font-weight: 700; font-size: 13px; padding: 10px 14px; border: 1px solid var(--border); min-width: 78px; transition: transform 0.15s ease; }
+        .heatmap-table td:hover { transform: scale(1.05); }
 
-        .paper-card::before {
-            content: "";
-            position: absolute;
-            left: 32px;
-            right: 32px;
-            top: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--paper-accent), transparent);
-            border-radius: 0 0 4px 4px;
-            opacity: 0.4;
-        }
+        /* AR(1) cards */
+        .ar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; margin: 18px 0; }
+        .ar-card { background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; }
+        .ar-metric { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+        .ar-value { font-family: "Space Grotesk",sans-serif; font-size: 28px; font-weight: 700; line-height: 1; }
+        .ar-interp { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
 
-        .paper-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: "Inter", sans-serif;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--paper-accent);
-            margin-bottom: 10px;
-        }
+        /* Markov */
+        .markov-table { border-collapse: collapse; width: auto; margin: 16px auto; min-width: auto; }
+        .markov-table th, .markov-table td { padding: 10px 14px; border: 1px solid var(--border); text-align: center; font-size: 13px; }
+        .markov-table th { background: var(--surface-alt); color: var(--text-secondary); font-weight: 700; font-size: 11px; letter-spacing: 0.3px; position: static; }
+        .markov-table td { font-weight: 600; color: #fff; }
 
-        .paper-title {
-            font-family: "Crimson Pro", Georgia, serif;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--paper-text);
-            line-height: 1.3;
-            margin-bottom: 16px;
-            letter-spacing: -0.3px;
-        }
-
-        .paper-body {
-            font-family: "Crimson Pro", Georgia, serif;
-            font-size: 17px;
-            line-height: 1.75;
-            color: var(--paper-text);
-        }
-
-        .paper-body p {
-            margin-bottom: 14px;
-        }
-
-        .paper-body p:last-child {
-            margin-bottom: 0;
-        }
-
-        .paper-body strong {
-            color: #1a1a1a;
-        }
-
-        .paper-divider {
-            width: 60px;
-            height: 1px;
-            background: var(--paper-rule);
-            margin: 24px 0;
-        }
-
-        .paper-formula {
-            background: var(--paper-bg-alt);
-            border: 1px solid var(--paper-rule);
-            border-radius: var(--radius-sm);
-            padding: 16px 20px;
-            margin: 20px 0;
-            text-align: center;
-            overflow-x: auto;
-        }
-
-        .paper-finding {
-            background: rgba(91, 122, 111, 0.08);
-            border-left: 3px solid var(--paper-accent);
-            padding: 14px 18px;
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            margin: 20px 0;
-            font-family: "Crimson Pro", Georgia, serif;
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--paper-text);
-        }
-
-        .paper-finding strong {
-            color: var(--paper-accent);
-        }
-
-        /* Heatmap within paper */
-        .heatmap-wrap {
-            overflow-x: auto;
-            margin: 20px 0;
-        }
-
-        .heatmap-table {
-            border-collapse: collapse;
-            min-width: auto;
-            width: auto;
-            margin: 0 auto;
-        }
-
-        .heatmap-table th {
-            background: var(--paper-bg-alt);
-            color: var(--paper-text-dim);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            padding: 8px 10px;
-            border: 1px solid var(--paper-rule);
-            position: static;
-        }
-
-        .heatmap-table td {
-            text-align: center;
-            font-weight: 700;
-            font-size: 13px;
-            padding: 10px 12px;
-            border: 1px solid var(--paper-rule);
-            min-width: 72px;
-            transition: transform 0.15s ease;
-        }
-
-        .heatmap-table td:hover {
-            transform: scale(1.05);
-        }
-
-        /* AR(1) coefficient cards */
-        .ar-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .ar-card {
-            background: var(--paper-bg-alt);
-            border: 1px solid var(--paper-rule);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            text-align: center;
-        }
-
-        .ar-metric {
-            font-family: "Inter", sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            color: var(--paper-text-dim);
-            margin-bottom: 6px;
-        }
-
-        .ar-value {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .ar-interp {
-            font-family: "Crimson Pro", Georgia, serif;
-            font-size: 13px;
-            color: var(--paper-text-dim);
-            margin-top: 6px;
-        }
-
-        /* Markov matrix */
-        .markov-table {
-            border-collapse: collapse;
-            width: auto;
-            margin: 16px auto;
-            min-width: auto;
-        }
-
-        .markov-table th,
-        .markov-table td {
-            padding: 10px 14px;
-            border: 1px solid var(--paper-rule);
-            text-align: center;
-            font-size: 13px;
-        }
-
-        .markov-table th {
-            background: var(--paper-bg-alt);
-            color: var(--paper-text-dim);
-            font-weight: 700;
-            font-size: 11px;
-            letter-spacing: 0.3px;
-            position: static;
-        }
-
-        .markov-table td {
-            font-weight: 600;
-        }
-
-        /* Chart within paper card */
-        .paper-chart-container {
-            position: relative;
-            height: 280px;
-            margin: 20px 0;
-            background: #fff;
-            border: 1px solid var(--paper-rule);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-        }
+        /* Chart in stat card */
+        .stat-chart-container { position: relative; height: 280px; margin: 18px 0; }
 
         /* ═══════════════════════════════════════════════
            INSIGHTS ARCHIVE
            ═══════════════════════════════════════════════ */
-        .insights-grid {
-            display: grid;
-            gap: 14px;
-        }
-
-        .insight-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 18px 20px;
-            transition: border-color 0.2s ease;
-        }
-
-        .insight-card:hover {
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-
-        .insight-card-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
-        .insight-agent-tag {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            color: var(--accent);
-            background: var(--accent-soft);
-            border: 1px solid rgba(91, 154, 139, 0.2);
-            padding: 3px 8px;
-            border-radius: 6px;
-        }
-
-        .insight-time-tag {
-            font-size: 11px;
-            color: var(--text-dim);
-            font-weight: 600;
-        }
-
-        .insight-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.82);
-            line-height: 1.65;
-        }
-
-        .insight-text ul {
-            margin: 6px 0 0 18px;
-        }
-
-        .insight-text li {
-            margin-bottom: 4px;
-        }
-
-        .insight-detail {
-            margin-top: 10px;
-            border-top: 1px dashed var(--border);
-            padding-top: 10px;
-        }
-
-        .insight-detail summary {
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            list-style: none;
-        }
-
-        .insight-detail summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .insight-detail pre {
-            margin-top: 8px;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.02);
-            color: rgba(255, 255, 255, 0.82);
-            font-size: 13px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            font-family: "Inter", sans-serif;
-            max-height: 240px;
-            overflow: auto;
-        }
+        .insights-grid { display: grid; gap: 14px; }
+        .insight-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 18px; transition: border-color 0.2s ease; }
+        .insight-card:hover { border-color: rgba(255,255,255,0.12); }
+        .insight-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        .insight-agent-tag { font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border: 1px solid rgba(91,154,139,0.2); padding: 3px 8px; border-radius: 6px; }
+        .insight-time-tag { font-size: 11px; color: var(--text-dim); font-weight: 600; }
+        .insight-summary { font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.6; }
+        .insight-details { margin-top: 8px; }
+        .insight-details summary { cursor: pointer; color: var(--accent); font-size: 12px; font-weight: 700; list-style: none; display: flex; align-items: center; gap: 4px; }
+        .insight-details summary::-webkit-details-marker { display: none; }
+        .insight-details-body { margin-top: 8px; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.72); font-size: 13px; line-height: 1.6; white-space: pre-wrap; max-height: 200px; overflow: auto; }
 
         /* ═══════════════════════════════════════════════
            CHAT
            ═══════════════════════════════════════════════ */
-        .chat-log {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.02);
-            padding: 14px;
-            overflow-y: auto;
-            display: grid;
-            gap: 10px;
-            min-height: 180px;
-            max-height: 380px;
-            margin-bottom: 14px;
-        }
+        .chat-log { border: 1px solid var(--border); border-radius: var(--radius-md); background: rgba(255,255,255,0.02); padding: 14px; overflow-y: auto; display: grid; gap: 10px; min-height: 180px; max-height: 380px; margin-bottom: 14px; }
+        .msg { max-width: 88%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.6; word-break: break-word; border: 1px solid transparent; white-space: pre-wrap; }
+        .msg.user { justify-self: end; background: rgba(91,120,154,0.16); border-color: rgba(91,120,154,0.3); color: #fff; border-bottom-right-radius: 6px; }
+        .msg.bot { justify-self: start; background: var(--accent-soft); border-color: rgba(91,154,139,0.22); color: rgba(255,255,255,0.9); border-bottom-left-radius: 6px; }
+        .msg.system { justify-self: center; background: rgba(91,154,139,0.08); border-color: rgba(91,154,139,0.18); color: var(--accent); text-align: center; max-width: 100%; font-size: 13px; padding: 10px 14px; }
+        .chat-form { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+        .chat-form textarea { min-height: 44px; max-height: 88px; resize: vertical; border: 1px solid var(--border); border-radius: 12px; padding: 12px; font-family: inherit; font-size: 14px; line-height: 1.45; color: var(--text); background: rgba(255,255,255,0.04); outline: none; transition: border-color 0.2s ease; }
+        .chat-form textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(91,154,139,0.1); }
+        .chat-actions { display: grid; gap: 8px; align-content: stretch; }
+        .btn { border: none; border-radius: var(--radius-sm); padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s ease; text-decoration: none; white-space: nowrap; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent-dim); transform: translateY(-1px); }
+        .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 
-        .msg {
-            max-width: 88%;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 14px;
-            line-height: 1.6;
-            word-break: break-word;
-            border: 1px solid transparent;
-            white-space: pre-wrap;
-        }
+        .page-footer { text-align: center; color: var(--text-dim); font-size: 12px; padding: 32px 0 0; border-top: 1px solid var(--border); }
 
-        .msg.user {
-            justify-self: end;
-            background: rgba(91, 120, 154, 0.16);
-            border-color: rgba(91, 120, 154, 0.3);
-            color: #fff;
-            border-bottom-right-radius: 6px;
-        }
+        .loading-placeholder { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 40px; color: var(--text-secondary); font-size: 14px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spin { animation: spin 0.9s linear infinite; }
+        .empty-state { color: var(--text-secondary); font-size: 13px; text-align: center; padding: 24px; border: 1px dashed var(--border); border-radius: var(--radius-sm); background: rgba(255,255,255,0.02); }
 
-        .msg.bot {
-            justify-self: start;
-            background: var(--accent-soft);
-            border-color: rgba(91, 154, 139, 0.22);
-            color: rgba(255, 255, 255, 0.9);
-            border-bottom-left-radius: 6px;
-        }
-
-        .msg.system {
-            justify-self: center;
-            background: rgba(91, 154, 139, 0.08);
-            border-color: rgba(91, 154, 139, 0.18);
-            color: var(--accent);
-            text-align: center;
-            max-width: 100%;
-            font-size: 13px;
-            padding: 10px 14px;
-        }
-
-        .chat-form {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 10px;
-        }
-
-        .chat-form textarea {
-            min-height: 44px;
-            max-height: 88px;
-            resize: vertical;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            font-family: inherit;
-            font-size: 14px;
-            line-height: 1.45;
-            color: var(--text);
-            background: rgba(255, 255, 255, 0.04);
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .chat-form textarea:focus {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 3px rgba(91, 154, 139, 0.1);
-        }
-
-        .chat-actions {
-            display: grid;
-            gap: 8px;
-            align-content: stretch;
-        }
-
-        .btn {
-            border: none;
-            border-radius: var(--radius-sm);
-            padding: 10px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-dim);
-            transform: translateY(-1px);
-        }
-
-        .btn-ghost {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-ghost:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text);
-        }
-
-        /* ═══════════════════════════════════════════════
-           FOOTER
-           ═══════════════════════════════════════════════ */
-        .page-footer {
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 12px;
-            padding: 32px 0 0;
-            border-top: 1px solid var(--border);
-        }
-
-        /* ═══════════════════════════════════════════════
-           LOADING STATE
-           ═══════════════════════════════════════════════ */
-        .loading-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 40px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .spin {
-            animation: spin 0.9s linear infinite;
-        }
-
-        .empty-state {
-            color: var(--text-secondary);
-            font-size: 13px;
-            text-align: center;
-            padding: 24px;
-            border: 1px dashed var(--border);
-            border-radius: var(--radius-sm);
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        /* ═══════════════════════════════════════════════
-           STAT SECTION HEADER (on dark bg, before paper)
-           ═══════════════════════════════════════════════ */
-        .stat-section-header {
-            margin-bottom: 28px;
-        }
-
-        .stat-section-header .section-subtitle {
-            font-family: "Crimson Pro", Georgia, serif;
-            font-size: 16px;
-            color: var(--text-secondary);
-            line-height: 1.65;
-        }
-
-        /* ═══════════════════════════════════════════════
-           RESPONSIVE
-           ═══════════════════════════════════════════════ */
-        @media (max-width: 860px) {
-            .workout-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero {
-                padding: 28px 22px;
-            }
-
-            .hero-kpis {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .paper-card {
-                padding: 26px 22px;
-            }
-
-            .ar-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .page {
-                width: calc(100% - 20px);
-                padding-top: 18px;
-            }
-
-            .hero-kpis {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .hero h1 {
-                font-size: 26px;
-            }
-
-            .chart-container {
-                height: 260px;
-            }
-
-            .paper-chart-container {
-                height: 220px;
-            }
-
-            .ar-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .chat-form {
-                grid-template-columns: 1fr;
-            }
-
-            .chat-actions {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        @media (max-width: 860px) { .workout-grid { grid-template-columns: 1fr; } .hero { padding: 28px 22px; } .hero-kpis { grid-template-columns: repeat(3,1fr); } .ar-grid { grid-template-columns: repeat(3,1fr); } .stat-card { padding: 22px; } }
+        @media (max-width: 600px) { .page { width: calc(100% - 20px); padding-top: 18px; } .hero-kpis { grid-template-columns: repeat(2,1fr); } .hero h1 { font-size: 26px; } .chart-container,.stat-chart-container { height: 260px; } .ar-grid { grid-template-columns: repeat(2,1fr); } .chat-form { grid-template-columns: 1fr; } .chat-actions { grid-template-columns: repeat(2,1fr); } }
     </style>
 </head>
 
@@ -1026,20 +252,10 @@
         <!-- ─── TOPBAR ──────────────────────────────── -->
         <header class="topbar">
             <div class="topbar-links">
-                <a class="chip-link" href="/">
-                    <i data-lucide="arrow-left" style="width:13px;height:13px;"></i>
-                    Portfolio
-                </a>
-                <a class="chip-link" href="https://github.com/Liranatt/garmin-project" target="_blank"
-                    rel="noopener noreferrer">
-                    <i data-lucide="github" style="width:13px;height:13px;"></i>
-                    Source
-                </a>
+                <a class="chip-link" href="/"><i data-lucide="arrow-left" style="width:13px;height:13px;"></i> Portfolio</a>
+                <a class="chip-link" href="https://github.com/Liranatt/garmin-project" target="_blank" rel="noopener noreferrer"><i data-lucide="github" style="width:13px;height:13px;"></i> Source</a>
             </div>
-            <span class="archive-badge">
-                <i data-lucide="archive" style="width:12px;height:12px;"></i>
-                Historical Archive
-            </span>
+            <span class="archive-badge"><i data-lucide="archive" style="width:12px;height:12px;"></i> Historical Archive</span>
         </header>
 
         <!-- ─── HERO ────────────────────────────────── -->
@@ -1049,10 +265,21 @@
                     <div class="hero-period">February 1 — March 20, 2026</div>
                     <h1>Garmin Health <span>Archive</span></h1>
                     <p class="hero-desc">
-                        A comprehensive analysis of 48 days of Garmin health data. This page
-                        explores daily recovery metrics, workout patterns, and the statistical
-                        relationships that emerge across sleep, stress, and training load.
+                        A comprehensive analysis of 48 days of Garmin health and fitness data. This page explores
+                        daily recovery metrics, workout patterns, and the statistical relationships that emerge
+                        across sleep, stress, and training load.
                     </p>
+                    <div class="hero-context">
+                        <strong>Why an archive?</strong> This project originally ran as a live, real-time analytics dashboard —
+                        pulling data daily from Garmin Connect via the <em>Garth</em> unofficial API. In early 2026,
+                        Garmin shut down unofficial API access. Their official Connect API remains unavailable to
+                        individual developers. This archive preserves the data and analysis from the final weeks of collection.
+                    </div>
+                    <div class="hero-context" style="border-left-color: rgba(224,116,116,0.4); background: rgba(224,116,116,0.06);">
+                        <strong>Feb 28 — Reserve Duty.</strong> On February 28, the Iran conflict began, and I was called to
+                        active reserve duty in the Israeli Navy. The resulting disruption in training, sleep, and daily
+                        routine is clearly visible in the data.
+                    </div>
                 </div>
                 <div class="hero-kpis" id="heroKpis">
                     <div class="kpi-card"><div class="kpi-label">Avg Resting HR</div><div class="kpi-value" id="kpiHr">—</div><div class="kpi-unit">bpm</div></div>
@@ -1067,19 +294,18 @@
 
         <!-- ─── HEALTH TIMELINE ─────────────────────── -->
         <section class="section" id="timelineSection">
-            <div class="section-header">
-                <div class="section-label">
-                    <i data-lucide="activity" style="width:13px;height:13px;"></i>
-                    Health Timeline
-                </div>
+            <div class="section-header" style="margin-bottom:24px;">
+                <div class="section-label"><i data-lucide="activity" style="width:13px;height:13px;"></i> Health Timeline</div>
                 <h2 class="section-title">Daily Recovery Metrics</h2>
-                <p class="section-subtitle">Track how resting heart rate, HRV, sleep, and other recovery signals evolved across the archive period. Toggle metrics on and off to compare.</p>
+                <p class="section-subtitle">Track how resting heart rate, HRV, sleep, and other recovery signals evolved across the archive period.</p>
             </div>
             <div class="card">
                 <div class="card-body">
                     <div class="toggle-row" id="metricToggles"></div>
-                    <div class="chart-container">
-                        <canvas id="timelineChart"></canvas>
+                    <div class="chart-container"><canvas id="timelineChart"></canvas></div>
+                    <div class="timeline-annotation">
+                        <i data-lucide="alert-triangle" style="width:14px;height:14px;"></i>
+                        <span><strong>Feb 28:</strong> Start of Iran conflict → Navy reserve duty activation. Data after this date reflects significant lifestyle disruption (irregular sleep, limited training, elevated stress).</span>
                     </div>
                 </div>
             </div>
@@ -1087,147 +313,86 @@
 
         <!-- ─── WORKOUT ARCHIVE ─────────────────────── -->
         <section class="section" id="workoutSection">
-            <div class="section-header">
-                <div class="section-label">
-                    <i data-lucide="dumbbell" style="width:13px;height:13px;"></i>
-                    Workout Archive
-                </div>
+            <div class="section-header" style="margin-bottom:24px;">
+                <div class="section-label"><i data-lucide="dumbbell" style="width:13px;height:13px;"></i> Workout Archive</div>
                 <h2 class="section-title">Training Activity</h2>
                 <p class="section-subtitle">Overview of workout types, durations, and performance across the 48-day period.</p>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="workout-grid">
-                        <div>
-                            <div class="chart-container-sm">
-                                <canvas id="activityChart"></canvas>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="chart-container-sm">
-                                <canvas id="scatterChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="workout-table-wrap" id="workoutTableWrap"></div>
+            <div class="card"><div class="card-body">
+                <div class="workout-grid">
+                    <div><div class="chart-container-sm"><canvas id="activityChart"></canvas></div></div>
+                    <div><div class="chart-container-sm"><canvas id="scatterChart"></canvas></div></div>
                 </div>
-            </div>
+                <div class="workout-table-wrap" id="workoutTableWrap"></div>
+            </div></div>
         </section>
 
         <!-- ─── STATISTICAL DEEP DIVE ───────────────── -->
-        <section class="section paper-section" id="statsSection">
-            <div class="stat-section-header">
-                <div class="section-label">
-                    <i data-lucide="flask-conical" style="width:13px;height:13px;"></i>
-                    Statistical Analysis
-                </div>
+        <section class="section" id="statsSection">
+            <div style="margin-bottom:28px;">
+                <div class="section-label"><i data-lucide="flask-conical" style="width:13px;height:13px;"></i> Statistical Analysis</div>
                 <h2 class="section-title">Patterns in the Data</h2>
-                <p class="section-subtitle" style="font-family:'Crimson Pro',Georgia,serif; font-size:16px;">
-                    Beyond the daily numbers, what relationships and patterns emerge from 48 days of continuous health monitoring?
-                    The following sections use established statistical methods to uncover meaningful structure in the data.
-                </p>
+                <p class="section-subtitle" style="font-family:'Crimson Pro',Georgia,serif; font-size:15px;">Beyond daily numbers — what relationships and structures emerge from 48 days of continuous monitoring?</p>
             </div>
 
-            <!-- Pearson Correlation -->
-            <div class="paper-card" id="pearsonCard">
-                <div class="paper-label">
-                    <i data-lucide="scan-search" style="width:11px;height:11px;"></i>
-                    Correlation Analysis
+            <!-- Pearson -->
+            <div class="stat-card" id="pearsonCard">
+                <div class="stat-card-label"><i data-lucide="scan-search" style="width:11px;height:11px;"></i> Correlation Analysis</div>
+                <h3 class="stat-card-title">How Do Health Metrics Move Together?</h3>
+                <div class="stat-card-body">
+                    <p><strong>Pearson correlation</strong> measures whether two metrics tend to move together (+1), in opposite directions (−1), or have no linear relationship (0).</p>
                 </div>
-                <h3 class="paper-title">How Do Health Metrics Move Together?</h3>
-                <div class="paper-body">
-                    <p>
-                        <strong>Pearson correlation</strong> measures whether two health metrics tend to move in the same direction
-                        (positive correlation), opposite directions (negative correlation), or have no consistent relationship.
-                        A value of <strong>+1</strong> means they always move together; <strong>−1</strong> means they always move
-                        in opposite directions; <strong>0</strong> means no linear relationship.
-                    </p>
-                </div>
-                <div class="paper-formula" id="pearsonFormula"></div>
+                <div class="stat-formula" id="pearsonFormula"></div>
                 <div id="pearsonHeatmap" class="heatmap-wrap"></div>
                 <div id="pearsonFindings"></div>
             </div>
 
-            <!-- AR(1) Persistence -->
-            <div class="paper-card" id="arCard">
-                <div class="paper-label">
-                    <i data-lucide="repeat-2" style="width:11px;height:11px;"></i>
-                    Persistence Analysis
+            <!-- AR(1) -->
+            <div class="stat-card" id="arCard">
+                <div class="stat-card-label"><i data-lucide="repeat-2" style="width:11px;height:11px;"></i> Persistence Analysis</div>
+                <h3 class="stat-card-title">How Sticky Is Each Metric Day-to-Day?</h3>
+                <div class="stat-card-body">
+                    <p>An <strong>AR(1) coefficient</strong> measures how much today's value carries into tomorrow. Near <strong>1.0</strong> = very sticky; near <strong>0</strong> = each day is independent.</p>
                 </div>
-                <h3 class="paper-title">How Sticky Is Each Metric Day-to-Day?</h3>
-                <div class="paper-body">
-                    <p>
-                        Some health signals are <strong>persistent</strong>: if your stress is high today, it tends to stay
-                        high tomorrow. Others bounce around more freely. An <strong>AR(1) coefficient</strong> quantifies this
-                        "stickiness" — how much of today's value carries over into tomorrow's. A value near <strong>1.0</strong>
-                        means the metric barely changes day-to-day; near <strong>0</strong> means each day is essentially independent.
-                    </p>
-                </div>
-                <div class="paper-formula" id="arFormula"></div>
+                <div class="stat-formula" id="arFormula"></div>
                 <div id="arCoefficients" class="ar-grid"></div>
-                <div class="paper-chart-container">
-                    <canvas id="arScatterChart"></canvas>
-                </div>
+                <div class="stat-chart-container"><canvas id="arScatterChart"></canvas></div>
                 <div id="arFindings"></div>
             </div>
 
-            <!-- Markov Transitions -->
-            <div class="paper-card" id="markovCard">
-                <div class="paper-label">
-                    <i data-lucide="git-branch" style="width:11px;height:11px;"></i>
-                    State Transitions
+            <!-- Markov -->
+            <div class="stat-card" id="markovCard">
+                <div class="stat-card-label"><i data-lucide="git-branch" style="width:11px;height:11px;"></i> State Transitions</div>
+                <h3 class="stat-card-title">Recovery State Over Time</h3>
+                <div class="stat-card-body">
+                    <p>Each day's body battery is classified into a state: <strong>Low</strong> (&lt;30), <strong>Moderate</strong> (30–54), <strong>Good</strong> (55–74), <strong>High</strong> (≥75). The chart below shows how recovery state shifted day-to-day — and the transition matrix shows the probability of moving between states.</p>
                 </div>
-                <h3 class="paper-title">How Does Recovery State Change Day-to-Day?</h3>
-                <div class="paper-body">
-                    <p>
-                        A <strong>Markov transition matrix</strong> captures the probability of moving from one "state" to another.
-                        Here, we categorize each day's body battery into four states — <strong>Low</strong>, <strong>Moderate</strong>,
-                        <strong>Good</strong>, and <strong>High</strong> — and count how often each transition occurs. This reveals
-                        whether recovery tends to be stable, or whether it swings unpredictably.
-                    </p>
-                    <p>
-                        Each row in the matrix shows: given that today is in state X, what fraction of the time does tomorrow
-                        land in each state? High diagonal values mean the system is stable. Off-diagonal values show common transitions.
-                    </p>
-                </div>
-                <div class="paper-formula" id="markovFormula"></div>
+                <div class="stat-chart-container" style="height:120px;"><canvas id="markovTimeline"></canvas></div>
+                <div class="stat-formula" id="markovFormula"></div>
                 <div id="markovMatrix" class="heatmap-wrap"></div>
                 <div id="markovFindings"></div>
             </div>
 
-            <!-- Distribution Analysis -->
-            <div class="paper-card" id="distributionCard">
-                <div class="paper-label">
-                    <i data-lucide="bar-chart-3" style="width:11px;height:11px;"></i>
-                    Distribution & Volatility
+            <!-- Distributions -->
+            <div class="stat-card" id="distributionCard">
+                <div class="stat-card-label"><i data-lucide="bar-chart-3" style="width:11px;height:11px;"></i> Distribution &amp; Volatility</div>
+                <h3 class="stat-card-title">How Spread Out Are the Daily Values?</h3>
+                <div class="stat-card-body">
+                    <p>Averages hide variability. The chart shows each metric's full range (whiskers) and interquartile spread (solid bar), with <strong>CV</strong> measuring relative volatility.</p>
                 </div>
-                <h3 class="paper-title">How Spread Out Are the Daily Values?</h3>
-                <div class="paper-body">
-                    <p>
-                        Averages can hide a lot. Two metrics might have the same mean but very different <strong>variability</strong>.
-                        The table below shows the range and spread of each metric across the archive — from minimum through the
-                        median to maximum — along with the coefficient of variation (CV), which measures relative volatility.
-                        A higher CV means the metric swings more relative to its average.
-                    </p>
-                </div>
+                <div class="stat-chart-container" style="height:300px;"><canvas id="distributionChart"></canvas></div>
                 <div id="distributionTable" class="heatmap-wrap"></div>
                 <div id="distributionFindings"></div>
             </div>
 
-            <!-- Workout Recovery Effects -->
-            <div class="paper-card" id="effectsCard">
-                <div class="paper-label">
-                    <i data-lucide="zap" style="width:11px;height:11px;"></i>
-                    Workout Effects
+            <!-- Workout Effects -->
+            <div class="stat-card" id="effectsCard">
+                <div class="stat-card-label"><i data-lucide="zap" style="width:11px;height:11px;"></i> Workout Effects</div>
+                <h3 class="stat-card-title">How Does Training Affect Next-Day Recovery?</h3>
+                <div class="stat-card-body">
+                    <p>Comparing next-day metrics on <strong>workout days</strong> vs <strong>rest days</strong> to estimate the short-term recovery impact of training.</p>
                 </div>
-                <h3 class="paper-title">How Does Training Affect Next-Day Recovery?</h3>
-                <div class="paper-body">
-                    <p>
-                        One of the most useful questions in health tracking: does today's workout help or hinder
-                        tomorrow's recovery? By comparing next-day health metrics on <strong>workout days</strong> versus
-                        <strong>rest days</strong>, we can estimate the short-term recovery cost (or benefit) of training.
-                    </p>
-                </div>
+                <div class="stat-chart-container"><canvas id="effectsChart"></canvas></div>
                 <div id="effectsContent"></div>
                 <div id="effectsFindings"></div>
             </div>
@@ -1235,75 +400,50 @@
 
         <!-- ─── INSIGHTS ARCHIVE ────────────────────── -->
         <section class="section" id="insightsSection">
-            <div class="section-header">
-                <div class="section-label">
-                    <i data-lucide="sparkles" style="width:13px;height:13px;"></i>
-                    Archived Observations
-                </div>
+            <div style="margin-bottom:24px;">
+                <div class="section-label"><i data-lucide="sparkles" style="width:13px;height:13px;"></i> Archived Observations</div>
                 <h2 class="section-title">Agent-Generated Insights</h2>
-                <p class="section-subtitle">Synthesized observations from the analysis pipeline, computed from the archived data during the collection period.</p>
+                <p class="section-subtitle">Synthesized observations from the 5-agent analysis pipeline, computed from the archived data.</p>
             </div>
             <div id="insightsList" class="insights-grid">
-                <div class="loading-placeholder">
-                    <i data-lucide="loader-2" class="spin" style="width:16px;height:16px;"></i>
-                    Loading archived insights…
-                </div>
+                <div class="loading-placeholder"><i data-lucide="loader-2" class="spin" style="width:16px;height:16px;"></i> Loading archived insights…</div>
             </div>
         </section>
 
         <!-- ─── CHAT ────────────────────────────────── -->
         <section class="section" id="chatSection">
-            <div class="section-header">
-                <div class="section-label">
-                    <i data-lucide="message-circle-question" style="width:13px;height:13px;"></i>
-                    Archive Explorer
-                </div>
+            <div style="margin-bottom:24px;">
+                <div class="section-label"><i data-lucide="message-circle-question" style="width:13px;height:13px;"></i> Archive Explorer</div>
                 <h2 class="section-title">Ask About This Dataset</h2>
-                <p class="section-subtitle">Query the archived health data to explore trends, correlations, workout effects, and recovery patterns from February–March 2026.</p>
+                <p class="section-subtitle">Query the archived data. The AI agent analyzes your question in 3 diagnostic layers — this can take 30–90 seconds.</p>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div id="chatLog" class="chat-log">
-                        <div class="msg system">
-                            Ask about sleep patterns, training effects, correlations, or recovery trends in the Feb–Mar 2026 archive.
-                        </div>
-                    </div>
-                    <form id="chatForm" class="chat-form">
-                        <textarea id="chatInput" placeholder="e.g. How did running affect my next-day HRV?"></textarea>
-                        <div class="chat-actions">
-                            <button class="btn btn-primary" type="submit" id="sendBtn">
-                                <i data-lucide="send" style="width:14px;height:14px;"></i>
-                                Send
-                            </button>
-                            <button class="btn btn-ghost" type="button" id="clearChatBtn">
-                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-                                Clear
-                            </button>
-                        </div>
-                    </form>
+            <div class="card"><div class="card-body">
+                <div id="chatLog" class="chat-log">
+                    <div class="msg system">Ask about sleep, training effects, correlations, or recovery patterns. Agent responses typically take 30–60 seconds.</div>
                 </div>
-            </div>
+                <form id="chatForm" class="chat-form">
+                    <textarea id="chatInput" placeholder="e.g. How did running affect my next-day HRV?"></textarea>
+                    <div class="chat-actions">
+                        <button class="btn btn-primary" type="submit" id="sendBtn"><i data-lucide="send" style="width:14px;height:14px;"></i> Send</button>
+                        <button class="btn btn-ghost" type="button" id="clearChatBtn"><i data-lucide="trash-2" style="width:14px;height:14px;"></i> Clear</button>
+                    </div>
+                </form>
+            </div></div>
         </section>
 
-        <!-- ─── FOOTER ──────────────────────────────── -->
-        <footer class="page-footer">
-            Garmin Health Archive · Liran Attar · Data period: Feb 1 – Mar 20, 2026 · Built with Chart.js and KaTeX
-        </footer>
+        <footer class="page-footer">Garmin Health Archive · Liran Attar · Data period: Feb 1 – Mar 20, 2026 · Built with Chart.js and KaTeX</footer>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════
-         JAVASCRIPT
-         ═══════════════════════════════════════════════════ -->
     <script>
     (function () {
         "use strict";
 
-        /* ─── CONSTANTS ────────────────────────────── */
         const API_BASE = "https://garmin-health-liran-f16faec73fc5.herokuapp.com";
         const START_DATE = "2026-02-01";
         const END_DATE = "2026-03-20";
         const START_TS = Date.parse(START_DATE);
         const END_TS = Date.parse(END_DATE);
+        const WAR_DATE = "2026-02-28";
 
         const METRIC_DEFS = [
             { key: "restingHr", label: "Resting HR", unit: "bpm", color: "#e07474", higherBetter: false },
@@ -1315,1078 +455,302 @@
         ];
 
         const SPORT_COLORS = {
-            running:  "#6ec89b",
-            cycling:  "#7baaf7",
-            swimming: "#5bc0de",
-            skiing:   "#a78bdb",
-            gym:      "#d4a957",
-            other:    "#888",
+            running: "#6ec89b", cycling: "#7baaf7", "road biking": "#4a90d9", "road_biking": "#4a90d9",
+            swimming: "#5bc0de", skiing: "#c084fc", gym: "#d4a957", "strength training": "#f59e42", "strength_training": "#f59e42",
+            walking: "#e8a87c", basketball: "#e07474", hiking: "#8bc88b", yoga: "#c77dba",
+            "indoor cycling": "#64b5f6", "indoor_cycling": "#64b5f6", cardio: "#ff7eb3", other: "#8a8f98",
         };
 
-        /* ─── STATE ────────────────────────────────── */
-        const state = {
-            history: [],
-            workouts: [],
-            crossEffects: null,
-            insights: [],
-            activeMetrics: new Set(["restingHr", "hrv", "sleep", "battery"]),
-        };
+        function sportColor(type) {
+            if (!type) return SPORT_COLORS.other;
+            const t = String(type).toLowerCase().replace(/_/g, " ");
+            return SPORT_COLORS[t] || SPORT_COLORS[t.replace(/ /g, "_")] || SPORT_COLORS.other;
+        }
 
+        const state = { history: [], workouts: [], crossEffects: null, insights: [], activeMetrics: new Set(["restingHr","hrv","sleep","battery"]) };
         let timelineChart = null;
 
-        /* ─── UTILITY HELPERS ──────────────────────── */
-        function endpoint(path) { return `${API_BASE}${path}`; }
+        /* ─── UTILITIES ────────────────────────────── */
+        function endpoint(p) { return `${API_BASE}${p}`; }
+        function fmt(v, fb="—") { if (v==null||v==="") return fb; if (typeof v==="number"&&Number.isFinite(v)) return Number.isInteger(v)?String(v):v.toFixed(1); return String(v); }
+        function escapeHtml(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+        function findFirst(src,keys) { for (const k of keys) { const v=src?.[k]; if (v!==undefined&&v!==null&&v!=="") return v; } return null; }
+        function numOrNull(v) { const n=Number(v); return Number.isFinite(n)?n:null; }
+        function average(arr) { const c=arr.filter(v=>v!=null); if (!c.length) return null; return c.reduce((a,b)=>a+b,0)/c.length; }
+        function median(arr) { const s=arr.filter(v=>v!=null).sort((a,b)=>a-b); if (!s.length) return null; const m=Math.floor(s.length/2); return s.length%2?s[m]:(s[m-1]+s[m])/2; }
+        function stddev(arr) { const c=arr.filter(v=>v!=null); if (c.length<2) return null; const m=average(c); return Math.sqrt(c.reduce((s,v)=>s+(v-m)**2,0)/(c.length-1)); }
+        function percentile(arr,p) { const s=arr.filter(v=>v!=null).sort((a,b)=>a-b); if (!s.length) return null; const i=(p/100)*(s.length-1), lo=Math.floor(i), hi=Math.ceil(i); if (lo===hi) return s[lo]; return s[lo]+(s[hi]-s[lo])*(i-lo); }
+        function formatDate(v) { if (!v) return ""; const ts=Date.parse(String(v)); if (!Number.isFinite(ts)) return String(v); return new Date(ts).toISOString().slice(0,10); }
+        function shortDate(d) { return new Date(d).toLocaleDateString("en-US",{month:"short",day:"numeric"}); }
+        function rollingAvg(values,w=7) { return values.map((_,i)=>{ const start=Math.max(0,i-w+1); const sl=values.slice(start,i+1).filter(v=>v!=null); return sl.length?sl.reduce((a,b)=>a+b,0)/sl.length:null; }); }
 
-        function fmt(v, fb = "—") {
-            if (v === null || v === undefined || v === "") return fb;
-            if (typeof v === "number" && Number.isFinite(v))
-                return Number.isInteger(v) ? String(v) : v.toFixed(1);
-            return String(v);
-        }
-
-        function escapeHtml(s) {
-            return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
-                .replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-        }
-
-        function findFirst(src, keys) {
-            for (const k of keys) {
-                const v = src?.[k];
-                if (v !== undefined && v !== null && v !== "") return v;
-            }
-            return null;
-        }
-
-        function numOrNull(v) {
-            const n = Number(v);
-            return Number.isFinite(n) ? n : null;
-        }
-
-        function average(arr) {
-            const c = arr.filter(v => v !== null && v !== undefined);
-            if (!c.length) return null;
-            return c.reduce((a, b) => a + b, 0) / c.length;
-        }
-
-        function median(arr) {
-            const s = arr.filter(v => v != null).sort((a, b) => a - b);
-            if (!s.length) return null;
-            const m = Math.floor(s.length / 2);
-            return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
-        }
-
-        function stddev(arr) {
-            const c = arr.filter(v => v != null);
-            if (c.length < 2) return null;
-            const m = average(c);
-            const variance = c.reduce((s, v) => s + (v - m) ** 2, 0) / (c.length - 1);
-            return Math.sqrt(variance);
-        }
-
-        function percentile(arr, p) {
-            const s = arr.filter(v => v != null).sort((a, b) => a - b);
-            if (!s.length) return null;
-            const i = (p / 100) * (s.length - 1);
-            const lo = Math.floor(i);
-            const hi = Math.ceil(i);
-            if (lo === hi) return s[lo];
-            return s[lo] + (s[hi] - s[lo]) * (i - lo);
-        }
-
-        function formatDate(v) {
-            if (!v) return "";
-            const ts = Date.parse(String(v));
-            if (!Number.isFinite(ts)) return String(v);
-            return new Date(ts).toISOString().slice(0, 10);
-        }
-
-        function shortDate(d) {
-            const dt = new Date(d);
-            return dt.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-        }
-
-        function rollingAvg(values, window = 7) {
-            return values.map((_, i) => {
-                const start = Math.max(0, i - window + 1);
-                const slice = values.slice(start, i + 1).filter(v => v != null);
-                return slice.length ? slice.reduce((a, b) => a + b, 0) / slice.length : null;
-            });
-        }
-
-        /* ─── PEARSON CORRELATION ──────────────────── */
-        function pearson(a, b) {
-            const pairs = [];
-            for (let i = 0; i < a.length; i++) {
-                if (a[i] != null && b[i] != null) pairs.push([a[i], b[i]]);
-            }
-            if (pairs.length < 5) return null;
-            const xs = pairs.map(p => p[0]), ys = pairs.map(p => p[1]);
-            const mx = average(xs), my = average(ys);
-            if (mx === null || my === null) return null;
-            let num = 0, dx2 = 0, dy2 = 0;
-            for (let i = 0; i < xs.length; i++) {
-                const dx = xs[i] - mx, dy = ys[i] - my;
-                num += dx * dy; dx2 += dx * dx; dy2 += dy * dy;
-            }
-            if (dx2 === 0 || dy2 === 0) return null;
-            return num / Math.sqrt(dx2 * dy2);
+        function pearson(a,b) {
+            const pairs=[]; for (let i=0;i<a.length;i++) { if (a[i]!=null&&b[i]!=null) pairs.push([a[i],b[i]]); }
+            if (pairs.length<5) return null;
+            const xs=pairs.map(p=>p[0]),ys=pairs.map(p=>p[1]),mx=average(xs),my=average(ys);
+            if (mx==null||my==null) return null; let num=0,dx2=0,dy2=0;
+            for (let i=0;i<xs.length;i++) { const dx=xs[i]-mx,dy=ys[i]-my; num+=dx*dy; dx2+=dx*dx; dy2+=dy*dy; }
+            if (dx2===0||dy2===0) return null; return num/Math.sqrt(dx2*dy2);
         }
 
         /* ─── DATA NORMALIZATION ───────────────────── */
         function normalizeHistory(payload) {
-            const rows = Array.isArray(payload) ? payload
-                : Array.isArray(payload?.data) ? payload.data
-                : Array.isArray(payload?.history) ? payload.history : [];
-
-            return rows.map(r => ({
-                date:      formatDate(findFirst(r, ["date","timestamp","as_of"])),
-                restingHr: numOrNull(findFirst(r, ["resting_hr","restingHr","rhr"])),
-                hrv:       numOrNull(findFirst(r, ["hrv","hrv_last_night","hrv_ms","rmssd"])),
-                sleep:     numOrNull(findFirst(r, ["sleep_score","sleepScore","sleep"])),
-                stress:    numOrNull(findFirst(r, ["stress","stress_level","stress_score","avg_stress"])),
-                battery:   numOrNull(findFirst(r, ["battery","body_battery","bb_peak"])),
-                readiness: numOrNull(findFirst(r, ["training_readiness","readiness","readiness_score"])),
-                load:      numOrNull(findFirst(r, ["training_load","daily_load_acute","load","acute_load"])),
-            }))
-            .filter(r => r.date)
-            .filter(r => {
-                const ts = Date.parse(r.date);
-                if (!Number.isFinite(ts)) return false;
-                return ts >= START_TS && ts <= END_TS;
-            })
-            .filter(r => [r.restingHr, r.hrv, r.sleep, r.stress, r.battery, r.readiness, r.load]
-                .some(v => v !== null))
-            .sort((a, b) => a.date.localeCompare(b.date));
+            const rows = Array.isArray(payload)?payload:Array.isArray(payload?.data)?payload.data:Array.isArray(payload?.history)?payload.history:[];
+            return rows.map(r=>({ date:formatDate(findFirst(r,["date","timestamp","as_of"])), restingHr:numOrNull(findFirst(r,["resting_hr","restingHr","rhr"])), hrv:numOrNull(findFirst(r,["hrv","hrv_last_night","hrv_ms","rmssd"])), sleep:numOrNull(findFirst(r,["sleep_score","sleepScore","sleep"])), stress:numOrNull(findFirst(r,["stress","stress_level","stress_score","avg_stress"])), battery:numOrNull(findFirst(r,["battery","body_battery","bb_peak"])), readiness:numOrNull(findFirst(r,["training_readiness","readiness","readiness_score"])), load:numOrNull(findFirst(r,["training_load","daily_load_acute","load","acute_load"])) }))
+            .filter(r=>r.date).filter(r=>{ const ts=Date.parse(r.date); return Number.isFinite(ts)&&ts>=START_TS&&ts<=END_TS; })
+            .filter(r=>[r.restingHr,r.hrv,r.sleep,r.stress,r.battery,r.readiness,r.load].some(v=>v!==null))
+            .sort((a,b)=>a.date.localeCompare(b.date));
         }
 
         function normalizeWorkouts(payload) {
-            const rows = Array.isArray(payload?.data) ? payload.data
-                : Array.isArray(payload) ? payload : [];
-
-            return rows.map(r => {
-                const durMin = numOrNull(findFirst(r, ["duration_min","durationMin"]))
-                    ?? (() => { const s = numOrNull(findFirst(r, ["duration_sec","durationSec"])); return s ? s / 60 : null; })();
-                const distKm = numOrNull(findFirst(r, ["distance_km","distanceKm"]))
-                    ?? (() => { const m = numOrNull(findFirst(r, ["distance_m","distanceM"])); return m ? m / 1000 : null; })();
-                return {
-                    date: formatDate(findFirst(r, ["date","timestamp"])),
-                    name: findFirst(r, ["activity_name","activityName"]) || "Workout",
-                    type: (findFirst(r, ["activity_type","activityType","sport_type","sportType"]) || "other").toLowerCase().replace(/_/g," "),
-                    durMin, distKm,
-                    avgHr:  numOrNull(findFirst(r, ["average_hr","avg_hr","avgHr"])),
-                    speed:  numOrNull(findFirst(r, ["speed_kph","speedKph"])),
-                    load:   numOrNull(findFirst(r, ["training_load","trainingLoad"])),
-                };
-            })
-            .filter(r => r.date)
-            .filter(r => {
-                const ts = Date.parse(r.date);
-                return Number.isFinite(ts) && ts >= START_TS && ts <= END_TS;
-            })
-            .sort((a, b) => a.date.localeCompare(b.date));
+            const rows=Array.isArray(payload?.data)?payload.data:Array.isArray(payload)?payload:[];
+            return rows.map(r=>{ const durMin=numOrNull(findFirst(r,["duration_min","durationMin"]))??((()=>{ const s=numOrNull(findFirst(r,["duration_sec","durationSec"])); return s?s/60:null; })()); const distKm=numOrNull(findFirst(r,["distance_km","distanceKm"]))??((()=>{ const m=numOrNull(findFirst(r,["distance_m","distanceM"])); return m?m/1000:null; })()); return { date:formatDate(findFirst(r,["date","timestamp"])), name:findFirst(r,["activity_name","activityName"])||"Workout", type:(findFirst(r,["activity_type","activityType","sport_type","sportType"])||"other").toLowerCase().replace(/_/g," "), durMin,distKm, avgHr:numOrNull(findFirst(r,["average_hr","avg_hr","avgHr"])), speed:numOrNull(findFirst(r,["speed_kph","speedKph"])), load:numOrNull(findFirst(r,["training_load","trainingLoad"])) }; })
+            .filter(r=>r.date).filter(r=>{ const ts=Date.parse(r.date); return Number.isFinite(ts)&&ts>=START_TS&&ts<=END_TS; }).sort((a,b)=>a.date.localeCompare(b.date));
         }
 
-        /* ─── INSIGHT NORMALIZATION ────────────────── */
-        function rawInsightText(item) {
-            if (typeof item === "string") return item;
-            return findFirst(item, ["insight","message","text","summary","content"]) || "";
-        }
-        function rawInsightAgent(item) {
-            if (typeof item === "string") return "agent";
-            return findFirst(item, ["agent","agent_name","source","role"]) || "agent";
-        }
-        function rawInsightTime(item) {
-            if (typeof item === "string") return "";
-            return findFirst(item, ["timestamp","created_at","date","time"]) || "";
-        }
-        function cleanAgentText(text) {
-            return String(text||"").replace(/\r/g,"").replace(/```[\s\S]*?```/g,"\n")
-                .replace(/^\s*\|.*\|\s*$/gm,"").replace(/^\s*[-=]{3,}\s*$/gm,"")
-                .replace(/^\s*(SELECT|FROM|WHERE|JOIN|ORDER BY|GROUP BY|LIMIT|INSERT|UPDATE|DELETE)\b.*$/gim,"")
-                .replace(/\n{3,}/g,"\n\n").trim();
-        }
-        function summarizeInsightText(text, maxLen = 320) {
-            const cleaned = cleanAgentText(text);
-            const blocks = cleaned.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
-            let best = blocks.find(p => p.length >= 30) || blocks[0] || "";
-            best = best.replace(/\s+/g," ").trim();
-            return best.length <= maxLen ? best : best.slice(0, maxLen - 3) + "...";
-        }
-        function normalizeInsights(payload) {
-            const raw = Array.isArray(payload) ? payload
-                : Array.isArray(payload?.insights) ? payload.insights
-                : Array.isArray(payload?.data) ? payload.data
-                : (payload?.insight || payload?.message || payload?.text) ? [payload] : [];
-            return raw.slice(0, 12);
-        }
+        /* ─── INSIGHT HELPERS ──────────────────────── */
+        function rawInsightText(item) { if (typeof item==="string") return item; return findFirst(item,["insight","message","text","summary","content"])||""; }
+        function rawInsightAgent(item) { if (typeof item==="string") return "agent"; return findFirst(item,["agent","agent_name","source","role"])||"agent"; }
+        function rawInsightTime(item) { if (typeof item==="string") return ""; return findFirst(item,["timestamp","created_at","date","time"])||""; }
+        function cleanAgentText(text) { return String(text||"").replace(/\r/g,"").replace(/```[\s\S]*?```/g,"\n").replace(/^\s*\|.*\|\s*$/gm,"").replace(/^\s*[-=]{3,}\s*$/gm,"").replace(/^\s*(SELECT|FROM|WHERE|JOIN|ORDER BY|GROUP BY|LIMIT|INSERT|UPDATE|DELETE)\b.*$/gim,"").replace(/\n{3,}/g,"\n\n").trim(); }
+        function truncateText(text,max=160) { const c=cleanAgentText(text).replace(/\s+/g," ").trim(); return c.length<=max?c:c.slice(0,max-3)+"…"; }
+        function normalizeInsights(payload) { const raw=Array.isArray(payload)?payload:Array.isArray(payload?.insights)?payload.insights:Array.isArray(payload?.data)?payload.data:(payload?.insight||payload?.message||payload?.text)?[payload]:[]; return raw.slice(0,12); }
 
-        /* ─── FETCH HELPERS ────────────────────────── */
-        async function getJson(path) {
-            const res = await fetch(endpoint(path), { method: "GET", headers: { Accept: "application/json" }, mode: "cors" });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const text = await res.text();
-            if (!text) return {};
-            try { return JSON.parse(text); } catch { return { raw: text }; }
-        }
+        /* ─── FETCH ─────────────────────────────────── */
+        async function getJson(path) { const res=await fetch(endpoint(path),{method:"GET",headers:{Accept:"application/json"},mode:"cors"}); if (!res.ok) throw new Error(`HTTP ${res.status}`); const text=await res.text(); if (!text) return {}; try{return JSON.parse(text)}catch{return{raw:text};} }
+        async function postJson(path,body) { const res=await fetch(endpoint(path),{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(body),mode:"cors"}); if (!res.ok){const t=await res.text();throw new Error(t||`HTTP ${res.status}`);}const text=await res.text();if (!text)return {};try{return JSON.parse(text)}catch{return{raw:text};} }
 
-        async function postJson(path, body) {
-            const res = await fetch(endpoint(path), {
-                method: "POST",
-                headers: { Accept: "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify(body), mode: "cors"
-            });
-            if (!res.ok) { const t = await res.text(); throw new Error(t || `HTTP ${res.status}`); }
-            const text = await res.text();
-            if (!text) return {};
-            try { return JSON.parse(text); } catch { return { raw: text }; }
-        }
-
-        /* ─── CLIENT-SIDE COMPUTATIONS ─────────────── */
+        /* ─── COMPUTATIONS ─────────────────────────── */
         function computeKPIs() {
-            const h = state.history;
-            const w = state.workouts;
-            const avg = (key) => {
-                const vals = h.map(r => r[key]).filter(v => v != null);
-                return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length) : null;
-            };
-            document.getElementById("kpiHr").textContent = fmt(avg("restingHr"), "—");
-            document.getElementById("kpiHrv").textContent = fmt(avg("hrv"), "—");
-            document.getElementById("kpiSleep").textContent = fmt(avg("sleep"), "—");
-            document.getElementById("kpiBattery").textContent = fmt(avg("battery"), "—");
-            document.getElementById("kpiWorkouts").textContent = w.length || "—";
-            const totalDist = w.reduce((s, r) => s + (r.distKm || 0), 0);
-            document.getElementById("kpiDistance").textContent = totalDist > 0 ? totalDist.toFixed(1) : "—";
+            const h=state.history,w=state.workouts;
+            const avg=(key)=>{ const vals=h.map(r=>r[key]).filter(v=>v!=null); return vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length):null; };
+            document.getElementById("kpiHr").textContent=fmt(avg("restingHr"));
+            document.getElementById("kpiHrv").textContent=fmt(avg("hrv"));
+            document.getElementById("kpiSleep").textContent=fmt(avg("sleep"));
+            document.getElementById("kpiBattery").textContent=fmt(avg("battery"));
+            document.getElementById("kpiWorkouts").textContent=w.length||"—";
+            const td=w.reduce((s,r)=>s+(r.distKm||0),0);
+            document.getElementById("kpiDistance").textContent=td>0?td.toFixed(1):"—";
         }
 
         function computeCorrelationMatrix() {
-            const h = state.history;
-            const keys = METRIC_DEFS.filter(m => {
-                return h.some(r => r[m.key] != null);
-            });
-            const matrix = keys.map(a =>
-                keys.map(b => a.key === b.key ? 1 : pearson(h.map(r=>r[a.key]), h.map(r=>r[b.key])))
-            );
-            return { keys, matrix };
+            const h=state.history; const keys=METRIC_DEFS.filter(m=>h.some(r=>r[m.key]!=null));
+            const matrix=keys.map(a=>keys.map(b=>a.key===b.key?1:pearson(h.map(r=>r[a.key]),h.map(r=>r[b.key]))));
+            return {keys,matrix};
         }
 
         function computeAR1() {
-            const h = state.history;
-            const results = [];
-            for (const m of METRIC_DEFS) {
-                const vals = h.map(r => r[m.key]);
-                const today = [], tomorrow = [];
-                for (let i = 0; i < vals.length - 1; i++) {
-                    if (vals[i] != null && vals[i+1] != null) {
-                        today.push(vals[i]);
-                        tomorrow.push(vals[i+1]);
-                    }
-                }
-                const r = pearson(today, tomorrow);
-                if (r !== null) {
-                    results.push({ ...m, ar1: r, today, tomorrow });
-                }
-            }
-            return results.sort((a, b) => Math.abs(b.ar1) - Math.abs(a.ar1));
+            const h=state.history,results=[];
+            for (const m of METRIC_DEFS) { const vals=h.map(r=>r[m.key]); const today=[],tomorrow=[]; for (let i=0;i<vals.length-1;i++) { if (vals[i]!=null&&vals[i+1]!=null){today.push(vals[i]);tomorrow.push(vals[i+1]);} } const r=pearson(today,tomorrow); if (r!==null) results.push({...m,ar1:r,today,tomorrow}); }
+            return results.sort((a,b)=>Math.abs(b.ar1)-Math.abs(a.ar1));
         }
 
         function computeMarkov() {
-            const h = state.history;
-            const vals = h.map(r => r.battery).filter(v => v != null);
-            if (vals.length < 5) return null;
-
-            const states = ["Low", "Moderate", "Good", "High"];
-            function classify(v) {
-                if (v < 30) return 0;
-                if (v < 55) return 1;
-                if (v < 75) return 2;
-                return 3;
-            }
-
-            const classified = h.filter(r => r.battery != null).map(r => classify(r.battery));
-            const counts = states.map(() => states.map(() => 0));
-            for (let i = 0; i < classified.length - 1; i++) {
-                counts[classified[i]][classified[i+1]]++;
-            }
-
-            const probs = counts.map(row => {
-                const total = row.reduce((a, b) => a + b, 0);
-                return total > 0 ? row.map(v => v / total) : row.map(() => 0);
-            });
-
-            return { states, counts, probs };
+            const h=state.history; const vals=h.filter(r=>r.battery!=null);
+            if (vals.length<5) return null;
+            const states=["Low","Moderate","Good","High"];
+            function classify(v){if(v<30)return 0;if(v<55)return 1;if(v<75)return 2;return 3;}
+            const classified=vals.map(r=>({date:r.date,state:classify(r.battery),value:r.battery}));
+            const counts=states.map(()=>states.map(()=>0));
+            for (let i=0;i<classified.length-1;i++) counts[classified[i].state][classified[i+1].state]++;
+            const probs=counts.map(row=>{const total=row.reduce((a,b)=>a+b,0);return total>0?row.map(v=>v/total):row.map(()=>0);});
+            return {states,counts,probs,timeline:classified};
         }
 
         function computeDistributions() {
-            const h = state.history;
-            return METRIC_DEFS.map(m => {
-                const vals = h.map(r => r[m.key]).filter(v => v != null);
-                if (!vals.length) return null;
-                const mn = Math.min(...vals), mx = Math.max(...vals);
-                const med = median(vals), avg_ = average(vals), sd = stddev(vals);
-                const cv = (avg_ && sd) ? (sd / Math.abs(avg_)) * 100 : null;
-                const q25 = percentile(vals, 25), q75 = percentile(vals, 75);
-                return { ...m, min: mn, max: mx, median: med, avg: avg_, stddev: sd, cv, q25, q75, n: vals.length };
-            }).filter(Boolean);
+            const h=state.history;
+            return METRIC_DEFS.map(m=>{ const vals=h.map(r=>r[m.key]).filter(v=>v!=null); if (!vals.length) return null; const mn=Math.min(...vals),mx=Math.max(...vals),med=median(vals),avg_=average(vals),sd=stddev(vals),cv=(avg_&&sd)?(sd/Math.abs(avg_))*100:null,q25=percentile(vals,25),q75=percentile(vals,75); return {...m,min:mn,max:mx,median:med,avg:avg_,stddev:sd,cv,q25,q75,n:vals.length}; }).filter(Boolean);
         }
 
         function computeWorkoutEffects() {
-            const h = state.history;
-            const w = state.workouts;
-            const workoutDates = new Set(w.map(r => r.date));
-            const results = [];
-
-            for (const m of METRIC_DEFS) {
-                const afterWorkout = [], afterRest = [];
-                for (let i = 0; i < h.length - 1; i++) {
-                    const nextVal = h[i+1][m.key];
-                    if (nextVal == null) continue;
-                    if (workoutDates.has(h[i].date)) {
-                        afterWorkout.push(nextVal);
-                    } else {
-                        afterRest.push(nextVal);
-                    }
-                }
-                if (afterWorkout.length >= 3 && afterRest.length >= 3) {
-                    results.push({
-                        ...m,
-                        afterWorkout: average(afterWorkout),
-                        afterRest: average(afterRest),
-                        diff: average(afterWorkout) - average(afterRest),
-                        nWorkout: afterWorkout.length,
-                        nRest: afterRest.length,
-                    });
-                }
-            }
+            const h=state.history,w=state.workouts,workoutDates=new Set(w.map(r=>r.date)),results=[];
+            for (const m of METRIC_DEFS) { const afterWorkout=[],afterRest=[]; for (let i=0;i<h.length-1;i++) { const nv=h[i+1][m.key]; if (nv==null) continue; if (workoutDates.has(h[i].date)) afterWorkout.push(nv); else afterRest.push(nv); } if (afterWorkout.length>=3&&afterRest.length>=3) results.push({...m,afterWorkout:average(afterWorkout),afterRest:average(afterRest),diff:average(afterWorkout)-average(afterRest),nWorkout:afterWorkout.length,nRest:afterRest.length}); }
             return results;
         }
 
-        /* ─── RENDER: KATEX FORMULAS ───────────────── */
+        /* ─── RENDER: KATEX ────────────────────────── */
         function renderFormulas() {
             try {
-                katex.render(
-                    "r = \\frac{\\sum_{i=1}^{n}(x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum_{i=1}^{n}(x_i - \\bar{x})^2 \\cdot \\sum_{i=1}^{n}(y_i - \\bar{y})^2}}",
-                    document.getElementById("pearsonFormula"),
-                    { displayMode: true, throwOnError: false }
-                );
-                katex.render(
-                    "X_t = \\varphi \\cdot X_{t-1} + \\varepsilon_t \\quad \\text{where } \\varphi = \\text{AR(1) coefficient}",
-                    document.getElementById("arFormula"),
-                    { displayMode: true, throwOnError: false }
-                );
-                katex.render(
-                    "P(S_{t+1} = j \\mid S_t = i) = \\frac{n_{ij}}{\\sum_k n_{ik}}",
-                    document.getElementById("markovFormula"),
-                    { displayMode: true, throwOnError: false }
-                );
-            } catch (e) {
-                console.warn("KaTeX rendering error:", e);
-            }
+                katex.render("r = \\frac{\\sum(x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum(x_i - \\bar{x})^2 \\cdot \\sum(y_i - \\bar{y})^2}}", document.getElementById("pearsonFormula"), {displayMode:true,throwOnError:false});
+                katex.render("X_t = \\varphi \\cdot X_{t-1} + \\varepsilon_t", document.getElementById("arFormula"), {displayMode:true,throwOnError:false});
+                katex.render("P(S_{t+1}=j \\mid S_t=i) = \\frac{n_{ij}}{\\sum_k n_{ik}}", document.getElementById("markovFormula"), {displayMode:true,throwOnError:false});
+            } catch(e) { console.warn("KaTeX error:",e); }
         }
 
-        /* ─── RENDER: HERO KPIs ────────────────────── */
-        // (done in computeKPIs above)
-
-        /* ─── RENDER: HEALTH TIMELINE ──────────────── */
+        /* ─── RENDER: TIMELINE ─────────────────────── */
         function renderTimelineToggles() {
-            const container = document.getElementById("metricToggles");
-            container.innerHTML = METRIC_DEFS.map(m => `
-                <button class="toggle-btn ${state.activeMetrics.has(m.key) ? 'active' : ''}"
-                        data-metric="${m.key}">
-                    <span class="toggle-dot" style="background:${m.color}"></span>
-                    ${m.label}
-                </button>
-            `).join("");
-
-            container.querySelectorAll(".toggle-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const key = btn.dataset.metric;
-                    if (state.activeMetrics.has(key)) {
-                        if (state.activeMetrics.size > 1) state.activeMetrics.delete(key);
-                    } else {
-                        state.activeMetrics.add(key);
-                    }
-                    btn.classList.toggle("active", state.activeMetrics.has(key));
-                    updateTimelineChart();
-                });
-            });
+            const container=document.getElementById("metricToggles");
+            container.innerHTML=METRIC_DEFS.map(m=>`<button class="toggle-btn ${state.activeMetrics.has(m.key)?'active':''}" data-metric="${m.key}"><span class="toggle-dot" style="background:${m.color}"></span>${m.label}</button>`).join("");
+            container.querySelectorAll(".toggle-btn").forEach(btn=>{ btn.addEventListener("click",()=>{ const key=btn.dataset.metric; if (state.activeMetrics.has(key)){if(state.activeMetrics.size>1)state.activeMetrics.delete(key);}else state.activeMetrics.add(key); btn.classList.toggle("active",state.activeMetrics.has(key)); updateTimelineChart(); }); });
         }
 
         function renderTimelineChart() {
-            const ctx = document.getElementById("timelineChart").getContext("2d");
-            const labels = state.history.map(r => r.date);
-
-            const datasets = [];
-            for (const m of METRIC_DEFS) {
-                const values = state.history.map(r => r[m.key]);
-                const hasData = values.some(v => v != null);
-                if (!hasData) continue;
-
-                datasets.push({
-                    label: m.label,
-                    data: values,
-                    borderColor: m.color,
-                    backgroundColor: m.color + "18",
-                    borderWidth: 2,
-                    pointRadius: 2,
-                    pointHoverRadius: 5,
-                    tension: 0.3,
-                    hidden: !state.activeMetrics.has(m.key),
-                    _metricKey: m.key,
-                });
-
-                // Rolling average overlay
-                const ra = rollingAvg(values);
-                datasets.push({
-                    label: `${m.label} (7d avg)`,
-                    data: ra,
-                    borderColor: m.color + "80",
-                    borderWidth: 1.5,
-                    borderDash: [6, 3],
-                    pointRadius: 0,
-                    tension: 0.4,
-                    hidden: !state.activeMetrics.has(m.key),
-                    _metricKey: m.key,
-                    _isRolling: true,
-                });
+            const ctx=document.getElementById("timelineChart").getContext("2d"); const labels=state.history.map(r=>r.date); const datasets=[];
+            for (const m of METRIC_DEFS) { const values=state.history.map(r=>r[m.key]); if (!values.some(v=>v!=null)) continue;
+                datasets.push({label:m.label,data:values,borderColor:m.color,backgroundColor:m.color+"18",borderWidth:2,pointRadius:2,pointHoverRadius:5,tension:0.3,hidden:!state.activeMetrics.has(m.key),_metricKey:m.key});
+                datasets.push({label:`${m.label} (7d avg)`,data:rollingAvg(values),borderColor:m.color+"80",borderWidth:1.5,borderDash:[6,3],pointRadius:0,tension:0.4,hidden:!state.activeMetrics.has(m.key),_metricKey:m.key,_isRolling:true});
             }
+            // Vertical annotation line for war date
+            const warIdx=labels.indexOf(WAR_DATE);
 
-            timelineChart = new Chart(ctx, {
-                type: "line",
-                data: { labels, datasets },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: "index", intersect: false },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: "rgba(11,13,17,0.92)",
-                            borderColor: "rgba(255,255,255,0.1)",
-                            borderWidth: 1,
-                            titleFont: { family: "Inter", size: 12, weight: "600" },
-                            bodyFont: { family: "Inter", size: 12 },
-                            padding: 10,
-                            cornerRadius: 8,
-                            callbacks: {
-                                title: (items) => shortDate(items[0].label),
-                                label: (item) => {
-                                    if (item.dataset._isRolling) return null;
-                                    return ` ${item.dataset.label}: ${fmt(item.raw)}`;
-                                },
-                            },
-                            filter: (item) => !item.dataset._isRolling,
-                        },
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                color: "rgba(255,255,255,0.35)",
-                                font: { size: 10 },
-                                maxTicksLimit: 12,
-                                callback: (_, i) => shortDate(labels[i]),
-                            },
-                            grid: { color: "rgba(255,255,255,0.04)" },
-                        },
-                        y: {
-                            ticks: { color: "rgba(255,255,255,0.35)", font: { size: 10 } },
-                            grid: { color: "rgba(255,255,255,0.05)" },
-                        },
-                    },
+            timelineChart=new Chart(ctx,{type:"line",data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+                plugins:{legend:{display:false},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,titleFont:{family:"Inter",size:12,weight:"600"},bodyFont:{family:"Inter",size:12},padding:10,cornerRadius:8,callbacks:{title:(items)=>shortDate(items[0].label),label:(item)=>{if(item.dataset._isRolling)return null;return ` ${item.dataset.label}: ${fmt(item.raw)}`;},},filter:(item)=>!item.dataset._isRolling},
+                    annotation: warIdx>=0 ? undefined : undefined, // handled via plugin below
                 },
-            });
+                scales:{x:{ticks:{color:"rgba(255,255,255,0.35)",font:{size:10},maxTicksLimit:12,callback:(_,i)=>shortDate(labels[i])},grid:{color:"rgba(255,255,255,0.04)"}},y:{ticks:{color:"rgba(255,255,255,0.35)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}}},
+            },
+            plugins: warIdx>=0?[{id:"warLine",afterDraw:(chart)=>{const meta=chart.getDatasetMeta(0);if(!meta.data[warIdx])return;const x=meta.data[warIdx].x;const ctx2=chart.ctx;ctx2.save();ctx2.strokeStyle="rgba(224,116,116,0.5)";ctx2.lineWidth=2;ctx2.setLineDash([6,4]);ctx2.beginPath();ctx2.moveTo(x,chart.chartArea.top);ctx2.lineTo(x,chart.chartArea.bottom);ctx2.stroke();ctx2.fillStyle="rgba(224,116,116,0.7)";ctx2.font="bold 10px Inter";ctx2.fillText("Feb 28",x+4,chart.chartArea.top+12);ctx2.restore();}}]:[]});
         }
 
-        function updateTimelineChart() {
-            if (!timelineChart) return;
-            timelineChart.data.datasets.forEach(ds => {
-                ds.hidden = !state.activeMetrics.has(ds._metricKey);
-            });
-            timelineChart.update();
-        }
+        function updateTimelineChart() { if (!timelineChart) return; timelineChart.data.datasets.forEach(ds=>{ds.hidden=!state.activeMetrics.has(ds._metricKey);}); timelineChart.update(); }
 
-        /* ─── RENDER: WORKOUT ARCHIVE ──────────────── */
+        /* ─── RENDER: WORKOUTS ─────────────────────── */
         function renderWorkoutCharts() {
-            const w = state.workouts;
+            const w=state.workouts;
+            const typeCounts={}; w.forEach(r=>{typeCounts[r.type]=(typeCounts[r.type]||0)+1;}); const types=Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]);
+            new Chart(document.getElementById("activityChart").getContext("2d"),{type:"doughnut",data:{labels:types.map(t=>t[0]),datasets:[{data:types.map(t=>t[1]),backgroundColor:types.map(t=>sportColor(t[0])),borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"bottom",labels:{color:"rgba(255,255,255,0.65)",font:{size:11,family:"Inter"},padding:12,boxWidth:12,boxHeight:12}},title:{display:true,text:"Activity Distribution",color:"rgba(255,255,255,0.5)",font:{size:11,weight:"600",family:"Inter"},padding:{bottom:8}}}}});
 
-            // Activity type distribution (doughnut)
-            const typeCounts = {};
-            w.forEach(r => { typeCounts[r.type] = (typeCounts[r.type] || 0) + 1; });
-            const types = Object.entries(typeCounts).sort((a,b) => b[1]-a[1]);
-
-            new Chart(document.getElementById("activityChart").getContext("2d"), {
-                type: "doughnut",
-                data: {
-                    labels: types.map(t => t[0]),
-                    datasets: [{
-                        data: types.map(t => t[1]),
-                        backgroundColor: types.map(t => SPORT_COLORS[t[0]] || SPORT_COLORS.other),
-                        borderWidth: 0,
-                        hoverOffset: 6,
-                    }],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: "60%",
-                    plugins: {
-                        legend: {
-                            position: "bottom",
-                            labels: { color: "rgba(255,255,255,0.65)", font: { size: 11, family: "Inter" }, padding: 12, boxWidth: 12, boxHeight: 12 },
-                        },
-                        title: {
-                            display: true, text: "Activity Distribution", color: "rgba(255,255,255,0.5)",
-                            font: { size: 11, weight: "600", family: "Inter" }, padding: { bottom: 8 },
-                        },
-                    },
-                },
-            });
-
-            // Scatter: duration vs distance
-            const scatterData = w.filter(r => r.durMin != null && r.distKm != null).map(r => ({
-                x: r.durMin, y: r.distKm,
-                backgroundColor: SPORT_COLORS[r.type] || SPORT_COLORS.other,
-                label: r.name,
-                date: r.date,
-                type: r.type,
-            }));
-
-            new Chart(document.getElementById("scatterChart").getContext("2d"), {
-                type: "scatter",
-                data: {
-                    datasets: [{
-                        data: scatterData,
-                        backgroundColor: scatterData.map(d => d.backgroundColor),
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                    }],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        title: {
-                            display: true, text: "Duration vs Distance", color: "rgba(255,255,255,0.5)",
-                            font: { size: 11, weight: "600", family: "Inter" }, padding: { bottom: 8 },
-                        },
-                        tooltip: {
-                            backgroundColor: "rgba(11,13,17,0.92)",
-                            borderColor: "rgba(255,255,255,0.1)",
-                            borderWidth: 1,
-                            callbacks: {
-                                label: (ctx) => {
-                                    const d = ctx.raw;
-                                    return [`${d.label} (${d.type})`, `${d.date}`, `${fmt(d.x)} min · ${fmt(d.y)} km`];
-                                },
-                            },
-                        },
-                    },
-                    scales: {
-                        x: {
-                            title: { display: true, text: "Duration (min)", color: "rgba(255,255,255,0.4)", font: { size: 10, family: "Inter" } },
-                            ticks: { color: "rgba(255,255,255,0.35)", font: { size: 10 } },
-                            grid: { color: "rgba(255,255,255,0.04)" },
-                        },
-                        y: {
-                            title: { display: true, text: "Distance (km)", color: "rgba(255,255,255,0.4)", font: { size: 10, family: "Inter" } },
-                            ticks: { color: "rgba(255,255,255,0.35)", font: { size: 10 } },
-                            grid: { color: "rgba(255,255,255,0.05)" },
-                        },
-                    },
-                },
-            });
+            const scatterData=w.filter(r=>r.durMin!=null&&r.distKm!=null).map(r=>({x:r.durMin,y:r.distKm,backgroundColor:sportColor(r.type),label:r.name,date:r.date,type:r.type}));
+            new Chart(document.getElementById("scatterChart").getContext("2d"),{type:"scatter",data:{datasets:[{data:scatterData,backgroundColor:scatterData.map(d=>d.backgroundColor),pointRadius:5,pointHoverRadius:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},title:{display:true,text:"Duration vs Distance",color:"rgba(255,255,255,0.5)",font:{size:11,weight:"600",family:"Inter"},padding:{bottom:8}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,callbacks:{label:(ctx)=>{const d=ctx.raw;return [`${d.label} (${d.type})`,`${d.date}`,`${fmt(d.x)} min · ${fmt(d.y)} km`];}}}},scales:{x:{title:{display:true,text:"Duration (min)",color:"rgba(255,255,255,0.4)",font:{size:10,family:"Inter"}},ticks:{color:"rgba(255,255,255,0.35)",font:{size:10}},grid:{color:"rgba(255,255,255,0.04)"}},y:{title:{display:true,text:"Distance (km)",color:"rgba(255,255,255,0.4)",font:{size:10,family:"Inter"}},ticks:{color:"rgba(255,255,255,0.35)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}}}}});
         }
 
         function renderWorkoutTable() {
-            const w = [...state.workouts].reverse();
-            if (!w.length) {
-                document.getElementById("workoutTableWrap").innerHTML = '<div class="empty-state">No workouts found in the archive period.</div>';
-                return;
-            }
-
-            const typeColor = (t) => SPORT_COLORS[t] || SPORT_COLORS.other;
-            const rows = w.map(r => `
-                <tr>
-                    <td>${escapeHtml(r.date)}</td>
-                    <td>${escapeHtml(r.name)}</td>
-                    <td><span class="sport-tag" style="background:${typeColor(r.type)}22;color:${typeColor(r.type)}">${escapeHtml(r.type)}</span></td>
-                    <td>${fmt(r.durMin)}</td>
-                    <td>${fmt(r.distKm)}</td>
-                    <td>${fmt(r.avgHr)}</td>
-                    <td>${fmt(r.load)}</td>
-                </tr>
-            `).join("");
-
-            document.getElementById("workoutTableWrap").innerHTML = `
-                <table>
-                    <thead><tr>
-                        <th>Date</th><th>Activity</th><th>Type</th><th>Min</th><th>Km</th><th>Avg HR</th><th>Load</th>
-                    </tr></thead>
-                    <tbody>${rows}</tbody>
-                </table>
-            `;
+            const w=[...state.workouts].reverse(); if (!w.length){document.getElementById("workoutTableWrap").innerHTML='<div class="empty-state">No workouts found in the archive period.</div>';return;}
+            const rows=w.map(r=>`<tr><td>${escapeHtml(r.date)}</td><td>${escapeHtml(r.name)}</td><td><span class="sport-tag" style="background:${sportColor(r.type)}22;color:${sportColor(r.type)}">${escapeHtml(r.type)}</span></td><td>${fmt(r.durMin)}</td><td>${fmt(r.distKm)}</td><td>${fmt(r.avgHr)}</td><td>${fmt(r.load)}</td></tr>`).join("");
+            document.getElementById("workoutTableWrap").innerHTML=`<table><thead><tr><th>Date</th><th>Activity</th><th>Type</th><th>Min</th><th>Km</th><th>Avg HR</th><th>Load</th></tr></thead><tbody>${rows}</tbody></table>`;
         }
 
-        /* ─── RENDER: PEARSON HEATMAP ──────────────── */
-        function corrColor(v, diagonal = false) {
-            if (diagonal) return "background:#e8e3d8;";
-            if (v === null) return "background:#ede8de;color:#b0a898;";
-            const abs = Math.abs(v);
-            if (v >= 0) {
-                const r = Math.round(110 - abs * 60), g = Math.round(200 - abs * 20), b = Math.round(155 - abs * 60);
-                return `background:rgb(${r},${g},${b});color:${abs>0.5?'#fff':'#2c2a26'};`;
-            }
-            const r = Math.round(224 - abs * 40), g = Math.round(140 - abs * 50), b = Math.round(140 - abs * 40);
-            return `background:rgb(${r},${g},${b});color:${abs>0.5?'#fff':'#2c2a26'};`;
-        }
-
-        function corrStrength(v) {
-            const abs = Math.abs(v);
-            if (abs >= 0.7) return "strong";
-            if (abs >= 0.4) return "moderate";
-            return "weak";
+        /* ─── RENDER: PEARSON ──────────────────────── */
+        function corrCellStyle(v, diag) {
+            if (diag) return "background:rgba(91,154,139,0.15);color:var(--text-dim);";
+            if (v==null) return "background:var(--surface-alt);color:var(--text-dim);";
+            const abs=Math.abs(v);
+            if (v>=0) { const a=0.08+abs*0.45; return `background:rgba(110,200,155,${a.toFixed(2)});color:${abs>0.6?'#fff':'var(--text)'};`; }
+            const a=0.08+abs*0.45; return `background:rgba(224,116,116,${a.toFixed(2)});color:${abs>0.6?'#fff':'var(--text)'};`;
         }
 
         function renderPearsonHeatmap() {
-            const { keys, matrix } = computeCorrelationMatrix();
-            if (!keys.length) {
-                document.getElementById("pearsonHeatmap").innerHTML = '<div class="paper-finding">Insufficient data for correlation analysis.</div>';
-                return;
-            }
+            const {keys,matrix}=computeCorrelationMatrix(); if (!keys.length){document.getElementById("pearsonHeatmap").innerHTML='<div class="stat-finding">Insufficient data for correlation analysis.</div>';return;}
+            const header=keys.map(m=>`<th>${escapeHtml(m.label)}</th>`).join("");
+            const body=keys.map((m,ri)=>{ const cells=keys.map((_,ci)=>{ const v=matrix[ri][ci]; return `<td style="${corrCellStyle(v,ri===ci)}">${v==null?"—":v.toFixed(2)}</td>`; }).join(""); return `<tr><th>${escapeHtml(m.label)}</th>${cells}</tr>`; }).join("");
+            document.getElementById("pearsonHeatmap").innerHTML=`<table class="heatmap-table"><thead><tr><th></th>${header}</tr></thead><tbody>${body}</tbody></table>`;
 
-            const header = keys.map(m => `<th>${escapeHtml(m.label)}</th>`).join("");
-            const body = keys.map((m, ri) => {
-                const cells = keys.map((_, ci) => {
-                    const v = matrix[ri][ci];
-                    const text = v === null ? "—" : v.toFixed(2);
-                    return `<td style="${corrColor(v, ri===ci)}">${text}</td>`;
-                }).join("");
-                return `<tr><th>${escapeHtml(m.label)}</th>${cells}</tr>`;
-            }).join("");
-
-            document.getElementById("pearsonHeatmap").innerHTML = `
-                <table class="heatmap-table"><thead><tr><th></th>${header}</tr></thead><tbody>${body}</tbody></table>
-            `;
-
-            // Findings
-            const notable = [];
-            for (let i = 0; i < keys.length; i++) {
-                for (let j = i+1; j < keys.length; j++) {
-                    const v = matrix[i][j];
-                    if (v !== null) notable.push({ a: keys[i].label, b: keys[j].label, r: v });
-                }
-            }
-            notable.sort((a, b) => Math.abs(b.r) - Math.abs(a.r));
-
-            const findings = notable.slice(0, 3).map(n => {
-                const dir = n.r >= 0 ? "move together" : "move in opposite directions";
-                return `<strong>${n.a}</strong> and <strong>${n.b}</strong> ${dir} (${corrStrength(n.r)}, r=${n.r.toFixed(2)}).`;
-            });
-
-            if (findings.length) {
-                document.getElementById("pearsonFindings").innerHTML = `
-                    <div class="paper-divider"></div>
-                    <div class="paper-body"><p><strong>Key findings:</strong></p>
-                    ${findings.map(f => `<div class="paper-finding">${f}</div>`).join("")}</div>
-                `;
-            }
+            const notable=[]; for (let i=0;i<keys.length;i++) for (let j=i+1;j<keys.length;j++) { const v=matrix[i][j]; if (v!==null) notable.push({a:keys[i].label,b:keys[j].label,r:v}); }
+            notable.sort((a,b)=>Math.abs(b.r)-Math.abs(a.r));
+            const findings=notable.slice(0,3).map(n=>{ const dir=n.r>=0?"move together":"move in opposite directions"; const str=Math.abs(n.r)>=0.7?"strong":Math.abs(n.r)>=0.4?"moderate":"weak"; return `<strong>${n.a}</strong> and <strong>${n.b}</strong> ${dir} (${str}, r=${n.r.toFixed(2)}).`; });
+            if (findings.length) document.getElementById("pearsonFindings").innerHTML=`<div class="stat-divider"></div>${findings.map(f=>`<div class="stat-finding">${f}</div>`).join("")}`;
         }
 
         /* ─── RENDER: AR(1) ────────────────────────── */
         function renderAR1() {
-            const results = computeAR1();
-            if (!results.length) {
-                document.getElementById("arCoefficients").innerHTML = '<div class="paper-finding">Insufficient data for persistence analysis.</div>';
-                return;
-            }
+            const results=computeAR1(); if (!results.length){document.getElementById("arCoefficients").innerHTML='<div class="stat-finding">Insufficient data.</div>';return;}
+            document.getElementById("arCoefficients").innerHTML=results.map(r=>{ const interp=Math.abs(r.ar1)>=0.7?"High persistence":Math.abs(r.ar1)>=0.4?"Moderate":"Low persistence"; const color=Math.abs(r.ar1)>=0.7?"var(--accent)":Math.abs(r.ar1)>=0.4?"var(--warn)":"var(--text-dim)"; return `<div class="ar-card"><div class="ar-metric">${escapeHtml(r.label)}</div><div class="ar-value" style="color:${color}">${r.ar1.toFixed(2)}</div><div class="ar-interp">${interp}</div></div>`; }).join("");
 
-            // Coefficient cards
-            document.getElementById("arCoefficients").innerHTML = results.map(r => {
-                const interp = Math.abs(r.ar1) >= 0.7 ? "High persistence"
-                    : Math.abs(r.ar1) >= 0.4 ? "Moderate persistence" : "Low persistence";
-                const color = Math.abs(r.ar1) >= 0.7 ? "var(--paper-accent)" : Math.abs(r.ar1) >= 0.4 ? "#886" : "#a99";
-                return `
-                    <div class="ar-card">
-                        <div class="ar-metric">${escapeHtml(r.label)}</div>
-                        <div class="ar-value" style="color:${color}">${r.ar1.toFixed(2)}</div>
-                        <div class="ar-interp">${interp}</div>
-                    </div>
-                `;
-            }).join("");
+            const top2=results.slice(0,2); const ctx=document.getElementById("arScatterChart").getContext("2d");
+            new Chart(ctx,{type:"scatter",data:{datasets:top2.map(m=>({label:`${m.label} (φ=${m.ar1.toFixed(2)})`,data:m.today.map((t,i)=>({x:t,y:m.tomorrow[i]})),backgroundColor:m.color+"60",borderColor:m.color,pointRadius:4,pointHoverRadius:6}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"var(--text-secondary)",font:{size:11,family:"Inter"}}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",callbacks:{label:(ctx)=>`Today: ${fmt(ctx.raw.x)} → Tomorrow: ${fmt(ctx.raw.y)}`}}},scales:{x:{title:{display:true,text:"Today's value",color:"var(--text-dim)",font:{size:10,family:"Inter"}},ticks:{color:"var(--text-dim)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}},y:{title:{display:true,text:"Next day's value",color:"var(--text-dim)",font:{size:10,family:"Inter"}},ticks:{color:"var(--text-dim)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}}}}});
 
-            // Scatter plot for top 2 most persistent metrics
-            const top2 = results.slice(0, 2);
-            const ctx = document.getElementById("arScatterChart").getContext("2d");
-
-            const datasets = top2.map(m => ({
-                label: `${m.label} (φ=${m.ar1.toFixed(2)})`,
-                data: m.today.map((t, i) => ({ x: t, y: m.tomorrow[i] })),
-                backgroundColor: m.color + "60",
-                borderColor: m.color,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-            }));
-
-            new Chart(ctx, {
-                type: "scatter",
-                data: { datasets },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: { color: "#6b6560", font: { size: 11, family: "Inter" } },
-                        },
-                        tooltip: {
-                            backgroundColor: "rgba(44,42,38,0.92)",
-                            callbacks: {
-                                label: (ctx) => `Today: ${fmt(ctx.raw.x)} → Tomorrow: ${fmt(ctx.raw.y)}`,
-                            },
-                        },
-                    },
-                    scales: {
-                        x: {
-                            title: { display: true, text: "Today's value", color: "#6b6560", font: { size: 10, family: "Inter" } },
-                            ticks: { color: "#6b6560", font: { size: 10 } },
-                            grid: { color: "rgba(0,0,0,0.08)" },
-                        },
-                        y: {
-                            title: { display: true, text: "Next day's value", color: "#6b6560", font: { size: 10, family: "Inter" } },
-                            ticks: { color: "#6b6560", font: { size: 10 } },
-                            grid: { color: "rgba(0,0,0,0.08)" },
-                        },
-                    },
-                },
-            });
-
-            // Findings
-            const most = results[0];
-            const least = results[results.length - 1];
-            document.getElementById("arFindings").innerHTML = `
-                <div class="paper-divider"></div>
-                <div class="paper-body">
-                    <div class="paper-finding">
-                        <strong>${most.label}</strong> is the most persistent metric (φ = ${most.ar1.toFixed(2)}) — it changes slowly day-to-day.
-                        <strong>${least.label}</strong> is the least persistent (φ = ${least.ar1.toFixed(2)}) — it can shift substantially overnight.
-                    </div>
-                </div>
-            `;
+            const most=results[0],least=results[results.length-1];
+            document.getElementById("arFindings").innerHTML=`<div class="stat-divider"></div><div class="stat-finding"><strong>${most.label}</strong> is the most persistent (φ=${most.ar1.toFixed(2)}) — changes slowly. <strong>${least.label}</strong> is the least (φ=${least.ar1.toFixed(2)}) — can shift overnight.</div>`;
         }
 
         /* ─── RENDER: MARKOV ───────────────────────── */
         function renderMarkov() {
-            const markov = computeMarkov();
-            if (!markov) {
-                document.getElementById("markovMatrix").innerHTML = '<div class="paper-finding">Insufficient body battery data for transition analysis.</div>';
-                return;
-            }
+            const markov=computeMarkov(); if (!markov){document.getElementById("markovMatrix").innerHTML='<div class="stat-finding">Insufficient body battery data.</div>';return;}
+            const {states,probs,counts,timeline}=markov;
+            const stateColors=["#e07474","#d4a957","#5b9a8b","#6ec89b"];
 
-            const { states, probs, counts } = markov;
+            // Timeline bar chart
+            const ctx=document.getElementById("markovTimeline").getContext("2d");
+            new Chart(ctx,{type:"bar",data:{labels:timeline.map(d=>d.date),datasets:[{data:timeline.map(()=>1),backgroundColor:timeline.map(d=>stateColors[d.state]),borderWidth:0,barPercentage:1,categoryPercentage:1}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:"x",plugins:{legend:{display:false},tooltip:{callbacks:{title:(items)=>shortDate(items[0].label),label:(item)=>{const d=timeline[item.dataIndex];return `${states[d.state]} (${d.value})`;}}},title:{display:true,text:"Body Battery State Timeline",color:"rgba(255,255,255,0.5)",font:{size:11,weight:"600",family:"Inter"}}},scales:{x:{display:false},y:{display:false}}}});
 
-            function cellColor(p) {
-                const alpha = 0.15 + p * 0.6;
-                return `background:rgba(91,122,111,${alpha.toFixed(2)});color:${p>0.5?'#fff':'#2c2a26'};`;
-            }
+            // Matrix
+            function cellBg(p){const a=0.12+p*0.55;return `background:rgba(91,154,139,${a.toFixed(2)});color:${p>0.5?'#fff':'var(--text)'};`;}
+            const header=states.map(s=>`<th>→ ${s}</th>`).join("");
+            const body=states.map((s,i)=>{ const rowTotal=counts[i].reduce((a,b)=>a+b,0); const cells=probs[i].map((p,j)=>{ const text=rowTotal>0?(p*100).toFixed(0)+"%":"—"; return `<td style="${cellBg(p)}" title="${counts[i][j]} of ${rowTotal}">${text}</td>`; }).join(""); return `<tr><th>${s}</th>${cells}</tr>`; }).join("");
+            document.getElementById("markovMatrix").innerHTML=`<table class="markov-table"><thead><tr><th>From \\ To</th>${header}</tr></thead><tbody>${body}</tbody></table>`;
 
-            const header = states.map(s => `<th>→ ${s}</th>`).join("");
-            const body = states.map((s, i) => {
-                const rowTotal = counts[i].reduce((a,b)=>a+b, 0);
-                const cells = probs[i].map((p, j) => {
-                    const text = rowTotal > 0 ? (p * 100).toFixed(0) + "%" : "—";
-                    return `<td style="${cellColor(p)}" title="${counts[i][j]} of ${rowTotal} transitions">${text}</td>`;
-                }).join("");
-                return `<tr><th>${s}</th>${cells}</tr>`;
-            }).join("");
-
-            document.getElementById("markovMatrix").innerHTML = `
-                <table class="markov-table"><thead><tr><th>From \\ To</th>${header}</tr></thead><tbody>${body}</tbody></table>
-            `;
-
-            // Find dominant diagonal
-            const diags = states.map((s, i) => ({ state: s, prob: probs[i][i] }))
-                .filter(d => d.prob > 0.3)
-                .sort((a, b) => b.prob - a.prob);
-
-            if (diags.length) {
-                const stableStates = diags.map(d => `<strong>${d.state}</strong> (${(d.prob*100).toFixed(0)}% self-transition)`);
-                document.getElementById("markovFindings").innerHTML = `
-                    <div class="paper-divider"></div>
-                    <div class="paper-body">
-                        <div class="paper-finding">
-                            The most stable recovery states are ${stableStates.join(" and ")} — once the body reaches these levels, it tends to stay there.
-                        </div>
-                    </div>
-                `;
-            }
+            const topDiags=states.map((s,i)=>({state:s,prob:probs[i][i]})).filter(d=>d.prob>0.4).sort((a,b)=>b.prob-a.prob).slice(0,2);
+            if (topDiags.length) document.getElementById("markovFindings").innerHTML=`<div class="stat-divider"></div><div class="stat-finding">Most stable states: ${topDiags.map(d=>`<strong>${d.state}</strong> (${(d.prob*100).toFixed(0)}% stays)`).join(" and ")}.</div>`;
         }
 
         /* ─── RENDER: DISTRIBUTIONS ────────────────── */
         function renderDistributions() {
-            const dists = computeDistributions();
-            if (!dists.length) {
-                document.getElementById("distributionTable").innerHTML = '<div class="paper-finding">Insufficient data for distribution analysis.</div>';
-                return;
-            }
+            const dists=computeDistributions(); if (!dists.length){document.getElementById("distributionTable").innerHTML='<div class="stat-finding">Insufficient data.</div>';return;}
 
-            const rows = dists.map(d => `
-                <tr>
-                    <th>${escapeHtml(d.label)}</th>
-                    <td>${fmt(d.min)}</td>
-                    <td>${fmt(d.q25)}</td>
-                    <td style="font-weight:700;">${fmt(d.median)}</td>
-                    <td>${fmt(d.q75)}</td>
-                    <td>${fmt(d.max)}</td>
-                    <td>${fmt(d.avg)}</td>
-                    <td>${d.stddev ? d.stddev.toFixed(1) : "—"}</td>
-                    <td style="font-weight:700;color:${d.cv && d.cv > 20 ? '#8b5e3c' : 'var(--paper-text)'}">${d.cv ? d.cv.toFixed(1) + "%" : "—"}</td>
-                    <td>${d.n}</td>
-                </tr>
-            `).join("");
+            // Horizontal floating bar chart
+            const ctx=document.getElementById("distributionChart").getContext("2d");
+            new Chart(ctx,{type:"bar",data:{labels:dists.map(d=>d.label),datasets:[
+                {label:"Range (min–max)",data:dists.map(d=>[d.min,d.max]),backgroundColor:"rgba(255,255,255,0.08)",borderColor:"rgba(255,255,255,0.15)",borderWidth:1,barPercentage:0.5},
+                {label:"IQR (Q1–Q3)",data:dists.map(d=>[d.q25,d.q75]),backgroundColor:dists.map(d=>d.color+"50"),borderColor:dists.map(d=>d.color),borderWidth:1.5,barPercentage:0.5},
+            ]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"rgba(255,255,255,0.5)",font:{size:10,family:"Inter"}}},tooltip:{callbacks:{label:(ctx)=>{const d=dists[ctx.dataIndex];return ctx.datasetIndex===0?`Range: ${fmt(d.min)} – ${fmt(d.max)}`:`IQR: ${fmt(d.q25)} – ${fmt(d.q75)} (median: ${fmt(d.median)})`;}}}},scales:{x:{ticks:{color:"rgba(255,255,255,0.35)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}},y:{ticks:{color:"rgba(255,255,255,0.6)",font:{size:11,weight:"600"}},grid:{display:false}}}}});
 
-            document.getElementById("distributionTable").innerHTML = `
-                <table class="heatmap-table">
-                    <thead><tr>
-                        <th>Metric</th><th>Min</th><th>Q1</th><th>Median</th><th>Q3</th><th>Max</th><th>Mean</th><th>SD</th><th>CV</th><th>N</th>
-                    </tr></thead>
-                    <tbody>${rows}</tbody>
-                </table>
-            `;
+            // Table
+            const rows=dists.map(d=>`<tr><th>${escapeHtml(d.label)}</th><td>${fmt(d.min)}</td><td>${fmt(d.q25)}</td><td style="font-weight:700;color:#fff;">${fmt(d.median)}</td><td>${fmt(d.q75)}</td><td>${fmt(d.max)}</td><td>${fmt(d.avg)}</td><td>${d.stddev?d.stddev.toFixed(1):"—"}</td><td style="font-weight:700;color:${d.cv&&d.cv>30?'var(--warn)':'var(--accent)'}">${d.cv?d.cv.toFixed(1)+"%":"—"}</td><td>${d.n}</td></tr>`).join("");
+            document.getElementById("distributionTable").innerHTML=`<table class="heatmap-table"><thead><tr><th>Metric</th><th>Min</th><th>Q1</th><th>Median</th><th>Q3</th><th>Max</th><th>Mean</th><th>SD</th><th>CV</th><th>N</th></tr></thead><tbody>${rows}</tbody></table>`;
 
-            const mostVolatile = [...dists].filter(d => d.cv != null).sort((a,b) => b.cv - a.cv)[0];
-            const leastVolatile = [...dists].filter(d => d.cv != null).sort((a,b) => a.cv - b.cv)[0];
-
-            if (mostVolatile && leastVolatile && mostVolatile.key !== leastVolatile.key) {
-                document.getElementById("distributionFindings").innerHTML = `
-                    <div class="paper-divider"></div>
-                    <div class="paper-body">
-                        <div class="paper-finding">
-                            <strong>${mostVolatile.label}</strong> is the most volatile metric (CV = ${mostVolatile.cv.toFixed(1)}%), while
-                            <strong>${leastVolatile.label}</strong> is the most stable (CV = ${leastVolatile.cv.toFixed(1)}%).
-                        </div>
-                    </div>
-                `;
-            }
+            const mv=[...dists].filter(d=>d.cv!=null).sort((a,b)=>b.cv-a.cv)[0];
+            const lv=[...dists].filter(d=>d.cv!=null).sort((a,b)=>a.cv-b.cv)[0];
+            if (mv&&lv&&mv.key!==lv.key) document.getElementById("distributionFindings").innerHTML=`<div class="stat-divider"></div><div class="stat-finding"><strong>${mv.label}</strong> is the most volatile (CV=${mv.cv.toFixed(1)}%), <strong>${lv.label}</strong> the most stable (CV=${lv.cv.toFixed(1)}%).</div>`;
         }
 
         /* ─── RENDER: WORKOUT EFFECTS ──────────────── */
         function renderWorkoutEffects() {
-            const effects = computeWorkoutEffects();
-            if (!effects.length) {
-                document.getElementById("effectsContent").innerHTML = '<div class="paper-finding">Insufficient paired data to estimate workout effects.</div>';
-                return;
-            }
+            const effects=computeWorkoutEffects(); if (!effects.length){document.getElementById("effectsContent").innerHTML='<div class="stat-finding">Insufficient paired data.</div>';return;}
 
-            const rows = effects.map(e => {
-                const diffSign = e.diff >= 0 ? "+" : "";
-                const diffColor = (e.higherBetter && e.diff > 0) || (!e.higherBetter && e.diff < 0)
-                    ? "color:var(--paper-accent)" : e.diff !== 0 ? "color:#8b5e3c" : "";
-                return `
-                    <tr>
-                        <th>${escapeHtml(e.label)}</th>
-                        <td>${fmt(e.afterWorkout)}</td>
-                        <td>${fmt(e.afterRest)}</td>
-                        <td style="font-weight:700;${diffColor}">${diffSign}${e.diff.toFixed(1)}</td>
-                        <td style="color:var(--paper-text-dim)">${e.nWorkout} / ${e.nRest}</td>
-                    </tr>
-                `;
-            }).join("");
+            // Grouped bar chart
+            const ctx=document.getElementById("effectsChart").getContext("2d");
+            new Chart(ctx,{type:"bar",data:{labels:effects.map(e=>e.label),datasets:[
+                {label:"After Workout",data:effects.map(e=>e.afterWorkout),backgroundColor:"rgba(91,154,139,0.6)",borderColor:"var(--accent)",borderWidth:1},
+                {label:"After Rest",data:effects.map(e=>e.afterRest),backgroundColor:"rgba(255,255,255,0.12)",borderColor:"rgba(255,255,255,0.25)",borderWidth:1},
+            ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"rgba(255,255,255,0.6)",font:{size:11,family:"Inter"}}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",borderColor:"rgba(255,255,255,0.1)",borderWidth:1}},scales:{x:{ticks:{color:"rgba(255,255,255,0.5)",font:{size:11}},grid:{display:false}},y:{ticks:{color:"rgba(255,255,255,0.35)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}}}}});
 
-            document.getElementById("effectsContent").innerHTML = `
-                <div class="heatmap-wrap">
-                    <table class="heatmap-table">
-                        <thead><tr>
-                            <th>Metric</th><th>After Workout</th><th>After Rest</th><th>Difference</th><th>N (workout/rest)</th>
-                        </tr></thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                </div>
-            `;
+            // Table
+            const rows=effects.map(e=>{ const diffSign=e.diff>=0?"+":""; const diffColor=(e.higherBetter&&e.diff>0)||(!e.higherBetter&&e.diff<0)?"color:var(--positive)":e.diff!==0?"color:var(--negative)":""; return `<tr><th>${escapeHtml(e.label)}</th><td>${fmt(e.afterWorkout)}</td><td>${fmt(e.afterRest)}</td><td style="font-weight:700;${diffColor}">${diffSign}${e.diff.toFixed(1)}</td><td style="color:var(--text-dim)">${e.nWorkout} / ${e.nRest}</td></tr>`; }).join("");
+            document.getElementById("effectsContent").innerHTML=`<div class="heatmap-wrap"><table class="heatmap-table"><thead><tr><th>Metric</th><th>After Workout</th><th>After Rest</th><th>Diff</th><th>N (w/r)</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 
-            const beneficial = effects.filter(e =>
-                (e.higherBetter && e.diff > 1) || (!e.higherBetter && e.diff < -1)
-            );
-            const costly = effects.filter(e =>
-                (e.higherBetter && e.diff < -1) || (!e.higherBetter && e.diff > 1)
-            );
-
-            const parts = [];
-            if (costly.length) {
-                parts.push(`Training days show a next-day cost in <strong>${costly.map(e=>e.label).join(", ")}</strong>.`);
-            }
-            if (beneficial.length) {
-                parts.push(`However, <strong>${beneficial.map(e=>e.label).join(", ")}</strong> ${beneficial.length>1?"tend":"tends"} to improve after workout days.`);
-            }
-            if (!parts.length) {
-                parts.push("Workout days and rest days show similar next-day recovery profiles in this archive.");
-            }
-
-            document.getElementById("effectsFindings").innerHTML = `
-                <div class="paper-divider"></div>
-                <div class="paper-body">
-                    <div class="paper-finding">${parts.join(" ")}</div>
-                </div>
-            `;
+            const costly=effects.filter(e=>(e.higherBetter&&e.diff<-1)||(!e.higherBetter&&e.diff>1));
+            const bene=effects.filter(e=>(e.higherBetter&&e.diff>1)||(!e.higherBetter&&e.diff<-1));
+            const parts=[]; if (costly.length) parts.push(`Training shows a next-day cost in <strong>${costly.map(e=>e.label).join(", ")}</strong>.`);
+            if (bene.length) parts.push(`<strong>${bene.map(e=>e.label).join(", ")}</strong> ${bene.length>1?"tend":"tends"} to improve after workout days.`);
+            if (!parts.length) parts.push("Workout and rest days show similar next-day recovery profiles.");
+            document.getElementById("effectsFindings").innerHTML=`<div class="stat-divider"></div><div class="stat-finding">${parts.join(" ")}</div>`;
         }
 
         /* ─── RENDER: INSIGHTS ─────────────────────── */
         function renderInsights(items) {
-            const normalized = Array.isArray(items) ? items : [];
-            if (!normalized.length) {
-                document.getElementById("insightsList").innerHTML = '<div class="empty-state">No archived insights available for this period.</div>';
-                return;
-            }
-
-            document.getElementById("insightsList").innerHTML = normalized.map(item => {
-                const text = summarizeInsightText(rawInsightText(item));
-                const agent = escapeHtml(String(rawInsightAgent(item)).replace(/_/g, " "));
-                const time = escapeHtml(rawInsightTime(item));
-
-                return `
-                    <article class="insight-card">
-                        <div class="insight-card-top">
-                            <span class="insight-agent-tag">${agent}</span>
-                            ${time ? `<span class="insight-time-tag">${time}</span>` : ""}
-                        </div>
-                        <div class="insight-text">${escapeHtml(text)}</div>
-                    </article>
-                `;
-            }).join("");
+            const normalized=Array.isArray(items)?items:[];
+            if (!normalized.length){document.getElementById("insightsList").innerHTML='<div class="empty-state">No archived insights available.</div>';return;}
+            document.getElementById("insightsList").innerHTML=normalized.map(item=>{ const fullText=cleanAgentText(rawInsightText(item)); const summary=truncateText(fullText,180); const agent=escapeHtml(String(rawInsightAgent(item)).replace(/_/g," ")); const time=escapeHtml(rawInsightTime(item)); const hasMore=fullText.length>190;
+                return `<article class="insight-card"><div class="insight-card-top"><span class="insight-agent-tag">${agent}</span>${time?`<span class="insight-time-tag">${time}</span>`:""}</div><div class="insight-summary">${escapeHtml(summary)}</div>${hasMore?`<details class="insight-details"><summary>▸ Show full analysis</summary><div class="insight-details-body">${escapeHtml(fullText)}</div></details>`:""}</article>`; }).join("");
         }
 
         /* ─── CHAT ─────────────────────────────────── */
-        function appendMessage(role, text) {
-            const node = document.createElement("div");
-            node.className = `msg ${role}`;
-            node.textContent = text;
-            document.getElementById("chatLog").appendChild(node);
-            document.getElementById("chatLog").scrollTop = document.getElementById("chatLog").scrollHeight;
-        }
-
-        function formatChatReply(text) {
-            const clean = cleanAgentText(text);
-            return clean || "No response from agent.";
-        }
+        function appendMessage(role,text){const node=document.createElement("div");node.className=`msg ${role}`;node.textContent=text;document.getElementById("chatLog").appendChild(node);document.getElementById("chatLog").scrollTop=document.getElementById("chatLog").scrollHeight;}
 
         async function sendChat(message) {
-            const chatLog = document.getElementById("chatLog");
-            appendMessage("user", message);
-            appendMessage("bot", "Analyzing the archive (this may take up to a minute)…");
-            const pendingNode = chatLog.lastElementChild;
-
-            try {
-                const result = await postJson("/api/v1/chat", { message });
-
-                if (result.job_id && result.status === "processing") {
-                    pendingNode.textContent = "Working…";
-                    for (let i = 0; i < 90; i++) {
-                        await new Promise(r => setTimeout(r, 2000));
-                        try {
-                            const status = await getJson(`/api/v1/chat/status/${result.job_id}`);
-                            if (status.status === "completed") {
-                                const reply = findFirst(status, ["answer","response","message","text","output"]) || "No response.";
-                                pendingNode.textContent = formatChatReply(String(reply));
-                                return;
-                            }
-                            if (status.status === "failed" || status.error) {
-                                pendingNode.textContent = `Analysis failed: ${status.error || "Unknown error"}`;
-                                return;
-                            }
-                            pendingNode.textContent = "Working" + ".".repeat((i % 3) + 1);
-                        } catch { /* transient */ }
-                    }
-                    pendingNode.textContent = "Agent timed out. Please try again.";
-                } else {
-                    const reply = findFirst(result, ["answer","response","message","text","output"]) || "No response.";
-                    pendingNode.textContent = formatChatReply(String(reply));
-                }
-            } catch (error) {
-                pendingNode.textContent = `Request failed: ${error.message}`;
-            }
+            const chatLog=document.getElementById("chatLog"); appendMessage("user",message); appendMessage("bot","Analyzing the archive (typically 30–60 seconds)…"); const pendingNode=chatLog.lastElementChild;
+            try { const result=await postJson("/api/v1/chat",{message});
+                if (result.job_id&&result.status==="processing"){ let elapsed=0; for (let i=0;i<90;i++){await new Promise(r=>setTimeout(r,2000));elapsed+=2; try{const status=await getJson(`/api/v1/chat/status/${result.job_id}`);if(status.status==="completed"){const reply=findFirst(status,["answer","response","message","text","output"])||"No response.";pendingNode.textContent=cleanAgentText(String(reply));return;}if(status.status==="failed"||status.error){pendingNode.textContent=`Analysis failed: ${status.error||"Unknown"}`;return;}pendingNode.textContent=`Working… (${elapsed}s)`;}catch{}} pendingNode.textContent="Agent timed out. Please try again.";}
+                else{const reply=findFirst(result,["answer","response","message","text","output"])||"No response.";pendingNode.textContent=cleanAgentText(String(reply));}
+            }catch(error){pendingNode.textContent=`Request failed: ${error.message}`;}
         }
 
-        /* ─── INIT & BOOT ──────────────────────────── */
-        function initChat() {
-            const form = document.getElementById("chatForm");
-            const input = document.getElementById("chatInput");
-            const sendBtn = document.getElementById("sendBtn");
+        /* ─── INIT ─────────────────────────────────── */
+        function initChat(){const form=document.getElementById("chatForm"),input=document.getElementById("chatInput"),sendBtn=document.getElementById("sendBtn");
+            form.addEventListener("submit",async(e)=>{e.preventDefault();const msg=input.value.trim();if(!msg)return;input.value="";sendBtn.disabled=true;await sendChat(msg);sendBtn.disabled=false;input.focus();});
+            document.getElementById("clearChatBtn").addEventListener("click",()=>{document.getElementById("chatLog").innerHTML='<div class="msg system">Chat cleared. Responses typically take 30–60 seconds.</div>';});
+            input.addEventListener("keydown",(e)=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();form.requestSubmit();}});}
 
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const msg = input.value.trim();
-                if (!msg) return;
-                input.value = "";
-                sendBtn.disabled = true;
-                await sendChat(msg);
-                sendBtn.disabled = false;
-                input.focus();
-            });
+        async function boot(){renderFormulas();
+            const [histR,workR,effR,insR]=await Promise.allSettled([getJson("/api/v1/metrics/history?days=48"),getJson("/api/v1/workouts/progress?days=48&sport=all"),getJson("/api/v1/analytics/cross-effects?days=48"),getJson("/api/v1/insights/latest")]);
+            if(histR.status==="fulfilled")state.history=normalizeHistory(histR.value);
+            if(workR.status==="fulfilled")state.workouts=normalizeWorkouts(workR.value);
+            if(effR.status==="fulfilled")state.crossEffects=effR.value;
+            if(insR.status==="fulfilled")state.insights=normalizeInsights(insR.value);
+            computeKPIs();renderTimelineToggles();renderTimelineChart();renderWorkoutCharts();renderWorkoutTable();renderPearsonHeatmap();renderAR1();renderMarkov();renderDistributions();renderWorkoutEffects();renderInsights(state.insights);}
 
-            document.getElementById("clearChatBtn").addEventListener("click", () => {
-                document.getElementById("chatLog").innerHTML = '<div class="msg system">Chat cleared. Ask a new question about the Feb–Mar 2026 archive.</div>';
-            });
-
-            input.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    form.requestSubmit();
-                }
-            });
-        }
-
-        async function boot() {
-            // Render formulas immediately
-            renderFormulas();
-
-            // Fetch all data in parallel
-            const [historyResult, workoutResult, effectsResult, insightsResult] = await Promise.allSettled([
-                getJson("/api/v1/metrics/history?days=48"),
-                getJson("/api/v1/workouts/progress?days=48&sport=all"),
-                getJson("/api/v1/analytics/cross-effects?days=48"),
-                getJson("/api/v1/insights/latest"),
-            ]);
-
-            // Process history
-            if (historyResult.status === "fulfilled") {
-                state.history = normalizeHistory(historyResult.value);
-            }
-
-            // Process workouts
-            if (workoutResult.status === "fulfilled") {
-                state.workouts = normalizeWorkouts(workoutResult.value);
-            }
-
-            // Process cross-effects
-            if (effectsResult.status === "fulfilled") {
-                state.crossEffects = effectsResult.value;
-            }
-
-            // Process insights
-            if (insightsResult.status === "fulfilled") {
-                state.insights = normalizeInsights(insightsResult.value);
-            }
-
-            // Render everything
-            computeKPIs();
-            renderTimelineToggles();
-            renderTimelineChart();
-            renderWorkoutCharts();
-            renderWorkoutTable();
-            renderPearsonHeatmap();
-            renderAR1();
-            renderMarkov();
-            renderDistributions();
-            renderWorkoutEffects();
-            renderInsights(state.insights);
-        }
-
-        // Initialize
-        lucide.createIcons();
-        initChat();
-        boot().then(() => {
-            lucide.createIcons();
-        });
+        lucide.createIcons(); initChat(); boot().then(()=>lucide.createIcons());
     })();
     </script>
 </body>
-
 </html>
