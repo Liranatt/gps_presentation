@@ -344,7 +344,10 @@
                 </div>
                 <div class="stat-formula" id="pearsonFormula"></div>
                 <div id="pearsonHeatmap" class="heatmap-wrap"></div>
+                <div class="stat-card-body"><p style="margin-top:18px;"><strong>See it in the data:</strong> the two most correlated metrics plotted day-by-day. When they track each other closely, the correlation is working. When they diverge, something changed.</p></div>
+                <div class="stat-chart-container"><canvas id="pearsonTimeSeriesChart"></canvas></div>
                 <div id="pearsonFindings"></div>
+                <div id="pearsonCaveats"></div>
             </div>
 
             <!-- AR(1) -->
@@ -357,7 +360,10 @@
                 <div class="stat-formula" id="arFormula"></div>
                 <div id="arCoefficients" class="ar-grid"></div>
                 <div class="stat-chart-container"><canvas id="arScatterChart"></canvas></div>
+                <div class="stat-card-body"><p style="margin-top:18px;"><strong>Daily change magnitude:</strong> how much does each metric actually jump day-to-day? High persistence = small jumps. Low persistence = large swings.</p></div>
+                <div class="stat-chart-container"><canvas id="arDeltaChart"></canvas></div>
                 <div id="arFindings"></div>
+                <div id="arCaveats"></div>
             </div>
 
             <!-- Markov -->
@@ -381,8 +387,11 @@
                     <p>Averages hide variability. The chart shows each metric's full range (whiskers) and interquartile spread (solid bar), with <strong>CV</strong> measuring relative volatility.</p>
                 </div>
                 <div class="stat-chart-container" style="height:300px;"><canvas id="distributionChart"></canvas></div>
+                <div class="stat-card-body"><p style="margin-top:18px;"><strong>The actual daily values:</strong> see where each metric lives day-to-day. The horizontal lines show the median — when data hugs the line, it's stable. When it scatters, it's volatile.</p></div>
+                <div class="stat-chart-container" style="height:320px;"><canvas id="distributionSparklines"></canvas></div>
                 <div id="distributionTable" class="heatmap-wrap"></div>
                 <div id="distributionFindings"></div>
+                <div id="distributionCaveats"></div>
             </div>
 
             <!-- Workout Effects -->
@@ -393,8 +402,11 @@
                     <p>Comparing next-day metrics on <strong>workout days</strong> vs <strong>rest days</strong> to estimate the short-term recovery impact of training.</p>
                 </div>
                 <div class="stat-chart-container"><canvas id="effectsChart"></canvas></div>
+                <div class="stat-card-body"><p style="margin-top:18px;"><strong>Day-by-day reality check:</strong> the timeline below highlights workout days (green) vs rest days. Each dot is the <em>next-day</em> metric value — so you can see the recovery pattern with your own eyes, not just averages.</p></div>
+                <div class="stat-chart-container" style="height:300px;"><canvas id="effectsTimelineChart"></canvas></div>
                 <div id="effectsContent"></div>
                 <div id="effectsFindings"></div>
+                <div id="effectsCaveats"></div>
             </div>
         </section>
 
@@ -635,10 +647,31 @@
             const body=keys.map((m,ri)=>{ const cells=keys.map((_,ci)=>{ const v=matrix[ri][ci]; return `<td style="${corrCellStyle(v,ri===ci)}">${v==null?"—":v.toFixed(2)}</td>`; }).join(""); return `<tr><th>${escapeHtml(m.label)}</th>${cells}</tr>`; }).join("");
             document.getElementById("pearsonHeatmap").innerHTML=`<table class="heatmap-table"><thead><tr><th></th>${header}</tr></thead><tbody>${body}</tbody></table>`;
 
-            const notable=[]; for (let i=0;i<keys.length;i++) for (let j=i+1;j<keys.length;j++) { const v=matrix[i][j]; if (v!==null) notable.push({a:keys[i].label,b:keys[j].label,r:v}); }
+            const notable=[]; for (let i=0;i<keys.length;i++) for (let j=i+1;j<keys.length;j++) { const v=matrix[i][j]; if (v!==null) notable.push({a:keys[i],b:keys[j],r:v,ai:i,bi:j}); }
             notable.sort((a,b)=>Math.abs(b.r)-Math.abs(a.r));
-            const findings=notable.slice(0,3).map(n=>{ const dir=n.r>=0?"move together":"move in opposite directions"; const str=Math.abs(n.r)>=0.7?"strong":Math.abs(n.r)>=0.4?"moderate":"weak"; return `<strong>${n.a}</strong> and <strong>${n.b}</strong> ${dir} (${str}, r=${n.r.toFixed(2)}).`; });
+            const findings=notable.slice(0,3).map(n=>{ const dir=n.r>=0?"move together":"move in opposite directions"; const str=Math.abs(n.r)>=0.7?"strong":Math.abs(n.r)>=0.4?"moderate":"weak"; return `<strong>${n.a.label}</strong> and <strong>${n.b.label}</strong> ${dir} (${str}, r=${n.r.toFixed(2)}).`; });
             if (findings.length) document.getElementById("pearsonFindings").innerHTML=`<div class="stat-divider"></div>${findings.map(f=>`<div class="stat-finding">${f}</div>`).join("")}`;
+
+            // Real data time-series: top correlated pair
+            if (notable.length) {
+                const top=notable[0]; const h=state.history; const labels=h.map(r=>r.date);
+                const aVals=h.map(r=>r[top.a.key]),bVals=h.map(r=>r[top.b.key]);
+                const warIdx=labels.indexOf(WAR_DATE);
+                const ctx=document.getElementById("pearsonTimeSeriesChart").getContext("2d");
+                new Chart(ctx,{type:"line",data:{labels,datasets:[
+                    {label:top.a.label,data:aVals,borderColor:top.a.color,backgroundColor:top.a.color+"18",borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:0.3,yAxisID:"y"},
+                    {label:top.b.label,data:bVals,borderColor:top.b.color,backgroundColor:top.b.color+"18",borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:0.3,yAxisID:"y1"},
+                ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{labels:{color:"rgba(255,255,255,0.6)",font:{size:11,family:"Inter"}}},title:{display:true,text:`${top.a.label} vs ${top.b.label} — r = ${top.r.toFixed(2)}`,color:"rgba(255,255,255,0.5)",font:{size:11,weight:"600",family:"Inter"}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,callbacks:{title:(items)=>shortDate(items[0].label)}}},scales:{x:{ticks:{color:"rgba(255,255,255,0.3)",font:{size:9},maxTicksLimit:10,callback:(_,i)=>shortDate(labels[i])},grid:{color:"rgba(255,255,255,0.04)"}},y:{position:"left",title:{display:true,text:top.a.label,color:top.a.color,font:{size:10}},ticks:{color:top.a.color+"90",font:{size:9}},grid:{color:"rgba(255,255,255,0.05)"}},y1:{position:"right",title:{display:true,text:top.b.label,color:top.b.color,font:{size:10}},ticks:{color:top.b.color+"90",font:{size:9}},grid:{drawOnChartArea:false}}}},
+                plugins:warIdx>=0?[{id:"warLine2",afterDraw:(chart)=>{const meta=chart.getDatasetMeta(0);if(!meta.data[warIdx])return;const x=meta.data[warIdx].x;const c=chart.ctx;c.save();c.strokeStyle="rgba(224,116,116,0.4)";c.lineWidth=1.5;c.setLineDash([5,3]);c.beginPath();c.moveTo(x,chart.chartArea.top);c.lineTo(x,chart.chartArea.bottom);c.stroke();c.restore();}}]:[]});
+
+                // Data quality caveat
+                const n=h.filter(r=>r[top.a.key]!=null&&r[top.b.key]!=null).length;
+                const caveats=[`Based on <strong>${n} paired days</strong>.`];
+                if (n<30) caveats.push(`⚠️ Small sample — correlations with N<30 can be unstable.`);
+                if (Math.abs(top.r)>=0.7) caveats.push(`This is a strong signal — but remember, correlation ≠ causation.`);
+                else if (Math.abs(top.r)<0.3) caveats.push(`Weak correlation — this relationship may be noise.`);
+                document.getElementById("pearsonCaveats").innerHTML=`<div class="stat-finding" style="background:rgba(212,169,87,0.08);border-left-color:var(--warn);margin-top:14px;">🔍 <strong>Data quality:</strong> ${caveats.join(" ")}</div>`;
+            }
         }
 
         /* ─── RENDER: AR(1) ────────────────────────── */
@@ -649,8 +682,26 @@
             const top2=results.slice(0,2); const ctx=document.getElementById("arScatterChart").getContext("2d");
             new Chart(ctx,{type:"scatter",data:{datasets:top2.map(m=>({label:`${m.label} (φ=${m.ar1.toFixed(2)})`,data:m.today.map((t,i)=>({x:t,y:m.tomorrow[i]})),backgroundColor:m.color+"60",borderColor:m.color,pointRadius:4,pointHoverRadius:6}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"var(--text-secondary)",font:{size:11,family:"Inter"}}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",callbacks:{label:(ctx)=>`Today: ${fmt(ctx.raw.x)} → Tomorrow: ${fmt(ctx.raw.y)}`}}},scales:{x:{title:{display:true,text:"Today's value",color:"var(--text-dim)",font:{size:10,family:"Inter"}},ticks:{color:"var(--text-dim)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}},y:{title:{display:true,text:"Next day's value",color:"var(--text-dim)",font:{size:10,family:"Inter"}},ticks:{color:"var(--text-dim)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}}}}});
 
+            // Daily delta bar chart — show the actual day-to-day jumps
+            const h=state.history, labels=h.map(r=>r.date).slice(1);
+            const mostM=results[0], leastM=results[results.length-1];
+            const mostDeltas=[], leastDeltas=[];
+            for (let i=0;i<h.length-1;i++) { const m1=h[i][mostM.key],m2=h[i+1][mostM.key]; mostDeltas.push(m1!=null&&m2!=null?Math.abs(m2-m1):null); const l1=h[i][leastM.key],l2=h[i+1][leastM.key]; leastDeltas.push(l1!=null&&l2!=null?Math.abs(l2-l1):null); }
+            const dctx=document.getElementById("arDeltaChart").getContext("2d");
+            new Chart(dctx,{type:"bar",data:{labels,datasets:[
+                {label:`${mostM.label} — daily |Δ|`,data:mostDeltas,backgroundColor:mostM.color+"50",borderColor:mostM.color,borderWidth:1},
+                {label:`${leastM.label} — daily |Δ|`,data:leastDeltas,backgroundColor:leastM.color+"50",borderColor:leastM.color,borderWidth:1},
+            ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"rgba(255,255,255,0.5)",font:{size:10,family:"Inter"}}},title:{display:true,text:"Absolute Day-over-Day Change (most persistent vs least)",color:"rgba(255,255,255,0.5)",font:{size:11,weight:"600",family:"Inter"}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",callbacks:{title:(items)=>shortDate(items[0].label)}}},scales:{x:{ticks:{color:"rgba(255,255,255,0.3)",font:{size:9},maxTicksLimit:10,callback:(_,i)=>shortDate(labels[i])},grid:{color:"rgba(255,255,255,0.04)"}},y:{title:{display:true,text:"Absolute change",color:"rgba(255,255,255,0.4)",font:{size:10}},ticks:{color:"rgba(255,255,255,0.3)",font:{size:9}},grid:{color:"rgba(255,255,255,0.05)"}}}}});
+
             const most=results[0],least=results[results.length-1];
             document.getElementById("arFindings").innerHTML=`<div class="stat-divider"></div><div class="stat-finding"><strong>${most.label}</strong> is the most persistent (φ=${most.ar1.toFixed(2)}) — changes slowly. <strong>${least.label}</strong> is the least (φ=${least.ar1.toFixed(2)}) — can shift overnight.</div>`;
+
+            // Caveats
+            const nPairs=most.today.length;
+            const caveatParts=[`Based on <strong>${nPairs} consecutive-day pairs</strong>.`];
+            if (results.some(r=>r.ar1<0)) caveatParts.push(`Negative AR(1) = metric tends to <em>reverse</em> day-to-day — could indicate over-correction or noisy sensor data.`);
+            caveatParts.push(`Post-Feb 28 data disruption may inflate apparent volatility in low-persistence metrics.`);
+            document.getElementById("arCaveats").innerHTML=`<div class="stat-finding" style="background:rgba(212,169,87,0.08);border-left-color:var(--warn);margin-top:14px;">🔍 <strong>Data quality:</strong> ${caveatParts.join(" ")}</div>`;
         }
 
         /* ─── RENDER: MARKOV ───────────────────────── */
@@ -684,6 +735,18 @@
                 {label:"IQR (Q1–Q3)",data:dists.map(d=>[d.q25,d.q75]),backgroundColor:dists.map(d=>d.color+"50"),borderColor:dists.map(d=>d.color),borderWidth:1.5,barPercentage:0.5},
             ]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"rgba(255,255,255,0.5)",font:{size:10,family:"Inter"}}},tooltip:{callbacks:{label:(ctx)=>{const d=dists[ctx.dataIndex];return ctx.datasetIndex===0?`Range: ${fmt(d.min)} – ${fmt(d.max)}`:`IQR: ${fmt(d.q25)} – ${fmt(d.q75)} (median: ${fmt(d.median)})`;}}}},scales:{x:{ticks:{color:"rgba(255,255,255,0.35)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}},y:{ticks:{color:"rgba(255,255,255,0.6)",font:{size:11,weight:"600"}},grid:{display:false}}}}});
 
+            // Sparklines — actual daily values with median reference lines
+            const h=state.history; const labels=h.map(r=>r.date);
+            const sparkDatasets=[]; const medianAnnotations=[];
+            dists.slice(0,4).forEach(d=>{ // top 4 most interesting metrics
+                const vals=h.map(r=>r[d.key]);
+                sparkDatasets.push({label:d.label,data:vals,borderColor:d.color,backgroundColor:d.color+"10",borderWidth:1.5,pointRadius:2,pointHoverRadius:4,tension:0.3,fill:false});
+            });
+            const sctx=document.getElementById("distributionSparklines").getContext("2d");
+            const warIdx=labels.indexOf(WAR_DATE);
+            new Chart(sctx,{type:"line",data:{labels,datasets:sparkDatasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{labels:{color:"rgba(255,255,255,0.5)",font:{size:10,family:"Inter"}}},title:{display:true,text:"Daily Values Over Time (hover to inspect)",color:"rgba(255,255,255,0.5)",font:{size:11,weight:"600",family:"Inter"}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",borderColor:"rgba(255,255,255,0.1)",borderWidth:1,callbacks:{title:(items)=>shortDate(items[0].label)}}},scales:{x:{ticks:{color:"rgba(255,255,255,0.3)",font:{size:9},maxTicksLimit:10,callback:(_,i)=>shortDate(labels[i])},grid:{color:"rgba(255,255,255,0.04)"}},y:{ticks:{color:"rgba(255,255,255,0.3)",font:{size:9}},grid:{color:"rgba(255,255,255,0.05)"}}}},
+            plugins:warIdx>=0?[{id:"warLine3",afterDraw:(chart)=>{const meta=chart.getDatasetMeta(0);if(!meta.data[warIdx])return;const x=meta.data[warIdx].x;const c=chart.ctx;c.save();c.strokeStyle="rgba(224,116,116,0.35)";c.lineWidth=1.5;c.setLineDash([5,3]);c.beginPath();c.moveTo(x,chart.chartArea.top);c.lineTo(x,chart.chartArea.bottom);c.stroke();c.fillStyle="rgba(224,116,116,0.5)";c.font="bold 9px Inter";c.fillText("Feb 28",x+3,chart.chartArea.top+10);c.restore();}}]:[]});
+
             // Table
             const rows=dists.map(d=>`<tr><th>${escapeHtml(d.label)}</th><td>${fmt(d.min)}</td><td>${fmt(d.q25)}</td><td style="font-weight:700;color:#fff;">${fmt(d.median)}</td><td>${fmt(d.q75)}</td><td>${fmt(d.max)}</td><td>${fmt(d.avg)}</td><td>${d.stddev?d.stddev.toFixed(1):"—"}</td><td style="font-weight:700;color:${d.cv&&d.cv>30?'var(--warn)':'var(--accent)'}">${d.cv?d.cv.toFixed(1)+"%":"—"}</td><td>${d.n}</td></tr>`).join("");
             document.getElementById("distributionTable").innerHTML=`<table class="heatmap-table"><thead><tr><th>Metric</th><th>Min</th><th>Q1</th><th>Median</th><th>Q3</th><th>Max</th><th>Mean</th><th>SD</th><th>CV</th><th>N</th></tr></thead><tbody>${rows}</tbody></table>`;
@@ -691,6 +754,13 @@
             const mv=[...dists].filter(d=>d.cv!=null).sort((a,b)=>b.cv-a.cv)[0];
             const lv=[...dists].filter(d=>d.cv!=null).sort((a,b)=>a.cv-b.cv)[0];
             if (mv&&lv&&mv.key!==lv.key) document.getElementById("distributionFindings").innerHTML=`<div class="stat-divider"></div><div class="stat-finding"><strong>${mv.label}</strong> is the most volatile (CV=${mv.cv.toFixed(1)}%), <strong>${lv.label}</strong> the most stable (CV=${lv.cv.toFixed(1)}%).</div>`;
+
+            // Caveats
+            const minN=Math.min(...dists.map(d=>d.n));
+            const caveatParts=[`Each metric has <strong>${minN}–${Math.max(...dists.map(d=>d.n))} valid days</strong> of data.`];
+            if (minN<20) caveatParts.push(`⚠️ Some metrics have very few data points — quartile estimates may be unreliable.`);
+            caveatParts.push(`CV above 40% usually signals that the metric swings so much day-to-day that a single number doesn't capture the story — look at the sparklines instead.`);
+            document.getElementById("distributionCaveats").innerHTML=`<div class="stat-finding" style="background:rgba(212,169,87,0.08);border-left-color:var(--warn);margin-top:14px;">🔍 <strong>When to trust it:</strong> ${caveatParts.join(" ")}</div>`;
         }
 
         /* ─── RENDER: WORKOUT EFFECTS ──────────────── */
@@ -704,6 +774,25 @@
                 {label:"After Rest",data:effects.map(e=>e.afterRest),backgroundColor:"rgba(255,255,255,0.12)",borderColor:"rgba(255,255,255,0.25)",borderWidth:1},
             ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"rgba(255,255,255,0.6)",font:{size:11,family:"Inter"}}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",borderColor:"rgba(255,255,255,0.1)",borderWidth:1}},scales:{x:{ticks:{color:"rgba(255,255,255,0.5)",font:{size:11}},grid:{display:false}},y:{ticks:{color:"rgba(255,255,255,0.35)",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}}}}});
 
+            // Timeline with workout/rest markers — pick the most interesting metric (largest absolute diff)
+            const h=state.history, w=state.workouts, workoutDates=new Set(w.map(r=>r.date));
+            const targetMetric=effects.sort((a,b)=>Math.abs(b.diff)-Math.abs(a.diff))[0];
+            if (targetMetric) {
+                const labels=h.map(r=>r.date).slice(1);
+                const nextDayVals=[], bgColors=[], borderColors=[];
+                for (let i=0;i<h.length-1;i++) {
+                    const v=h[i+1][targetMetric.key];
+                    nextDayVals.push(v);
+                    const isWorkout=workoutDates.has(h[i].date);
+                    bgColors.push(isWorkout?"rgba(91,154,139,0.7)":"rgba(255,255,255,0.15)");
+                    borderColors.push(isWorkout?"#5b9a8b":"rgba(255,255,255,0.3)");
+                }
+                const tctx=document.getElementById("effectsTimelineChart").getContext("2d");
+                const avgAfterW=targetMetric.afterWorkout, avgAfterR=targetMetric.afterRest;
+                new Chart(tctx,{type:"bar",data:{labels,datasets:[{label:`Next-day ${targetMetric.label}`,data:nextDayVals,backgroundColor:bgColors,borderColor:borderColors,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},title:{display:true,text:`Next-Day ${targetMetric.label}: Green = After Workout, Gray = After Rest`,color:"rgba(255,255,255,0.5)",font:{size:11,weight:"600",family:"Inter"}},tooltip:{backgroundColor:"rgba(11,13,17,0.92)",callbacks:{title:(items)=>shortDate(items[0].label),label:(item)=>{const isW=workoutDates.has(h[item.dataIndex]?.date);return `${targetMetric.label}: ${fmt(item.raw)} (after ${isW?'workout':'rest'})`;}}},annotation:{}},scales:{x:{ticks:{color:"rgba(255,255,255,0.3)",font:{size:9},maxTicksLimit:10,callback:(_,i)=>shortDate(labels[i])},grid:{color:"rgba(255,255,255,0.04)"}},y:{title:{display:true,text:targetMetric.label,color:"rgba(255,255,255,0.4)",font:{size:10}},ticks:{color:"rgba(255,255,255,0.3)",font:{size:9}},grid:{color:"rgba(255,255,255,0.05)"}}}},
+                plugins:[{id:"avgLines",afterDraw:(chart)=>{const c=chart.ctx;const y1=chart.scales.y.getPixelForValue(avgAfterW);const y2=chart.scales.y.getPixelForValue(avgAfterR);c.save();c.strokeStyle="#5b9a8b";c.lineWidth=1.5;c.setLineDash([6,3]);c.beginPath();c.moveTo(chart.chartArea.left,y1);c.lineTo(chart.chartArea.right,y1);c.stroke();c.fillStyle="#5b9a8b";c.font="bold 9px Inter";c.fillText(`Workout avg: ${fmt(avgAfterW)}`,chart.chartArea.left+4,y1-4);c.strokeStyle="rgba(255,255,255,0.3)";c.beginPath();c.moveTo(chart.chartArea.left,y2);c.lineTo(chart.chartArea.right,y2);c.stroke();c.fillStyle="rgba(255,255,255,0.4)";c.fillText(`Rest avg: ${fmt(avgAfterR)}`,chart.chartArea.left+4,y2-4);c.restore();}}]});
+            }
+
             // Table
             const rows=effects.map(e=>{ const diffSign=e.diff>=0?"+":""; const diffColor=(e.higherBetter&&e.diff>0)||(!e.higherBetter&&e.diff<0)?"color:var(--positive)":e.diff!==0?"color:var(--negative)":""; return `<tr><th>${escapeHtml(e.label)}</th><td>${fmt(e.afterWorkout)}</td><td>${fmt(e.afterRest)}</td><td style="font-weight:700;${diffColor}">${diffSign}${e.diff.toFixed(1)}</td><td style="color:var(--text-dim)">${e.nWorkout} / ${e.nRest}</td></tr>`; }).join("");
             document.getElementById("effectsContent").innerHTML=`<div class="heatmap-wrap"><table class="heatmap-table"><thead><tr><th>Metric</th><th>After Workout</th><th>After Rest</th><th>Diff</th><th>N (w/r)</th></tr></thead><tbody>${rows}</tbody></table></div>`;
@@ -714,6 +803,13 @@
             if (bene.length) parts.push(`<strong>${bene.map(e=>e.label).join(", ")}</strong> ${bene.length>1?"tend":"tends"} to improve after workout days.`);
             if (!parts.length) parts.push("Workout and rest days show similar next-day recovery profiles.");
             document.getElementById("effectsFindings").innerHTML=`<div class="stat-divider"></div><div class="stat-finding">${parts.join(" ")}</div>`;
+
+            // Caveats
+            const totalW=effects[0]?.nWorkout||0, totalR=effects[0]?.nRest||0;
+            const caveatParts=[`Based on <strong>${totalW} workout days</strong> and <strong>${totalR} rest days</strong>.`];
+            if (totalW<8||totalR<8) caveatParts.push(`⚠️ Small sample — with fewer than 8 days per group, the averages shift easily from single outliers.`);
+            caveatParts.push(`This is a simple before/after comparison — it doesn't control for training intensity, time of day, or cumulative fatigue.`);
+            document.getElementById("effectsCaveats").innerHTML=`<div class="stat-finding" style="background:rgba(212,169,87,0.08);border-left-color:var(--warn);margin-top:14px;">🔍 <strong>Limitations:</strong> ${caveatParts.join(" ")}</div>`;
         }
 
         /* ─── RENDER: INSIGHTS ─────────────────────── */
